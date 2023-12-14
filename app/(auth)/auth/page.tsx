@@ -10,7 +10,7 @@ export default function Login() {
   return (
     <div className="text-center w-full max-w-md min-w-fit mb-10">
       <div className="font-semibold text-4xl py-2">
-        Framsync.in
+        Framesync.in
       </div>
       <div className="text-sm pt-2">
         Authenticate with
