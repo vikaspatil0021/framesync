@@ -15,13 +15,13 @@ export default function Login() {
       <div className="text-sm pt-2">
         Authenticate with
       </div>
-      <div className="flex flex-col w-full gap-3 px-8 py-2">
+      <div className="flex flex-col w-full gap-4 px-8 py-2">
 
-        <Button variant="secondary" className="gap-1">
+        <Button variant="secondary" size='lg' className="gap-1">
           <GoogleIcon />
           Google
         </Button>
-        <Button variant="secondary" className="gap-1">
+        <Button variant="secondary" size='lg' className="gap-1">
           <GitHubLogoIcon />
           Github
         </Button>
