@@ -1,10 +1,15 @@
-import { GoogleIcon } from "@/components/icons/Icons"
+"use client"
+import { signIn } from "next-auth/react";
+
 import { Button } from "@/components/ui/button"
+
+import { GoogleIcon } from "@/components/icons/Icons"
 import { GitHubLogoIcon } from "@radix-ui/react-icons"
-import { Metadata } from "next"
-export const metadata: Metadata = {
-  title: 'Auth',
-}
+
+
+// export const metadata: Metadata = {
+//   title: 'Auth',
+// }
 
 export default function Login() {
   return (
@@ -17,16 +22,16 @@ export default function Login() {
       </div>
       <div className="flex flex-col w-full gap-3 px-8 py-2">
 
-        <Button variant="secondary" size='lg' className="gap-1">
+        <Button variant="secondary" size='lg' className="gap-1" onClick={()=>signIn('google')} >
           <GoogleIcon />
-          Google
+          Continue with Google
         </Button>
-        <Button variant="secondary" size='lg' className="gap-1">
+        <Button variant="secondary" size='lg' className="gap-1" onClick={()=>signIn('github')}>
           <GitHubLogoIcon />
-          Github
+          Continue with Github
         </Button>
       </div>
-      
+
     </div>
   )
 }
