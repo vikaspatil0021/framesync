@@ -17,14 +17,14 @@ export default function Login() {
   if (session?.status === 'authenticated') redirect('/');
 
   return (
-    <div className="text-center w-full max-w-md min-w-fit mb-10">
-      <div className="font-semibold text-4xl py-2">
+    <div className="text-center w-full max-w-md min-w-fit mb-5">
+      <div className="font-semibold text-4xl py-3 mb-5">
         Framesync.in
       </div>
-      <div className="text-sm pt-2">
+      <div className="flex flex-col w-full gap-3 p-6 bg-[#222] rounded-md">
+      <div className="text-sm">
         Authenticate with
       </div>
-      <div className="flex flex-col w-full gap-3 px-8 py-2">
 
         {
           (session.status === 'loading') ? <>

@@ -10,7 +10,7 @@ export default function RootLayout({
 }) {
     return (
         <SessionProvider>
-            <div className="bg-[#111] text-[#d3d1d1] flex h-screen flex-col items-center justify-center">
+            <div className="bg-[#111] text-[#d3d1d1] flex h-screen flex-col items-center justify-center p-5">
                 {children}
                 <BuiltByMe />
             </div>
