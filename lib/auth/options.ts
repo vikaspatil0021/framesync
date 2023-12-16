@@ -4,7 +4,6 @@ import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
 
 export const options: NextAuthOptions = {
-    secret: process.env.AUTH_SECRET,
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -15,6 +14,9 @@ export const options: NextAuthOptions = {
             clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
         })
     ],
+    pages:{
+        error:'/auth'
+    },
     callbacks: {
         async session({ session, token }) {
 
