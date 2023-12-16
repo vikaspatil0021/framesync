@@ -3,7 +3,7 @@ import { Button } from "../button";
 
 export default function BuiltByMe(){
     return(
-        <div className="text-sm pt-2 mb-20">
+        <div className="text-sm">
                 Built by
                 <Button variant='link' className="px-1">
                     <Link href='https://github.com/vikaspatil0021'>
