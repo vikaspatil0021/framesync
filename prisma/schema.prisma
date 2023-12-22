@@ -39,7 +39,7 @@ model Team {
 model TeamMembership {
   id     String         @id @default(uuid())
   role   MembershipRole
-  accepted Boolean
+  accepted Boolean @default(false)
   userId String
   teamId String
 

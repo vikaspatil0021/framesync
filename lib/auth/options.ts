@@ -22,6 +22,7 @@ export const options: NextAuthOptions = {
     },
     callbacks: {
         async signIn({ account, user }) {
+
             const providerType = (account?.provider === 'google' ? "Google" : "Github");
             const existingUser = await prisma.user.findUnique({
                 where: {
@@ -59,7 +60,7 @@ export const options: NextAuthOptions = {
                         role:"OWNER",
                         accepted: true
                     }
-                })
+                });
                 return true;
             }
 
