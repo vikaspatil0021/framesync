@@ -1,17 +1,12 @@
-import type { Metadata } from 'next'
+"use client"
+
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { Toaster } from '@/components/ui/toaster'
+import { SessionProvider } from 'next-auth/react'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export const metadata: Metadata = {
-  title: {
-    template: "%s | Framesync",
-    default: "Framesync",
-  },
-  description: 'An open source video reviewing tool for youtebers.',
-}
 
 export default function RootLayout({
   children,
@@ -19,11 +14,15 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        {children}
-        <Toaster />
-      </body>
-    </html>
+    <>
+      <html lang="en">
+        <body className={inter.className}>
+          <SessionProvider>
+            {children}
+            <Toaster />
+          </SessionProvider>
+        </body>
+      </html>
+    </>
   )
 }

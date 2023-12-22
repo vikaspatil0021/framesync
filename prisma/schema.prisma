@@ -10,21 +10,40 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-
-enum AuthProvider{
+enum AuthProvider {
   Google
   Github
 }
 
+enum MembershipRole {
+  Owner
+  Member
+}
 
-
-
-model User{
-  id String @id @default(uuid())
-  name String
-  email String @unique
-  picture String
-  authProvider AuthProvider
+model User {
+  id             String           @id @default(uuid())
+  name           String
+  email          String           @unique
+  picture        String
+  authProvider   AuthProvider
   authProviderId String
+  TeamMembership TeamMembership[]
+}
+
+model Team {
+  id             String           @id @default(uuid())
+  name           String
+  TeamMembership TeamMembership[]
+}
+
+model TeamMembership {
+  id     String         @id @default(uuid())
+  role   MembershipRole
+  userId String
+  teamId String
+
+  user User @relation(fields: [userId], references: [id])
+  team Team @relation(fields: [teamId], references: [id])
+
+  @@unique([userId, teamId])
 }

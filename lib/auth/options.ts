@@ -44,7 +44,7 @@ export const options: NextAuthOptions = {
                         authProvider: providerType,
                         authProviderId: user?.id as string
                     }
-                })
+                });
                 return true;
             }
 
@@ -52,6 +52,9 @@ export const options: NextAuthOptions = {
                 throw new Error(`Your email is registered with ${existingUser?.authProvider} provider!`);
             }
             return true;
+        },
+        async redirect({baseUrl}){
+            return baseUrl;
         },
         async session({ session, token }) {
 
