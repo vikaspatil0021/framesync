@@ -1,9 +1,11 @@
 "use client"
 
 import { signIn, useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton";
+import { toast } from "@/components/ui/use-toast";
 
 import { GoogleIcon } from "@/components/icons/Icons"
 import { GitHubLogoIcon } from "@radix-ui/react-icons"
@@ -11,6 +13,17 @@ import { GitHubLogoIcon } from "@radix-ui/react-icons"
 
 export default function Login() {
   const session = useSession();
+  const searchParams = useSearchParams();
+
+  // handle oauth errors with toast
+  const error: string | null = searchParams.get('error');
+  if (session?.status === 'unauthenticated' && error) {
+    toast({
+      variant: "destructive",
+      title: error,
+      description: 'Please try again later!'
+    });
+  }
 
   return (
     <>
