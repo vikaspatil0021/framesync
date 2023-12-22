@@ -16,8 +16,8 @@ enum AuthProvider {
 }
 
 enum MembershipRole {
-  Owner
-  Member
+  OWNER
+  MEMBER
 }
 
 model User {
@@ -39,6 +39,7 @@ model Team {
 model TeamMembership {
   id     String         @id @default(uuid())
   role   MembershipRole
+  accepted Boolean
   userId String
   teamId String
 

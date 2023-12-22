@@ -16,7 +16,7 @@ export const options: NextAuthOptions = {
             clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
         })
     ],
-    session:{strategy:"jwt"},
+    session: { strategy: "jwt" },
     pages: {
         error: '/auth',
     },
@@ -36,7 +36,7 @@ export const options: NextAuthOptions = {
             });
 
             if (!existingUser) {
-                await prisma.user.create({
+                const newUser = await prisma.user.create({
                     data: {
                         name: user?.name as string,
                         email: user?.email as string,
@@ -45,6 +45,21 @@ export const options: NextAuthOptions = {
                         authProviderId: user?.id as string
                     }
                 });
+
+                const newTeam = await prisma.team.create({
+                    data: {
+                        name: ((newUser.name).split(' ')[0]).toUpperCase() + "'s Team" as string
+                    }
+                })
+
+                await prisma.teamMembership.create({
+                    data:{
+                        teamId:newTeam.id as string,
+                        userId:newUser.id as string,
+                        role:"OWNER",
+                        accepted: true
+                    }
+                })
                 return true;
             }
 
@@ -53,13 +68,13 @@ export const options: NextAuthOptions = {
             }
             return true;
         },
-        async redirect({baseUrl}){
+        async redirect({ baseUrl }) {
             return baseUrl;
         },
         async session({ session, token }) {
 
             if (session?.user) {
-                session = Object.assign({}, session, { user: { ...session?.user, id: token?.sub } })
+                session = Object.assign({}, session, { user: { ...session?.user, id: token?.sub } });
             }
             return session
         }
