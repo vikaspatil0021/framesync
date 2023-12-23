@@ -16,7 +16,7 @@ export default function RootLayout({
   return (
     <>
       <html lang="en">
-        <body className={inter.className}>
+        <body className={inter.className + " bg-[#111] text-[#d3d1d1]"}>
           <SessionProvider>
             {children}
             <Toaster />

@@ -11,7 +11,7 @@ import { GoogleIcon } from "@/components/icons/Icons"
 import { GitHubLogoIcon } from "@radix-ui/react-icons"
 
 
-export default function Login() {
+export default function Auth() {
   const session = useSession();
   const searchParams = useSearchParams();
 
