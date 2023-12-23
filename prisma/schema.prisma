@@ -34,17 +34,28 @@ model Team {
   id             String           @id @default(uuid())
   name           String
   TeamMembership TeamMembership[]
+  invite         invite[]
 }
 
 model TeamMembership {
-  id     String         @id @default(uuid())
-  role   MembershipRole
-  accepted Boolean @default(false)
-  userId String
-  teamId String
+  id       String         @id @default(uuid())
+  role     MembershipRole
+  accepted Boolean        @default(false)
+  userId   String
+  teamId   String
 
   user User @relation(fields: [userId], references: [id])
   team Team @relation(fields: [teamId], references: [id])
 
   @@unique([userId, teamId])
+}
+
+model invite {
+  id        String   @id @default(uuid())
+  email     String
+  teamId    String
+  team      Team     @relation(fields: [teamId], references: [id])
+  expiresAt DateTime
+
+  @@unique([email, teamId])
 }

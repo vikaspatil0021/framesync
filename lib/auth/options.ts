@@ -18,7 +18,7 @@ export const options: NextAuthOptions = {
     ],
     session: { strategy: "jwt" },
     pages: {
-        signIn:'/auth',
+        signIn: '/auth',
         error: '/auth',
     },
     callbacks: {
@@ -55,10 +55,10 @@ export const options: NextAuthOptions = {
                 })
 
                 await prisma.teamMembership.create({
-                    data:{
-                        teamId:newTeam.id as string,
-                        userId:newUser.id as string,
-                        role:"OWNER",
+                    data: {
+                        teamId: newTeam.id as string,
+                        userId: newUser.id as string,
+                        role: "OWNER",
                         accepted: true
                     }
                 });
@@ -74,9 +74,8 @@ export const options: NextAuthOptions = {
             return baseUrl;
         },
         async session({ session, token }) {
-
             if (session?.user) {
-                session = Object.assign({}, session, { user: { ...session?.user, id: token?.sub } });
+                session = Object.assign({}, session, { user: { ...session?.user, id: token?.id } });
             }
             return session
         }
