@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 
-import { RightAccountContent } from "@/components/ui/invite/inviteComponents";
+import { ExpiredContent, RightAccountContent, UsedContent, WrongAccountContent } from "@/components/ui/invite/inviteComponents";
 
 export const metadata: Metadata = {
   title: "Invite | Framesync.in",
@@ -10,9 +10,7 @@ export const metadata: Metadata = {
 export default function Invite() {
   return (
     <>
-      <div>
-        <RightAccountContent />
-      </div>
+        <UsedContent />
     </>
   )
 }
