@@ -33,11 +33,13 @@ export const RightAccountContent = () => {
                 <div className="flex justify-center">
                     <CheckMark />
                 </div>
-                <div className="text-xl font-bold">
-                    Invite accepted
-                </div>
-                <div className="text-lg">
-                    Welcome to the team.
+                <div className="mb-3">
+                    <div className="text-xl font-bold">
+                        Invite accepted
+                    </div>
+                    <div className="text-lg">
+                        Welcome to the team.
+                    </div>
                 </div>
 
                 <Link href='/' className="w-full">
