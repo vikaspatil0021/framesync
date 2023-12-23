@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth"
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 
 import { options } from "@/lib/auth/options"
 import { hasTeamOwnership } from "@/lib/teams/service"
@@ -13,7 +13,7 @@ type Session = {
 } | null
 
 
-export const POST = async (req: NextResponse) => {
+export const POST = async (req: NextRequest) => {
     const session: Session = await getServerSession(options);
     const { teamId, email } = await req.json();
 
