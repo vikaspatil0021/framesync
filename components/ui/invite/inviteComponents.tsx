@@ -68,7 +68,7 @@ export const WrongAccountContent = () => {
                 </div>
                 <Link href='/' className="w-full">
                     <Button variant='secondary' className="w-full">
-                        Go to app
+                        Go back to app
                     </Button>
                 </Link>
             </ComponentCard>
@@ -117,32 +117,37 @@ export const ExpiredContent = () => {
                         Invites expire in 7 days <br /> Request a new one.
                     </div>
                 </div>
+                <Link href='/' className="w-full">
+                    <Button variant='secondary' className="w-full">
+                        Go back to app
+                    </Button>
+                </Link>
             </ComponentCard>
         </>
     )
 }
 
-// export const UsedContent = () => {
-//     return (
-//         <>
-//             <ComponentCard>
-//                 <div className="flex justify-center">
-//                     <CheckMark />
-//                 </div>
-//                 <div className="mb-3">
-//                     <div className="text-xl font-bold">
-//                         Invite already accepted
-//                     </div>
-//                     <div className="text-lg">
-//                         You are already part of the team.
-//                     </div>
-//                 </div>
-//                 <Link href='/' className="w-full">
-//                     <Button variant='secondary' className="w-full">
-//                         Go to app
-//                     </Button>
-//                 </Link>
-//             </ComponentCard>
-//         </>
-//     )
-// }
+export const NoTokenContent = () => {
+    return (
+        <>
+            <ComponentCard>
+                <div className="flex justify-center">
+                    <Xmark />
+                </div>
+                <div className="mb-3">
+                    <div className="text-xl font-bold">
+                        No Token Found
+                    </div>
+                    <div className="text-lg">
+                        Please ensure you have the valid link.
+                    </div>
+                </div>
+                <Link href='/' className="w-full">
+                    <Button variant='secondary' className="w-full">
+                        Go back to app
+                    </Button>
+                </Link>
+            </ComponentCard>
+        </>
+    )
+}
