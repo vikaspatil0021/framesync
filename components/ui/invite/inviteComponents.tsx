@@ -93,7 +93,7 @@ export const NotLoggedInContent = () => {
                 </div>
                 <Link href='/auth' className="w-full">
                     <Button variant='secondary' className="w-full">
-                        Go to Auth
+                        Authenticate
                     </Button>
                 </Link>
             </ComponentCard>
@@ -122,27 +122,27 @@ export const ExpiredContent = () => {
     )
 }
 
-export const UsedContent = () => {
-    return (
-        <>
-            <ComponentCard>
-                <div className="flex justify-center">
-                    <CheckMark />
-                </div>
-                <div className="mb-3">
-                    <div className="text-xl font-bold">
-                        Invite already accepted
-                    </div>
-                    <div className="text-lg">
-                        You are already part of the team.
-                    </div>
-                </div>
-                <Link href='/' className="w-full">
-                    <Button variant='secondary' className="w-full">
-                        Go to app
-                    </Button>
-                </Link>
-            </ComponentCard>
-        </>
-    )
-}
+// export const UsedContent = () => {
+//     return (
+//         <>
+//             <ComponentCard>
+//                 <div className="flex justify-center">
+//                     <CheckMark />
+//                 </div>
+//                 <div className="mb-3">
+//                     <div className="text-xl font-bold">
+//                         Invite already accepted
+//                     </div>
+//                     <div className="text-lg">
+//                         You are already part of the team.
+//                     </div>
+//                 </div>
+//                 <Link href='/' className="w-full">
+//                     <Button variant='secondary' className="w-full">
+//                         Go to app
+//                     </Button>
+//                 </Link>
+//             </ComponentCard>
+//         </>
+//     )
+// }

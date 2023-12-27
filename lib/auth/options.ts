@@ -22,6 +22,23 @@ export const options: NextAuthOptions = {
         error: '/auth',
     },
     callbacks: {
+        async jwt({ token }) {
+            const existingUser = await prisma.user.findFirst({
+                where: {
+                    email: token.email as string
+                },
+                select:{
+                    id:true
+                }
+            })
+            if (!existingUser) {
+                return token
+            }
+            return {
+                ...token,
+                id: existingUser.id,
+            }
+        },
         async signIn({ account, user }) {
 
             const providerType = (account?.provider === 'google' ? "Google" : "Github");
@@ -74,9 +91,8 @@ export const options: NextAuthOptions = {
             return baseUrl;
         },
         async session({ session, token }) {
-            if (session?.user) {
-                session = Object.assign({}, session, { user: { ...session?.user, id: token?.id } });
-            }
+            // @ts-expect-error
+            session.user.id = token?.id;
             return session
         }
     }

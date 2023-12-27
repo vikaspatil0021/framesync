@@ -8,10 +8,11 @@ export default function Home() {
     await fetch("/api/teams/inviteMember", {
       method: "post",
       body: JSON.stringify({
-        "teamId": "9d7f9cc3-d29b-4ac5-bc5c-c40c82dbac50",
-        "email": "vikaspatil212222@gmail.com"
+        "teamId": "8189bcf3-06fe-4f0c-854d-6a7dbeabee81",
+        "email": "kvianboleto@gmail.com"
       })
     })
+  
   }
   return (
     <>
