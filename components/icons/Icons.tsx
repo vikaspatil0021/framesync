@@ -1,4 +1,4 @@
-import { CheckIcon, Clock, Lock, X } from "lucide-react"
+import { CheckIcon, Clock, Lock, SearchX, X } from "lucide-react"
 
 export const GoogleIcon = () => {
     return (
@@ -45,5 +45,15 @@ export const ClockIcon = () => {
                 <Clock />
             </div>
         </>
+    )
+}
+
+export const NotFound = () => {
+    return (
+        <>
+            <div className="rounded-full bg-red-700 p-3">
+                <SearchX/>
+            </div>
+            </>
     )
 }

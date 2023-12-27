@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import Link from "next/link"
 
-import { CheckMark, ClockIcon, LockIcon, Xmark } from "@/components/icons/Icons"
+import { CheckMark, ClockIcon, LockIcon, NotFound, Xmark } from "@/components/icons/Icons"
 
 import { Button } from "../button"
 import BuiltByMe from "../shared/builtByMe"
@@ -132,14 +132,14 @@ export const NoTokenContent = () => {
         <>
             <ComponentCard>
                 <div className="flex justify-center">
-                    <Xmark />
+                    <NotFound />
                 </div>
                 <div className="mb-3">
                     <div className="text-xl font-bold">
                         No Token Found
                     </div>
                     <div className="text-lg">
-                        Please ensure you have the valid link.
+                        Please ensure you have <br/> valid invite link.
                     </div>
                 </div>
                 <Link href='/' className="w-full">
