@@ -17,7 +17,7 @@ const ComponentCard = ({
                 <div className="font-semibold text-4xl py-3 mb-5">
                     Framesync.in
                 </div>
-                <div className="flex flex-col w-full gap-3 p-7 bg-[#222] max-w-md min-w-fit rounded-md border border-white/5 mb-5 text-center">
+                <div className="flex flex-col w-full gap-3 p-7 bg-[#222] max-w-md min-w-fit rounded-md border border-white/10 mb-5 text-center">
                     {children}
                 </div>
                 <BuiltByMe />

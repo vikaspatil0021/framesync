@@ -31,7 +31,7 @@ export default function Auth() {
         <div className="font-semibold text-4xl py-3 mb-5">
           Framesync.in
         </div>
-        <div className="flex flex-col w-full gap-3 p-6 bg-[#222] rounded-md border border-white/5">
+        <div className="flex flex-col w-full gap-3 p-6 bg-[#222] rounded-md border border-white/10">
           <div className="text-sm">
             Authenticate with
           </div>
