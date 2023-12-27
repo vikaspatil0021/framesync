@@ -115,7 +115,7 @@ export const ExpiredContent = () => {
                         Token expired
                     </div>
                     <div className="text-lg">
-                        Invites expire in 7 days <br /> Request a new one.
+                        Invites expires in 7 days <br /> Request a new one.
                     </div>
                 </div>
                 <Link href='/' className="w-full">
