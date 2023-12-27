@@ -5,6 +5,7 @@ import { CheckMark, ClockIcon, LockIcon, NotFound, Xmark } from "@/components/ic
 
 import { Button } from "../button"
 import BuiltByMe from "../shared/builtByMe"
+import { Skeleton } from "../skeleton"
 
 const ComponentCard = ({
     children,
@@ -147,6 +148,29 @@ export const NoTokenContent = () => {
                         Go back to app
                     </Button>
                 </Link>
+            </ComponentCard>
+        </>
+    )
+}
+
+
+export const LoadingContent = () => {
+    return (
+        <>
+            <ComponentCard>
+                <div className="flex justify-center">
+                    <Skeleton className="h-12 w-12 rounded-full bg-white/75" />
+                </div>
+                <div className="mb-3">
+                    <div className="text-xl font-bold">
+                        <Skeleton className="h-6 w-1/2 mx-auto bg-zinc-700" />
+                    </div>
+                    <div className="text-lg">
+                        <Skeleton className="h-3 w-3/4 mx-auto my-3 bg-zinc-700" />
+                        <Skeleton className="h-3 w-1/2 mx-auto my-3 bg-zinc-700" />
+                    </div>
+                </div>
+                    <Skeleton className="h-9 bg-white/70" />
             </ComponentCard>
         </>
     )
