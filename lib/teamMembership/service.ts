@@ -1,3 +1,5 @@
+import prisma from "../prisma/client";
+
 export const getMembershipByTeamIdUserId = async (userId: string, teamId: string) => {
     return await prisma?.teamMembership.findFirst({
         where: {

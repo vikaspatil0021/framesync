@@ -3,8 +3,9 @@ import { type NextAuthOptions } from "next-auth"
 import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
 
-import prisma from "../prisma/client";
 import { createMembership } from "../teamMembership/service";
+import { createUser, getUserByEmail } from "../user/service";
+import { createTeam } from "../teams/service";
 
 export const options: NextAuthOptions = {
     providers: [
@@ -24,17 +25,12 @@ export const options: NextAuthOptions = {
     },
     callbacks: {
         async jwt({ token }) {
-            const existingUser = await prisma.user.findFirst({
-                where: {
-                    email: token.email as string
-                },
-                select: {
-                    id: true
-                }
-            })
+
+            const existingUser = await getUserByEmail(token?.email as string);
             if (!existingUser) {
                 return token
             }
+
             return {
                 ...token,
                 id: existingUser.id,
@@ -43,36 +39,27 @@ export const options: NextAuthOptions = {
         async signIn({ account, user }) {
 
             const providerType = (account?.provider === 'google' ? "Google" : "Github");
-            const existingUser = await prisma.user.findUnique({
-                where: {
-                    email: user?.email as string
-                },
-                select: {
-                    id: true,
-                    email: true,
-                    authProvider: true,
-                    authProviderId: true
-                }
-            });
+
+            const existingUser = await getUserByEmail(user?.email as string);
 
             if (!existingUser) {
-                const newUser = await prisma.user.create({
-                    data: {
-                        name: user?.name as string,
-                        email: user?.email as string,
-                        picture: user?.image as string,
-                        authProvider: providerType,
-                        authProviderId: user?.id as string
-                    }
-                });
 
-                const newTeam = await prisma.team.create({
-                    data: {
-                        name: ((newUser.name).split(' ')[0]).toUpperCase() + "'s Team" as string
-                    }
-                })
+                const data = {
+                    name: user?.name as string,
+                    email: user?.email as string,
+                    picture: user?.image as string,
+                    authProvider: providerType as "Google" | "Github",
+                    authProviderId: user?.id as string
+                }
 
-                await createMembership(newTeam.id as string, newUser.id as string, "OWNER");
+
+                const newUser = await createUser(data)
+
+                const teamName = newUser ? ((newUser.name).split(' ')[0]).toUpperCase() + "'s Team" : ''
+                
+                const newTeam = await createTeam(teamName)
+
+                await createMembership(newTeam?.id as string, newUser?.id as string, "OWNER");
                 return true;
             }
 

@@ -1,3 +1,5 @@
+import prisma from "../prisma/client";
+
 export const getInviteById = async (inviteId: string) => {
     return await prisma?.invite.findFirst({
         where: {

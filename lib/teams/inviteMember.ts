@@ -1,6 +1,7 @@
 
 import { createInvite, getInviteByTeamIdEmail } from "../invite/service";
 import { getMembershipByTeamIdUserId } from "../teamMembership/service";
+import { getUserByEmail } from "../user/service";
 
 export const inviteUser = async (email: string, teamId: string) => {
     
@@ -9,9 +10,7 @@ export const inviteUser = async (email: string, teamId: string) => {
         throw new Error("Invite already exists.")
     }
 
-    const user = await prisma?.user.findFirst({
-        where: { email }
-    });
+    const user = await getUserByEmail(email as string);
 
     if (user) {
         const membership = await getMembershipByTeamIdUserId(user.id, teamId);
