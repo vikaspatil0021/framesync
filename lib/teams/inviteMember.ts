@@ -1,20 +1,18 @@
 
+import { createInvite, getInviteByTeamIdEmail } from "../invite/service";
 import { getMembershipByTeamIdUserId } from "../teamMembership/service";
 
-export const inviteUser = async (email: string, teamId: string,) => {
-    const existingInvite = await prisma?.invite.findFirst({
-        where: {
-            teamId,
-            email
-        }
-    })
+export const inviteUser = async (email: string, teamId: string) => {
+    
+    const existingInvite = await getInviteByTeamIdEmail(teamId, email)
     if (existingInvite) {
-         throw new Error("Invite already exists.")
+        throw new Error("Invite already exists.")
     }
 
     const user = await prisma?.user.findFirst({
         where: { email }
     });
+
     if (user) {
         const membership = await getMembershipByTeamIdUserId(user.id, teamId);
         if (membership) {
@@ -25,13 +23,7 @@ export const inviteUser = async (email: string, teamId: string,) => {
     const expiresIn = 7 * 24 * 60 * 60 * 1000; // 7 days
     const expiresAt = new Date(Date.now() + expiresIn);
 
-    const invite = await prisma?.invite.create({
-        data: {
-            teamId,
-            email,
-            expiresAt
-        }
-    })
+    const invite = await createInvite(teamId as string, email as string, expiresAt as Date)
 
     return invite
 

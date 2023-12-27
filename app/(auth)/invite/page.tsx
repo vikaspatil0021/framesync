@@ -4,7 +4,10 @@ import { getServerSession } from "next-auth";
 import { verifyInviteToken } from "@/lib/jwt";
 import { options } from "@/lib/auth/options";
 
+import { createMembership } from "@/lib/teamMembership/service";
+
 import { ExpiredContent, NoTokenContent, NotLoggedInContent, RightAccountContent, WrongAccountContent } from "@/components/ui/invite/inviteComponents";
+import { deleteInvite, getInviteById } from "@/lib/invite/service";
 
 export const metadata: Metadata = {
   title: "Invite | Framesync.in",
@@ -24,15 +27,12 @@ export default async function Invite({
     if (!searchParams.token) return <NoTokenContent /> //if no token available
 
     const { email, inviteId } = verifyInviteToken(searchParams.token as string);
-    const invite = await prisma?.invite.findFirst({
-      where: {
-        id: inviteId
-      }
-    });
     
+    const invite = await getInviteById(inviteId as string)
+
     //@ts-expect-error
     const isInviteExpired = new Date(invite?.expiresAt) < new Date();
-    
+
     if (!invite || isInviteExpired) {
       return <ExpiredContent />
     } else if (!currentUser) {
@@ -40,21 +40,11 @@ export default async function Invite({
     } else if (currentUser.user?.email !== email) {
       return <WrongAccountContent />
     } else {
-      await prisma?.invite.delete({
-        where: {
-          id: invite.id
-        }
-      })
+      await deleteInvite(invite.id as string)
 
-      await prisma?.teamMembership.create({
-        data: {
-          teamId: invite.teamId,
-          // @ts-expect-error
-          userId: currentUser.user.id,
-          role: "MEMBER",
-          accepted: true
-        }
-      })
+      //@ts-expect-error
+      await createMembership(invite.teamId as string, currentUser.user?.id as string, "MEMBER");
+
       return <RightAccountContent />
     }
   } catch (error) {

@@ -4,6 +4,7 @@ import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
 
 import prisma from "../prisma/client";
+import { createMembership } from "../teamMembership/service";
 
 export const options: NextAuthOptions = {
     providers: [
@@ -27,8 +28,8 @@ export const options: NextAuthOptions = {
                 where: {
                     email: token.email as string
                 },
-                select:{
-                    id:true
+                select: {
+                    id: true
                 }
             })
             if (!existingUser) {
@@ -71,14 +72,7 @@ export const options: NextAuthOptions = {
                     }
                 })
 
-                await prisma.teamMembership.create({
-                    data: {
-                        teamId: newTeam.id as string,
-                        userId: newUser.id as string,
-                        role: "OWNER",
-                        accepted: true
-                    }
-                });
+                await createMembership(newTeam.id as string, newUser.id as string, "OWNER");
                 return true;
             }
 
