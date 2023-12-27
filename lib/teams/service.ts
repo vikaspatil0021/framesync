@@ -1,5 +1,6 @@
-import { getMembershipByTeamIdUserId } from "../teamMembership/service";
 import prisma from "../prisma/client";
+
+import { getMembershipByTeamIdUserId } from "../teamMembership/service";
 
 export const hasTeamOwnership = async (teamId: string, userId: string) => {
     const membership = await getMembershipByTeamIdUserId(userId, teamId)
