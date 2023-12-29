@@ -4,7 +4,7 @@ import Link from "next/link"
 import { CheckMark, ClockIcon, LockIcon, NotFound, Xmark } from "@/components/icons/Icons"
 
 import { Button } from "../button"
-import BuiltByMe from "../shared/builtByMe"
+import BuiltByMe from "../authorInfo/builtByMe"
 import { Skeleton } from "../skeleton"
 
 const ComponentCard = ({

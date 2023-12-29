@@ -18,14 +18,14 @@ export const POST = async (req: NextRequest) => {
     const { teamId, email } = await req.json();
 
     if (!session) {
-        return new Response("User not authenticated.", {
+        return NextResponse.json({ error: "User not authenticated." }, {
             status: 401
         })
     }
     const isUserOwner = await hasTeamOwnership(teamId as string, session?.user?.id);
 
     if (!isUserOwner) {
-        return new Response("User access not allowed.", {
+        return NextResponse.json({ error: "User access not allowed." }, {
             status: 401
         })
     }
@@ -33,7 +33,7 @@ export const POST = async (req: NextRequest) => {
         const invite = await inviteUser(email as string, teamId as string);
         return NextResponse.json({ invite });
     } catch (error: any) {
-        return new Response(error.message, {
+        return NextResponse.json({ error: error.message }, {
             status: 401
         })
     }

@@ -7,7 +7,7 @@ import { options } from "@/lib/auth/options";
 import { createMembership } from "@/lib/teamMembership/service";
 import { deleteInvite, getInviteById } from "@/lib/invite/service";
 
-import { ExpiredContent, NoTokenContent, NotLoggedInContent, RightAccountContent, WrongAccountContent } from "@/components/ui/invite/inviteComponents";
+import { ExpiredContent, NoTokenContent, NotLoggedInContent, RightAccountContent, WrongAccountContent } from "@/components/ui/invite/inviteContentComponents";
 
 export const metadata: Metadata = {
   title: "Invite | Framesync.in",

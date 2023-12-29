@@ -1,4 +1,4 @@
-import { LoadingContent } from "@/components/ui/invite/inviteComponents";
+import { LoadingContent } from "@/components/ui/invite/inviteContentComponents";
 
 export default function Loading() {
     return (

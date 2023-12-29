@@ -1,4 +1,5 @@
-import { CheckIcon, Clock, Lock, SearchX, X } from "lucide-react"
+import { CheckIcon, Clock, Lock, SearchX, Users, X } from "lucide-react"
+import { Button } from "../ui/button"
 
 export const GoogleIcon = () => {
     return (
@@ -52,8 +53,8 @@ export const NotFound = () => {
     return (
         <>
             <div className="rounded-full bg-red-700 p-3">
-                <SearchX/>
+                <SearchX />
             </div>
-            </>
+        </>
     )
 }

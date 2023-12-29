@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth"
 import { redirect } from "next/navigation";
 import { Metadata } from "next";
 
-import BuiltByMe from "@/components/ui/shared/builtByMe";
+import BuiltByMe from "@/components/ui/authorInfo/builtByMe";
 
 export const metadata: Metadata = {
     title: "Auth | Framesync.in",
