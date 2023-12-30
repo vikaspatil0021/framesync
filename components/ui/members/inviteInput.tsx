@@ -16,6 +16,7 @@ export default function InviteInput() {
                 email
             })
         });
+        
         if (!result.ok) {
             const errorMsg = await result.json();
             toast({
@@ -24,8 +25,6 @@ export default function InviteInput() {
             });
             return;
         }
-
-        const data = await result.json();
         
         toast({
             variant: "success",

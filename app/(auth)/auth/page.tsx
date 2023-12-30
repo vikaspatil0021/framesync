@@ -21,7 +21,6 @@ export default function Auth() {
     toast({
       variant: "destructive",
       title: error,
-      description: 'Please try again later!'
     });
   }
 

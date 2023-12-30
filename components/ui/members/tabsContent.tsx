@@ -30,8 +30,10 @@ const ProfileCard = ({
                         <AvatarFallback>CN</AvatarFallback>
                     </Avatar>
                     <div>
-                        <div className="text-base font-bold">
-                            {name}
+                        <div className="text-base font-bold flex items-center gap-2">
+                            {name}                    
+                            {isInvitationtab ? <Badge variant="default">Pending</Badge> : null}
+
                         </div>
                         <div className="text-sm text-[#f2f2f2]/70">
                             {email}
@@ -39,8 +41,6 @@ const ProfileCard = ({
                     </div>
                 </div>
                 <div className="flex gap-3 items-center">
-
-                    {isInvitationtab ? <Badge variant="default">Pending</Badge> : null}
 
                     <Popover>
                         <PopoverTrigger>
