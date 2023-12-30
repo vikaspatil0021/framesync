@@ -9,6 +9,14 @@ export default function InviteInput() {
     const inviteUser = async () => {
         if (email === '') return;
 
+        if(!email.includes("@")){
+            toast({
+                variant: "destructive",
+                title: "Enter a valid email.",
+            });
+            return;
+        }
+
         const result = await fetch('/api/teams/inviteMember', {
             method: "POST",
             body: JSON.stringify({
@@ -16,7 +24,7 @@ export default function InviteInput() {
                 email
             })
         });
-        
+
         if (!result.ok) {
             const errorMsg = await result.json();
             toast({
@@ -25,7 +33,7 @@ export default function InviteInput() {
             });
             return;
         }
-        
+
         toast({
             variant: "success",
             title: "Invite Sent Successfully"
@@ -46,6 +54,7 @@ export default function InviteInput() {
                 <Button
                     variant='secondary'
                     onClick={inviteUser}
+                    disabled={email === '' ? true : false}
                 >Invite</Button>
             </div>
         </>

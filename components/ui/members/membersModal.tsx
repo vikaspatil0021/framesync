@@ -14,9 +14,35 @@ import InviteInput from "./inviteInput"
 import { ScrollArea } from "../scroll-area"
 
 import { InvitationTabContent, MembersTabContent } from "./tabsContent"
+import { useEffect, useState } from "react"
+import { toast } from "../use-toast"
 
 
 export const ManageMembersModal = () => {
+    const [members, setMembers] = useState([])
+
+    const getMembersData = async () => {
+        const result = await fetch(`/api/teams/getMembers?teamId=${"04d916a0-561c-479c-8e6d-1f2992d4bca6"}`, {
+            method: "GET"
+        });
+
+        if (!result.ok) {
+            const errorMsg = await result.json();
+            toast({
+                variant: "destructive",
+                title: errorMsg.error,
+            });
+            return;
+        }
+
+        const data = await result.json();
+        setMembers(data?.memberships);
+    }
+
+    useEffect(() => {
+        getMembersData();
+    }, [])
+    
     return (
         <>
             <Dialog>
@@ -43,7 +69,7 @@ export const ManageMembersModal = () => {
                         <TabsContent value="members" className="">
                             <ScrollArea className="h-52 w-full pr-3">
 
-                                <MembersTabContent />
+                                <MembersTabContent members={members} />
 
                             </ScrollArea>
                         </TabsContent>

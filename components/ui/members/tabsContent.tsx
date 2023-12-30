@@ -8,17 +8,26 @@ import { UserMinusIcon, X } from "lucide-react"
 import { Button } from "../button"
 import { Badge } from "../badge"
 
+type EachMember = {
+    user: {
+        name: string,
+        email: string,
+        id: string,
+        picture: string
+    },
+    role: "OWNER" | "MEMBER"
+}
+
 const ProfileCard = ({
     imageURL,
     name,
     email,
-    isInvitationtab
+    isInvitationtab,
 }: {
     imageURL: string,
     name: string,
     email: string,
-    isInvitationtab:
-    boolean
+    isInvitationtab: boolean,
 }) => {
     return (
         <>
@@ -31,7 +40,7 @@ const ProfileCard = ({
                     </Avatar>
                     <div>
                         <div className="text-base font-bold flex items-center gap-2">
-                            {name}                    
+                            {name}
                             {isInvitationtab ? <Badge variant="default">Pending</Badge> : null}
 
                         </div>
@@ -67,10 +76,26 @@ const ProfileCard = ({
     )
 }
 
-export const MembersTabContent = () => {
+export const MembersTabContent = ({
+    members
+}: {
+    members: EachMember[]
+}) => {
+
     return (
         <>
-            <ProfileCard imageURL={"https://github.com/shadcn.png"} name={"Vikas Patil"} email={"vikaspatil0021o@gmail.com"} isInvitationtab={false} />
+            {members?.map((eachMember: EachMember, index: number) => {
+                return (
+                    <>
+                        <ProfileCard
+                            key={index}
+                            imageURL={eachMember?.user?.picture}
+                            name={eachMember.user.name}
+                            email={eachMember.user.email} isInvitationtab={false}
+                        />
+                    </>
+                )
+            })}
         </>
     )
 }
