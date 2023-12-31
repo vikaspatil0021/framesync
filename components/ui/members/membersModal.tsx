@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react"
+
 /* eslint-disable react/no-unescaped-entities */
 import { Users } from "lucide-react"
 import {
@@ -12,17 +14,15 @@ import { Button } from "../button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import InviteInput from "./inviteInput"
 import { ScrollArea } from "../scroll-area"
-
 import { InvitationTabContent, MembersTabContent } from "./tabsContent"
-import { useEffect, useState } from "react"
 import { toast } from "../use-toast"
 
 
 export const ManageMembersModal = () => {
     const [members, setMembers] = useState([])
 
-    const getMembersData = async () => {
-        const result = await fetch(`/api/teams/getMembers?teamId=${"b27eaf14-6a83-4924-9c32-f21b072c3967"}`, {
+    const getMembersData = async (teamId: string) => {
+        const result = await fetch(`/api/teams/getMembers?teamId=${teamId}`, {
             method: "GET"
         });
 
@@ -36,13 +36,14 @@ export const ManageMembersModal = () => {
         }
 
         const data = await result.json();
+
         setMembers(data?.memberships);
     }
 
     useEffect(() => {
-        getMembersData();
+        getMembersData("b27eaf14-6a83-4924-9c32-f21b072c3967");
     }, [])
-    
+
     return (
         <>
             <Dialog>

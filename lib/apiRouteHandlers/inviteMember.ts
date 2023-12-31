@@ -1,7 +1,7 @@
 
-import { createInvite, getInviteByTeamIdEmail } from "../invite/service";
-import { getMembershipByTeamIdUserId } from "../teamMembership/service";
-import { getUserByEmail } from "../user/service";
+import { createInvite, getInviteByTeamIdEmail } from "../prisma/invite/service";
+import { getMembershipByTeamIdUserId } from "../prisma/teamMembership/service";
+import { getUserByEmail } from "../prisma/user/service";
 
 export const inviteUser = async (email: string, teamId: string) => {
     

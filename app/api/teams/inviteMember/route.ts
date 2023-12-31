@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server"
 
 import { options } from "@/lib/auth/options"
 import { hasTeamOwnership } from "@/lib/prisma/teams/service"
-import { inviteUser } from "@/lib/prisma/teams/inviteMember"
+import { inviteUser } from "@/lib/apiRouteHandlers/inviteMember"
 
 
 type Session = {
