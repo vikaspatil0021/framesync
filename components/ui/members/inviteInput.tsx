@@ -20,7 +20,7 @@ export default function InviteInput() {
         const result = await fetch('/api/teams/inviteMember', {
             method: "POST",
             body: JSON.stringify({
-                teamId: "04d916a0-561c-479c-8e6d-1f2992d4bca6",
+                teamId: "b27eaf14-6a83-4924-9c32-f21b072c3967",
                 email
             })
         });

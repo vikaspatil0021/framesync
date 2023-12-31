@@ -1,4 +1,4 @@
-import prisma from "../prisma/client";
+import prisma from "../client";
 
 export const getInviteById = async (inviteId: string) => {
 

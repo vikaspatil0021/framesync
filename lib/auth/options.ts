@@ -3,9 +3,9 @@ import { type NextAuthOptions } from "next-auth"
 import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
 
-import { createMembership } from "../teamMembership/service";
-import { createUser, getUserByEmail } from "../user/service";
-import { createTeam } from "../teams/service";
+import { createMembership } from "../prisma/teamMembership/service";
+import { createUser, getUserByEmail } from "../prisma/user/service";
+import { createTeam } from "../prisma/teams/service";
 
 export const options: NextAuthOptions = {
     providers: [

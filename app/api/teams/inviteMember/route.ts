@@ -2,8 +2,8 @@ import { getServerSession } from "next-auth"
 import { NextRequest, NextResponse } from "next/server"
 
 import { options } from "@/lib/auth/options"
-import { hasTeamOwnership } from "@/lib/teams/service"
-import { inviteUser } from "@/lib/teams/inviteMember"
+import { hasTeamOwnership } from "@/lib/prisma/teams/service"
+import { inviteUser } from "@/lib/prisma/teams/inviteMember"
 
 
 type Session = {

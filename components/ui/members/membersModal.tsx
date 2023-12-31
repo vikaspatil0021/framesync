@@ -22,7 +22,7 @@ export const ManageMembersModal = () => {
     const [members, setMembers] = useState([])
 
     const getMembersData = async () => {
-        const result = await fetch(`/api/teams/getMembers?teamId=${"04d916a0-561c-479c-8e6d-1f2992d4bca6"}`, {
+        const result = await fetch(`/api/teams/getMembers?teamId=${"b27eaf14-6a83-4924-9c32-f21b072c3967"}`, {
             method: "GET"
         });
 

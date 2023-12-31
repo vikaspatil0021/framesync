@@ -1,4 +1,4 @@
-import prisma from "../prisma/client";
+import prisma from "../client";
 
 export const getMembershipByTeamIdUserId = async (userId: string, teamId: string) => {
     return await prisma?.teamMembership.findFirst({
@@ -9,21 +9,21 @@ export const getMembershipByTeamIdUserId = async (userId: string, teamId: string
     });
 }
 
-export const getMembershipsByTeamId= async (teamId: string) => {
+export const getMembershipsByTeamId = async (teamId: string) => {
     return await prisma?.teamMembership.findMany({
         where: {
             teamId
         },
-        select:{
-            user:{
-                select:{
-                    name:true,
-                    email:true,
-                    id:true,
-                    picture:true
+        select: {
+            user: {
+                select: {
+                    name: true,
+                    email: true,
+                    id: true,
+                    picture: true
                 }
             },
-            role:true,
+            role: true,
         }
     });
 }

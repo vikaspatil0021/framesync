@@ -4,8 +4,8 @@ import { getServerSession } from "next-auth";
 import { verifyInviteToken } from "@/lib/jwt";
 import { options } from "@/lib/auth/options";
 
-import { createMembership } from "@/lib/teamMembership/service";
-import { deleteInvite, getInviteById } from "@/lib/invite/service";
+import { createMembership } from "@/lib/prisma/teamMembership/service";
+import { deleteInvite, getInviteById } from "@/lib/prisma/invite/service";
 
 import { ExpiredContent, NoTokenContent, NotLoggedInContent, RightAccountContent, WrongAccountContent } from "@/components/ui/invite/inviteContentComponents";
 
