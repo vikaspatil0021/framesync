@@ -4,9 +4,13 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { UserMinusIcon, X } from "lucide-react"
+import { Copy, CopyCheck, SearchX, UserMinusIcon, X } from "lucide-react"
 import { Button } from "../button"
 import { Badge } from "../badge"
+import { Skeleton } from "../skeleton"
+import { toast } from "../use-toast"
+import { CopyIcon } from "@/components/icons/Icons"
+import { createInviteToken } from "@/lib/jwt"
 
 type EachMember = {
     user: {
@@ -17,18 +21,67 @@ type EachMember = {
     },
     role: "OWNER" | "MEMBER"
 }
+type EachInvite = {
+    email: string,
+    id: string
+}
 
 const ProfileCard = ({
+    id,
     imageURL,
     name,
     email,
     isInvitationtab,
+    getMembersInvitationsData
 }: {
+    id: string,
     imageURL: string,
     name: string,
     email: string,
     isInvitationtab: boolean,
+    getMembersInvitationsData: (urlType: string, teamId: string) => Promise<void>
+
 }) => {
+
+    const revokeInviteHandler = async (id: string) => {
+        const result = await fetch(`/api/invite?inviteId=${id}`, {
+            method: "DELETE"
+        });
+
+        if (!result.ok) {
+            const errorMsg = await result.json();
+            toast({
+                variant: "destructive",
+                title: errorMsg.error,
+            });
+            return;
+        }
+
+        toast({
+            variant: "success",
+            title: "Invitation revoked successfully"
+        });
+
+        getMembersInvitationsData("invite", "b27eaf14-6a83-4924-9c32-f21b072c3967");
+
+    }
+
+    const copyInviteToken = async(id: string, email: string) => {
+        
+        const token = await createInviteToken(email, id);
+
+        const inviteUrl = process.env.NEXT_PUBLIC_WEBAPP_URL + "/invite?token=" + token
+
+        navigator.clipboard.writeText(inviteUrl);
+
+        toast({
+            variant: "success",
+            title: "Invite copied to clipboard"
+        });
+
+    }
+
+
     return (
         <>
             <div className="flex items-center justify-between bg-[#151515] p-3  border-[.5px] border-white/10 mt-1 rounded-lg">
@@ -51,6 +104,16 @@ const ProfileCard = ({
                 </div>
                 <div className="flex gap-3 items-center">
 
+                    {
+                        isInvitationtab ?
+                            <div className="cursor-pointer opacity-70 hover:opacity-100" onClick={() => {
+                                copyInviteToken(id as string, email as string);
+                                ;
+                            }}>
+                                <CopyIcon />
+                            </div>
+                            : null
+                    }
                     <Popover>
                         <PopoverTrigger>
                             {
@@ -65,7 +128,10 @@ const ProfileCard = ({
                             <div className="text-sm text-center text-white/70">
                                 {isInvitationtab ? "Revoke invite?" : "Remove member?"}
                             </div>
-                            <Button variant='destructive'>
+                            <Button variant='destructive'
+                                onClick={() => {
+                                    isInvitationtab ? revokeInviteHandler(id as string) : null
+                                }}>
                                 Confirm
                             </Button>
                         </PopoverContent>
@@ -76,34 +142,113 @@ const ProfileCard = ({
     )
 }
 
-export const MembersTabContent = ({
-    members
-}: {
-    members: EachMember[]
-}) => {
-
+const ProfileCardSkeleton = () => {
     return (
         <>
-            {members?.map((eachMember: EachMember, index: number) => {
-                return (
-                    <>
-                        <ProfileCard
-                            key={index}
-                            imageURL={eachMember?.user?.picture}
-                            name={eachMember.user.name}
-                            email={eachMember.user.email} isInvitationtab={false}
-                        />
-                    </>
-                )
-            })}
+            <div className="flex items-center justify-between bg-[#151515] p-3 gap-3 border-[.5px] border-white/10 mt-1 rounded-lg">
+
+                <div>
+                    <Skeleton className="rounded-full h-10 w-10 bg-[#444]" />
+                </div>
+                <div className="flex flex-col gap-2 py-1 w-full">
+                    <Skeleton className="h-4 w-1/4 bg-[#555]" />
+                    <Skeleton className="h-3 w-1/2 bg-[#444]" />
+                </div>
+
+            </div>
         </>
     )
 }
 
-export const InvitationTabContent = () => {
+export const MembersTabContent = ({
+    members,
+    getMembersInvitationsData
+}: {
+    members: EachMember[],
+    getMembersInvitationsData: (urlType: string, teamId: string) => Promise<void>
+}) => {
+
     return (
         <>
-            <ProfileCard imageURL={"https://github.com/shadcn.png"} name={"vikaspatil0021o@gmail.com".split('@')[0]} email={"vikaspatil0021o@gmail.com"} isInvitationtab={true} />
+            {
+                (members.length !== 0) ?
+                    members?.map((eachMember: EachMember) => {
+                        return (
+                            <>
+                                <ProfileCard
+                                    key={"members" + eachMember.user.id}
+                                    id={eachMember.user.id}
+                                    imageURL={eachMember?.user?.picture}
+                                    name={eachMember.user.name}
+                                    email={eachMember.user.email}
+                                    isInvitationtab={false}
+                                    getMembersInvitationsData={getMembersInvitationsData}
+                                />
+                            </>
+                        )
+                    })
+                    :
+                    <>
+                        <ProfileCardSkeleton />
+                    </>
+            }
+
+        </>
+    )
+}
+
+export const InvitationTabContent = ({
+    invites,
+    invitesDataLoading,
+    getMembersInvitationsData
+}: {
+    invites: EachInvite[],
+    invitesDataLoading: boolean,
+    getMembersInvitationsData: (urlType: string, teamId: string) => Promise<void>
+}) => {
+    return (
+        <>
+            {
+                (invites.length !== 0) ?
+                    invites?.map((eachInvite: EachInvite) => {
+                        return (
+                            <>
+                                <ProfileCard
+                                    key={"invite" + eachInvite.id}
+                                    id={eachInvite.id}
+                                    imageURL={"https://github.com/shadcn.png"}
+                                    name={(eachInvite.email).split("@")[0]}
+                                    email={eachInvite.email}
+                                    isInvitationtab={true}
+                                    getMembersInvitationsData={getMembersInvitationsData}
+                                />
+                            </>
+                        )
+                    })
+                    :
+                    <>
+                        {
+                            !invitesDataLoading ?
+
+                                <>
+                                    <div className="flex flex-col gap-3 justify-center items-center h-52">
+                                        <div className="rounded-full bg-red-700 p-3">
+                                            <SearchX />
+                                        </div>
+                                        <div>
+                                            No Invitations
+                                        </div>
+                                    </div>
+                                </>
+                                :
+                                <>
+                                    <ProfileCardSkeleton />
+                                </>
+
+                        }
+
+                    </>
+            }
         </>
     )
 }

@@ -5,7 +5,7 @@ import { verifyInviteToken } from "@/lib/jwt";
 import { options } from "@/lib/auth/options";
 
 import { createMembership } from "@/lib/prisma/teamMembership/service";
-import { deleteInvite, getInviteById } from "@/lib/prisma/invite/service";
+import {  deleteInvite, getInviteById } from "@/lib/prisma/invite/service";
 
 import { ExpiredContent, NoTokenContent, NotLoggedInContent, RightAccountContent, WrongAccountContent } from "@/components/ui/invite/inviteContentComponents";
 
@@ -29,7 +29,6 @@ export default async function Invite({
     const { email, inviteId } = verifyInviteToken(searchParams.token as string);
     
     const invite = await getInviteById(inviteId as string)
-
     //@ts-expect-error
     const isInviteExpired = new Date(invite?.expiresAt) < new Date();
 

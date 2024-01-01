@@ -8,7 +8,8 @@ type Session = {
         id: string
     }
 } | null
-
+ 
+// GET members by teamId from memberships table - GET /api/memberships?teamId
 export const GET = async (req: NextRequest) => {
     const session: Session = await getServerSession(options);
 

@@ -9,20 +9,24 @@ import { toast } from "@/components/ui/use-toast";
 
 import { GoogleIcon } from "@/components/icons/Icons"
 import { GitHubLogoIcon } from "@radix-ui/react-icons"
+import { useEffect } from "react";
 
 
 export default function Auth() {
   const session = useSession();
   const searchParams = useSearchParams();
 
-  // handle oauth errors with toast
-  const error: string | null = searchParams.get('error');
-  if (session?.status === 'unauthenticated' && error) {
-    toast({
-      variant: "destructive",
-      title: error,
-    });
-  }
+  useEffect(() => {
+
+    // handle oauth errors with toast
+    const error: string | null = searchParams.get('error');
+    if (session?.status === 'unauthenticated' && error) {
+      toast({
+        variant: "destructive",
+        title: error,
+      });
+    }
+  }, [searchParams, session?.status])
 
   return (
     <>

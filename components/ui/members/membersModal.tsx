@@ -19,10 +19,15 @@ import { toast } from "../use-toast"
 
 
 export const ManageMembersModal = () => {
-    const [members, setMembers] = useState([])
+    const [members, setMembers] = useState([]);
+    const [invites, setInvites] = useState([])
+    const [invitesDataLoading, setInvitesDataLoading] = useState(false); //check if invites are being fetched
 
-    const getMembersData = async (teamId: string) => {
-        const result = await fetch(`/api/teams/getMembers?teamId=${teamId}`, {
+    const getMembersInvitationsData = async (urlType: string, teamId: string) => {
+
+        if(urlType==="invite") setInvitesDataLoading(true);
+        
+        const result = await fetch(`/api/${urlType}?teamId=${teamId}`, {
             method: "GET"
         });
 
@@ -36,12 +41,21 @@ export const ManageMembersModal = () => {
         }
 
         const data = await result.json();
+        if(urlType==="memberships"){
+            setMembers(data?.memberships);
+        }else{
+            setInvites(data?.invites.reverse());
+            setInvitesDataLoading(false);
+        }
 
-        setMembers(data?.memberships);
     }
 
+
     useEffect(() => {
-        getMembersData("b27eaf14-6a83-4924-9c32-f21b072c3967");
+        getMembersInvitationsData("memberships","b27eaf14-6a83-4924-9c32-f21b072c3967");
+
+        getMembersInvitationsData("invite","b27eaf14-6a83-4924-9c32-f21b072c3967");
+
     }, [])
 
     return (
@@ -60,7 +74,7 @@ export const ManageMembersModal = () => {
                         </DialogDescription>
                     </DialogHeader>
 
-                    <InviteInput />
+                    <InviteInput getMembersInvitationsData={getMembersInvitationsData} />
 
                     <Tabs defaultValue="members">
                         <TabsList>
@@ -70,14 +84,20 @@ export const ManageMembersModal = () => {
                         <TabsContent value="members" className="">
                             <ScrollArea className="h-52 w-full pr-3">
 
-                                <MembersTabContent members={members} />
+                                <MembersTabContent 
+                                members={members}
+                                getMembersInvitationsData={getMembersInvitationsData} />
 
                             </ScrollArea>
                         </TabsContent>
                         <TabsContent value="invitations">
                             <ScrollArea className="h-52 w-full pr-3">
 
-                                <InvitationTabContent />
+                                <InvitationTabContent 
+                                invites={invites} 
+                                invitesDataLoading={invitesDataLoading}
+                                getMembersInvitationsData={getMembersInvitationsData}
+                                 />
 
                             </ScrollArea>
                         </TabsContent>

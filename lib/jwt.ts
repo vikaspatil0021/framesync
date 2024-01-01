@@ -1,7 +1,8 @@
+"use server"
 import jwt, { JwtPayload } from "jsonwebtoken";
 
 
-export const createInviteToken = (email: string, inviteId: string, options = {}) => {
+export const createInviteToken = async (email: string, inviteId: string, options = {}) => {
     return jwt.sign({ email, inviteId }, process.env.NEXTAUTH_SECRET as string, options);
 }
 

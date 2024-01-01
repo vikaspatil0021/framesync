@@ -1,15 +1,22 @@
 "use client"
-import { useState } from "react"
+import { Dispatch, SetStateAction, useState } from "react"
+
 import { Button } from "../button"
 import { Input } from "../input"
 import { toast } from "../use-toast"
 
-export default function InviteInput() {
+
+export default function InviteInput({
+    getMembersInvitationsData
+}: {
+    getMembersInvitationsData: (urlType: string, teamId: string) => Promise<void>
+}) {
+
     const [email, setEmail] = useState('');
     const inviteUser = async () => {
         if (email === '') return;
 
-        if(!email.includes("@")){
+        if (!email.includes("@")) {
             toast({
                 variant: "destructive",
                 title: "Enter a valid email.",
@@ -17,7 +24,7 @@ export default function InviteInput() {
             return;
         }
 
-        const result = await fetch('/api/teams/inviteMember', {
+        const result = await fetch('/api/invite', {
             method: "POST",
             body: JSON.stringify({
                 teamId: "b27eaf14-6a83-4924-9c32-f21b072c3967",
@@ -38,6 +45,8 @@ export default function InviteInput() {
             variant: "success",
             title: "Invite Sent Successfully"
         });
+
+        getMembersInvitationsData("invite","b27eaf14-6a83-4924-9c32-f21b072c3967"); //update the invites
         setEmail('');
     }
 
