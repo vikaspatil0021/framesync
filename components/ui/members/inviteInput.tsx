@@ -13,6 +13,8 @@ export default function InviteInput({
 }) {
 
     const [email, setEmail] = useState('');
+
+    
     const inviteUser = async () => {
         if (email === '') return;
 
@@ -59,6 +61,7 @@ export default function InviteInput({
                         setEmail(e.target.value);
                     }}
                     value={email}
+                    tabIndex={-1}
                 />
                 <Button
                     variant='secondary'

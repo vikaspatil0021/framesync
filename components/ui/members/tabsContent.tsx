@@ -4,7 +4,7 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Copy, CopyCheck, SearchX, UserMinusIcon, X } from "lucide-react"
+import { SearchX, UserMinusIcon, X } from "lucide-react"
 import { Button } from "../button"
 import { Badge } from "../badge"
 import { Skeleton } from "../skeleton"
@@ -32,16 +32,19 @@ const ProfileCard = ({
     name,
     email,
     isInvitationtab,
-    getMembersInvitationsData
+    getMembersInvitationsData,
+    isCurrentUserOwner
 }: {
     id: string,
     imageURL: string,
     name: string,
     email: string,
     isInvitationtab: boolean,
-    getMembersInvitationsData: (urlType: string, teamId: string) => Promise<void>
+    getMembersInvitationsData: (urlType: string, teamId: string) => Promise<void>,
+    isCurrentUserOwner: boolean
 
 }) => {
+
 
     const revokeInviteHandler = async (id: string) => {
         const result = await fetch(`/api/invite?inviteId=${id}`, {
@@ -66,8 +69,8 @@ const ProfileCard = ({
 
     }
 
-    const copyInviteToken = async(id: string, email: string) => {
-        
+    const copyInviteToken = async (id: string, email: string) => {
+
         const token = await createInviteToken(email, id);
 
         const inviteUrl = process.env.NEXT_PUBLIC_WEBAPP_URL + "/invite?token=" + token
@@ -80,7 +83,6 @@ const ProfileCard = ({
         });
 
     }
-
 
     return (
         <>
@@ -102,41 +104,44 @@ const ProfileCard = ({
                         </div>
                     </div>
                 </div>
-                <div className="flex gap-3 items-center">
+                {
+                    isCurrentUserOwner &&
+                    <div className="flex gap-3 items-center">
 
-                    {
-                        isInvitationtab ?
-                            <div className="cursor-pointer opacity-70 hover:opacity-100" onClick={() => {
-                                copyInviteToken(id as string, email as string);
-                                ;
-                            }}>
-                                <CopyIcon />
-                            </div>
-                            : null
-                    }
-                    <Popover>
-                        <PopoverTrigger>
-                            {
-                                isInvitationtab ?
-                                    <X className=" h-6 w-6 p-1 text-red-400 hover:text-red-500 cursor-pointer" />
-                                    :
-                                    <UserMinusIcon className=" h-6 w-6 p-1 text-red-400 hover:text-red-500 cursor-pointer" />
-                            }
-
-                        </PopoverTrigger>
-                        <PopoverContent className="flex gap-3 items-center">
-                            <div className="text-sm text-center text-white/70">
-                                {isInvitationtab ? "Revoke invite?" : "Remove member?"}
-                            </div>
-                            <Button variant='destructive'
-                                onClick={() => {
-                                    isInvitationtab ? revokeInviteHandler(id as string) : null
+                        {
+                            isInvitationtab ?
+                                <div className="cursor-pointer opacity-70 hover:opacity-100" onClick={() => {
+                                    copyInviteToken(id as string, email as string);
                                 }}>
-                                Confirm
-                            </Button>
-                        </PopoverContent>
-                    </Popover>
-                </div>
+                                    <CopyIcon />
+                                </div>
+                                : null
+                        }
+
+                        <Popover>
+                            <PopoverTrigger>
+                                {
+                                    isInvitationtab ?
+                                        <X className=" h-6 w-6 p-1 text-red-400 hover:text-red-500 cursor-pointer" />
+                                        :
+                                        <UserMinusIcon className=" h-6 w-6 p-1 text-red-400 hover:text-red-500 cursor-pointer" />
+                                }
+
+                            </PopoverTrigger>
+                            <PopoverContent className="flex gap-3 items-center">
+                                <div className="text-sm text-center text-white/70">
+                                    {isInvitationtab ? "Revoke invite?" : "Remove member?"}
+                                </div>
+                                <Button variant='destructive'
+                                    onClick={() => {
+                                        isInvitationtab ? revokeInviteHandler(id as string) : null
+                                    }}>
+                                    Confirm
+                                </Button>
+                            </PopoverContent>
+                        </Popover>
+                    </div>
+                }
             </div>
         </>
     )
@@ -162,10 +167,12 @@ const ProfileCardSkeleton = () => {
 
 export const MembersTabContent = ({
     members,
-    getMembersInvitationsData
+    getMembersInvitationsData,
+    isCurrentUserOwner
 }: {
     members: EachMember[],
-    getMembersInvitationsData: (urlType: string, teamId: string) => Promise<void>
+    getMembersInvitationsData: (urlType: string, teamId: string) => Promise<void>,
+    isCurrentUserOwner: boolean
 }) => {
 
     return (
@@ -183,6 +190,7 @@ export const MembersTabContent = ({
                                     email={eachMember.user.email}
                                     isInvitationtab={false}
                                     getMembersInvitationsData={getMembersInvitationsData}
+                                    isCurrentUserOwner={isCurrentUserOwner}
                                 />
                             </>
                         )
@@ -200,11 +208,13 @@ export const MembersTabContent = ({
 export const InvitationTabContent = ({
     invites,
     invitesDataLoading,
-    getMembersInvitationsData
+    getMembersInvitationsData,
+    isCurrentUserOwner
 }: {
     invites: EachInvite[],
     invitesDataLoading: boolean,
-    getMembersInvitationsData: (urlType: string, teamId: string) => Promise<void>
+    getMembersInvitationsData: (urlType: string, teamId: string) => Promise<void>,
+    isCurrentUserOwner: boolean
 }) => {
     return (
         <>
@@ -221,6 +231,7 @@ export const InvitationTabContent = ({
                                     email={eachInvite.email}
                                     isInvitationtab={true}
                                     getMembersInvitationsData={getMembersInvitationsData}
+                                    isCurrentUserOwner={isCurrentUserOwner}
                                 />
                             </>
                         )

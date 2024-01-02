@@ -16,17 +16,33 @@ import InviteInput from "./inviteInput"
 import { ScrollArea } from "../scroll-area"
 import { InvitationTabContent, MembersTabContent } from "./tabsContent"
 import { toast } from "../use-toast"
+import { useSession } from "next-auth/react"
 
+type EachMember = {
+    user: {
+        name: string,
+        email: string,
+        id: string,
+        picture: string
+    },
+    role: "OWNER" | "MEMBER"
+}
+type Session = {
+    id: string
 
+} | null
 export const ManageMembersModal = () => {
+    const session = useSession();
+    const currentUser = session && session.data?.user as Session;
+
     const [members, setMembers] = useState([]);
     const [invites, setInvites] = useState([])
     const [invitesDataLoading, setInvitesDataLoading] = useState(false); //check if invites are being fetched
 
     const getMembersInvitationsData = async (urlType: string, teamId: string) => {
 
-        if(urlType==="invite") setInvitesDataLoading(true);
-        
+        if (urlType === "invite") setInvitesDataLoading(true);
+
         const result = await fetch(`/api/${urlType}?teamId=${teamId}`, {
             method: "GET"
         });
@@ -41,9 +57,9 @@ export const ManageMembersModal = () => {
         }
 
         const data = await result.json();
-        if(urlType==="memberships"){
+        if (urlType === "memberships") {
             setMembers(data?.memberships);
-        }else{
+        } else {
             setInvites(data?.invites.reverse());
             setInvitesDataLoading(false);
         }
@@ -52,11 +68,23 @@ export const ManageMembersModal = () => {
 
 
     useEffect(() => {
-        getMembersInvitationsData("memberships","b27eaf14-6a83-4924-9c32-f21b072c3967");
+        getMembersInvitationsData("memberships", "b27eaf14-6a83-4924-9c32-f21b072c3967");
 
-        getMembersInvitationsData("invite","b27eaf14-6a83-4924-9c32-f21b072c3967");
+        getMembersInvitationsData("invite", "b27eaf14-6a83-4924-9c32-f21b072c3967");
 
-    }, [])
+    }, []);
+
+    // check if the current user is the owner
+    let isCurrentUserOwner = false;
+
+    members.length != 0 && members.forEach((eachMember: EachMember) => {
+        if (currentUser && eachMember.user.id === currentUser?.id) {
+            if (eachMember?.role === 'OWNER') {
+                isCurrentUserOwner = true
+                return;
+            }
+        }
+    })
 
     return (
         <>
@@ -74,7 +102,9 @@ export const ManageMembersModal = () => {
                         </DialogDescription>
                     </DialogHeader>
 
-                    <InviteInput getMembersInvitationsData={getMembersInvitationsData} />
+                    {isCurrentUserOwner &&
+                        <InviteInput getMembersInvitationsData={getMembersInvitationsData} />
+                    }
 
                     <Tabs defaultValue="members">
                         <TabsList>
@@ -84,20 +114,23 @@ export const ManageMembersModal = () => {
                         <TabsContent value="members" className="">
                             <ScrollArea className="h-52 w-full pr-3">
 
-                                <MembersTabContent 
-                                members={members}
-                                getMembersInvitationsData={getMembersInvitationsData} />
+                                <MembersTabContent
+                                    members={members}
+                                    getMembersInvitationsData={getMembersInvitationsData}
+                                    isCurrentUserOwner={isCurrentUserOwner}
+                                />
 
                             </ScrollArea>
                         </TabsContent>
                         <TabsContent value="invitations">
                             <ScrollArea className="h-52 w-full pr-3">
 
-                                <InvitationTabContent 
-                                invites={invites} 
-                                invitesDataLoading={invitesDataLoading}
-                                getMembersInvitationsData={getMembersInvitationsData}
-                                 />
+                                <InvitationTabContent
+                                    invites={invites}
+                                    invitesDataLoading={invitesDataLoading}
+                                    getMembersInvitationsData={getMembersInvitationsData}
+                                    isCurrentUserOwner={isCurrentUserOwner}
+                                />
 
                             </ScrollArea>
                         </TabsContent>
