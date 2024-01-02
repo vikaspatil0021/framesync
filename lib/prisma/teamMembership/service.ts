@@ -23,6 +23,7 @@ export const getMembershipsByTeamId = async (teamId: string) => {
                     picture: true
                 }
             },
+            id:true,
             role: true,
         }
     });
@@ -35,6 +36,14 @@ export const createMembership = async (teamId: string, userId: string, role: "ME
             userId,
             role,
             accepted: true
+        }
+    })
+}
+
+export const deleteMembershipById = async (membershipId: string) => {
+    return await prisma?.teamMembership.delete({
+        where:{
+            id:membershipId 
         }
     })
 }

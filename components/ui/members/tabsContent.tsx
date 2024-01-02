@@ -19,6 +19,7 @@ type EachMember = {
         id: string,
         picture: string
     },
+    id: string,
     role: "OWNER" | "MEMBER"
 }
 type EachInvite = {
@@ -31,6 +32,7 @@ const ProfileCard = ({
     imageURL,
     name,
     email,
+    role,
     isInvitationtab,
     getMembersInvitationsData,
     isCurrentUserOwner
@@ -39,13 +41,37 @@ const ProfileCard = ({
     imageURL: string,
     name: string,
     email: string,
+    role: "OWNER" | "MEMBER",
     isInvitationtab: boolean,
     getMembersInvitationsData: (urlType: string, teamId: string) => Promise<void>,
     isCurrentUserOwner: boolean
 
 }) => {
+    //here id is the membership ID
+    const removeMemberHandler = async (id: string) => {
+        const result = await fetch(`/api/memberships?membershipId=${id}`, {
+            method: "DELETE"
+        });
 
+        if (!result.ok) {
+            const errorMsg = await result.json();
+            toast({
+                variant: "destructive",
+                title: errorMsg.error,
+            });
+            return;
+        }
 
+        toast({
+            variant: "success",
+            title: "Member removed successfully"
+        });
+
+        getMembersInvitationsData("memberships", "b27eaf14-6a83-4924-9c32-f21b072c3967");
+
+    }
+
+    //here id is the inviteId
     const revokeInviteHandler = async (id: string) => {
         const result = await fetch(`/api/invite?inviteId=${id}`, {
             method: "DELETE"
@@ -69,6 +95,7 @@ const ProfileCard = ({
 
     }
 
+    //here id is the inviteId
     const copyInviteToken = async (id: string, email: string) => {
 
         const token = await createInviteToken(email, id);
@@ -94,12 +121,14 @@ const ProfileCard = ({
                         <AvatarFallback>CN</AvatarFallback>
                     </Avatar>
                     <div>
-                        <div className="text-base font-bold flex items-center gap-2">
+                        <div className="text-sm font-bold flex items-center gap-2">
                             {name}
-                            {isInvitationtab ? <Badge variant="default">Pending</Badge> : null}
-
+                            {
+                                !isInvitationtab && role === 'OWNER' &&
+                                <Badge variant={"custom"}>{role}</Badge>
+                            }
                         </div>
-                        <div className="text-sm text-[#f2f2f2]/70">
+                        <div className="text-xs text-[#f2f2f2]/70">
                             {email}
                         </div>
                     </div>
@@ -118,28 +147,31 @@ const ProfileCard = ({
                                 : null
                         }
 
-                        <Popover>
-                            <PopoverTrigger>
-                                {
-                                    isInvitationtab ?
-                                        <X className=" h-6 w-6 p-1 text-red-400 hover:text-red-500 cursor-pointer" />
-                                        :
-                                        <UserMinusIcon className=" h-6 w-6 p-1 text-red-400 hover:text-red-500 cursor-pointer" />
-                                }
+                        {
+                            role !== "OWNER" &&
+                            <Popover>
+                                <PopoverTrigger>
+                                    {
+                                        isInvitationtab ?
+                                            <X className=" h-6 w-6 p-1 text-red-400 hover:text-red-500 cursor-pointer" />
+                                            :
+                                            <UserMinusIcon className=" h-6 w-6 p-1 text-red-400 hover:text-red-500 cursor-pointer" />
+                                    }
 
-                            </PopoverTrigger>
-                            <PopoverContent className="flex gap-3 items-center">
-                                <div className="text-sm text-center text-white/70">
-                                    {isInvitationtab ? "Revoke invite?" : "Remove member?"}
-                                </div>
-                                <Button variant='destructive'
-                                    onClick={() => {
-                                        isInvitationtab ? revokeInviteHandler(id as string) : null
-                                    }}>
-                                    Confirm
-                                </Button>
-                            </PopoverContent>
-                        </Popover>
+                                </PopoverTrigger>
+                                <PopoverContent className="flex gap-3 items-center">
+                                    <div className="text-sm text-center text-white/70">
+                                        {isInvitationtab ? "Revoke invite?" : "Remove member?"}
+                                    </div>
+                                    <Button variant='destructive'
+                                        onClick={() => {
+                                            isInvitationtab ? revokeInviteHandler(id as string) : removeMemberHandler(id as string)
+                                        }}>
+                                        Confirm
+                                    </Button>
+                                </PopoverContent>
+                            </Popover>
+                        }
                     </div>
                 }
             </div>
@@ -153,11 +185,11 @@ const ProfileCardSkeleton = () => {
             <div className="flex items-center justify-between bg-[#151515] p-3 gap-3 border-[.5px] border-white/10 mt-1 rounded-lg">
 
                 <div>
-                    <Skeleton className="rounded-full h-10 w-10 bg-[#444]" />
+                    <Skeleton className="rounded-full h-9 w-9 bg-[#444]" />
                 </div>
                 <div className="flex flex-col gap-2 py-1 w-full">
-                    <Skeleton className="h-4 w-1/4 bg-[#555]" />
-                    <Skeleton className="h-3 w-1/2 bg-[#444]" />
+                    <Skeleton className="h-3 w-1/4 bg-[#555]" />
+                    <Skeleton className="h-2 w-1/2 bg-[#444]" />
                 </div>
 
             </div>
@@ -184,10 +216,11 @@ export const MembersTabContent = ({
                             <>
                                 <ProfileCard
                                     key={"members" + eachMember.user.id}
-                                    id={eachMember.user.id}
+                                    id={eachMember.id}
                                     imageURL={eachMember?.user?.picture}
                                     name={eachMember.user.name}
                                     email={eachMember.user.email}
+                                    role={eachMember.role}
                                     isInvitationtab={false}
                                     getMembersInvitationsData={getMembersInvitationsData}
                                     isCurrentUserOwner={isCurrentUserOwner}
@@ -228,6 +261,7 @@ export const InvitationTabContent = ({
                                     id={eachInvite.id}
                                     imageURL={"https://github.com/shadcn.png"}
                                     name={(eachInvite.email).split("@")[0]}
+                                    role={"MEMBER"}
                                     email={eachInvite.email}
                                     isInvitationtab={true}
                                     getMembersInvitationsData={getMembersInvitationsData}

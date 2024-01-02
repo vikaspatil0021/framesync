@@ -1,5 +1,5 @@
 import { options } from "@/lib/auth/options";
-import { getMembershipsByTeamId } from "@/lib/prisma/teamMembership/service";
+import { deleteMembershipById, getMembershipsByTeamId } from "@/lib/prisma/teamMembership/service";
 import { getServerSession } from "next-auth";
 import { NextResponse, NextRequest } from "next/server";
 
@@ -41,6 +41,35 @@ export const GET = async (req: NextRequest) => {
         }
         throw Error("User access not allowed")
 
+    } catch (error: any) {
+        return NextResponse.json({ error: error.message }, {
+            status: 401
+        })
+    }
+}
+
+// DELETE membership by membershipID - DELETE /api/memberships?membershipId=
+export const DELETE = async (req: NextRequest) => {
+    const session: Session = await getServerSession(options);
+
+    const searchParams = req.nextUrl.searchParams;
+    const membershipId = searchParams.get('membershipId')
+
+    if (!session) {
+        return NextResponse.json({ error: "User not authenticated." }, {
+            status: 401
+        })
+    }
+
+    if (!membershipId) {
+        return NextResponse.json("Missing membershipId", {
+            status: 400,
+        });
+    }
+
+    try {
+        const invite = await deleteMembershipById(membershipId as string);
+        return NextResponse.json({ invite });
     } catch (error: any) {
         return NextResponse.json({ error: error.message }, {
             status: 401
