@@ -11,6 +11,7 @@ import { Skeleton } from "../skeleton"
 import { toast } from "../use-toast"
 import { CopyIcon } from "@/components/icons/Icons"
 import { createInviteToken } from "@/lib/jwt"
+import { usePathname } from "next/navigation"
 
 type EachMember = {
     user: {
@@ -47,6 +48,11 @@ const ProfileCard = ({
     isCurrentUserOwner: boolean
 
 }) => {
+
+    // get the teamId
+    const pathname = usePathname();
+    const currentTeamId = pathname.replace('/t/', '').split("&&")[0];
+
     //here id is the membership ID
     const removeMemberHandler = async (id: string) => {
         const result = await fetch(`/api/memberships?membershipId=${id}`, {
@@ -67,7 +73,7 @@ const ProfileCard = ({
             title: "Member removed successfully"
         });
 
-        getMembersInvitationsData("memberships", "b27eaf14-6a83-4924-9c32-f21b072c3967");
+        getMembersInvitationsData("memberships", currentTeamId);
 
     }
 
@@ -91,7 +97,7 @@ const ProfileCard = ({
             title: "Invitation revoked successfully"
         });
 
-        getMembersInvitationsData("invite", "b27eaf14-6a83-4924-9c32-f21b072c3967");
+        getMembersInvitationsData("invite", currentTeamId);
 
     }
 
@@ -261,7 +267,7 @@ export const InvitationTabContent = ({
                                     id={eachInvite.id}
                                     imageURL={"https://github.com/shadcn.png"}
                                     name={(eachInvite.email).split("@")[0]}
-                                    role={"MEMBER"}
+                                    role={"MEMBER"}//here role does nothing & need to find a way to remove it 
                                     email={eachInvite.email}
                                     isInvitationtab={true}
                                     getMembersInvitationsData={getMembersInvitationsData}

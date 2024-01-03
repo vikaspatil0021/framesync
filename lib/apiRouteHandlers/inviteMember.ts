@@ -1,5 +1,4 @@
 
-import { createInviteToken } from "../jwt";
 import { createInvite, getInviteByTeamIdEmail } from "../prisma/invite/service";
 import { getMembershipByTeamIdUserId } from "../prisma/teamMembership/service";
 import { getUserByEmail } from "../prisma/user/service";

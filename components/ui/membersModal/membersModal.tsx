@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
-
+import { useSession } from "next-auth/react"
+import { usePathname } from "next/navigation"
 /* eslint-disable react/no-unescaped-entities */
 import { Users } from "lucide-react"
 import {
@@ -16,7 +17,7 @@ import InviteInput from "./inviteInput"
 import { ScrollArea } from "../scroll-area"
 import { InvitationTabContent, MembersTabContent } from "./tabsContent"
 import { toast } from "../use-toast"
-import { useSession } from "next-auth/react"
+
 
 type EachMember = {
     user: {
@@ -34,6 +35,10 @@ type Session = {
 export const ManageMembersModal = () => {
     const session = useSession();
     const currentUser = session && session.data?.user as Session;
+
+    // get the teamId
+    const pathname = usePathname();
+    const currentTeamId = pathname.replace('/t/','').split("&&")[0];
 
     const [members, setMembers] = useState([]);
     const [invites, setInvites] = useState([])
@@ -68,11 +73,11 @@ export const ManageMembersModal = () => {
 
 
     useEffect(() => {
-        getMembersInvitationsData("memberships", "b27eaf14-6a83-4924-9c32-f21b072c3967");
+        getMembersInvitationsData("memberships", currentTeamId);
 
-        getMembersInvitationsData("invite", "b27eaf14-6a83-4924-9c32-f21b072c3967");
+        getMembersInvitationsData("invite", currentTeamId);
 
-    }, []);
+    }, [currentTeamId]);
 
     // check if the current user is the owner
     let isCurrentUserOwner = false;
@@ -103,7 +108,9 @@ export const ManageMembersModal = () => {
                     </DialogHeader>
 
                     {isCurrentUserOwner &&
-                        <InviteInput getMembersInvitationsData={getMembersInvitationsData} />
+                        <InviteInput
+                            getMembersInvitationsData={getMembersInvitationsData}
+                        />
                     }
 
                     <Tabs defaultValue="members">
