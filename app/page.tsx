@@ -2,7 +2,7 @@
 import { signOut } from "next-auth/react";
 
 import { Button } from "@/components/ui/button";
-import { ManageMembersModal } from "@/components/ui/members/membersModal";
+import { ManageMembersModal } from "@/components/ui/membersModal/membersModal";
 
 export default function Home() {
 

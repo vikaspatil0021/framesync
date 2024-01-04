@@ -1,15 +1,28 @@
 "use client"
-import { useState } from "react"
+import { Dispatch, SetStateAction, useState } from "react"
+
 import { Button } from "../button"
 import { Input } from "../input"
 import { toast } from "../use-toast"
+import { usePathname } from "next/navigation"
 
-export default function InviteInput() {
+
+export default function InviteInput({
+    getMembersInvitationsData
+}: {
+    getMembersInvitationsData: (urlType: string, teamId: string) => Promise<void>
+}) {
+
     const [email, setEmail] = useState('');
+
+        // get the teamId
+        const pathname = usePathname();
+        const currentTeamId = pathname.replace('/t/', '').split("&&")[0];
+    
     const inviteUser = async () => {
         if (email === '') return;
 
-        if(!email.includes("@")){
+        if (!email.includes("@")) {
             toast({
                 variant: "destructive",
                 title: "Enter a valid email.",
@@ -17,10 +30,10 @@ export default function InviteInput() {
             return;
         }
 
-        const result = await fetch('/api/teams/inviteMember', {
+        const result = await fetch('/api/invite', {
             method: "POST",
             body: JSON.stringify({
-                teamId: "b27eaf14-6a83-4924-9c32-f21b072c3967",
+                teamId: currentTeamId,
                 email
             })
         });
@@ -38,6 +51,8 @@ export default function InviteInput() {
             variant: "success",
             title: "Invite Sent Successfully"
         });
+
+        getMembersInvitationsData("invite",currentTeamId); //update the invites
         setEmail('');
     }
 
@@ -50,6 +65,7 @@ export default function InviteInput() {
                         setEmail(e.target.value);
                     }}
                     value={email}
+                    tabIndex={-1}
                 />
                 <Button
                     variant='secondary'

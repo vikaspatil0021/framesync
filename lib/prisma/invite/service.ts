@@ -1,5 +1,18 @@
 import prisma from "../client";
 
+export const getInvitesByTeamId = async (teamId: string) => {
+    return await prisma?.invite.findMany({
+        where: {
+            teamId
+        },
+        select: {
+            email: true,
+            id: true
+        }
+    })
+}
+
+
 export const getInviteById = async (inviteId: string) => {
 
     return await prisma?.invite.findFirst({
