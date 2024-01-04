@@ -55,7 +55,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       >
         {loading && (
-          <LoadingIcon className="animate-spin absolute" />
+          <LoadingIcon />
         )}
         {props.children}
       </Comp>
