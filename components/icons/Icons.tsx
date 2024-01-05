@@ -128,3 +128,16 @@ export const LoadingIcon = () => {
     </svg>
   );
 };
+
+export const SwitchTeamIcon = () => {
+  return (
+    <>
+      <div className="px-1.5 py-4">
+
+        <svg fill="#f4f4f4" height="22" width='22' viewBox="0 0 16 24" className="">
+          <path d="M13 8.517L8 3 3 8.517M3 15.48l5 5.517 5-5.517"></path>
+        </svg>
+      </div>
+    </>
+  )
+}

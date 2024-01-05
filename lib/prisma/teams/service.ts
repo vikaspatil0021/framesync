@@ -10,7 +10,17 @@ export const hasTeamOwnership = async (teamId: string, userId: string) => {
     return false;
 }
 
-
+export const getTeamById = async (teamId:string)=>{
+    return await prisma?.team.findFirst({
+        where:{
+            id:teamId
+        },
+        select:{
+            id:true,
+            name:true
+        }
+    })
+}
 
 export const createTeam = async (name: string) => {
     return await prisma?.team.create({

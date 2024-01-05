@@ -29,6 +29,24 @@ export const getMembershipsByTeamId = async (teamId: string) => {
     });
 }
 
+export const getMembershipsByUserId = async (userId: string) => {
+    return await prisma?.teamMembership.findMany({
+        where: {
+            userId
+        },
+        select: {
+            team:{
+                select:{
+                    id:true,
+                    name:true
+                }
+            },
+            id:true,
+            role: true,
+        }
+    });
+}
+
 export const createMembership = async (teamId: string, userId: string, role: "MEMBER" | "OWNER") => {
     return await prisma?.teamMembership.create({
         data: {

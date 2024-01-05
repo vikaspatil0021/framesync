@@ -11,7 +11,6 @@ import { Skeleton } from "../skeleton"
 import { toast } from "../use-toast"
 import { CopyIcon } from "@/components/icons/Icons"
 import { createInviteToken } from "@/lib/jwt"
-import { usePathname } from "next/navigation"
 
 type EachMember = {
     user: {
@@ -36,7 +35,9 @@ const ProfileCard = ({
     role,
     isInvitationtab,
     getMembersInvitationsData,
-    isCurrentUserOwner
+    isCurrentUserOwner,
+    params
+
 }: {
     id: string,
     imageURL: string,
@@ -45,13 +46,11 @@ const ProfileCard = ({
     role: "OWNER" | "MEMBER",
     isInvitationtab: boolean,
     getMembersInvitationsData: (urlType: string, teamId: string) => Promise<void>,
-    isCurrentUserOwner: boolean
+    isCurrentUserOwner: boolean,
+    params: { teamId: string }
 
 }) => {
 
-    // get the teamId
-    const pathname = usePathname();
-    const currentTeamId = pathname.replace('/t/', '').split("&&")[0];
 
     //here id is the membership ID
     const removeMemberHandler = async (id: string) => {
@@ -73,7 +72,7 @@ const ProfileCard = ({
             title: "Member removed successfully"
         });
 
-        getMembersInvitationsData("memberships", currentTeamId);
+        getMembersInvitationsData("memberships", params.teamId);
 
     }
 
@@ -97,7 +96,7 @@ const ProfileCard = ({
             title: "Invitation revoked successfully"
         });
 
-        getMembersInvitationsData("invite", currentTeamId);
+        getMembersInvitationsData("invite", params.teamId);
 
     }
 
@@ -206,11 +205,14 @@ const ProfileCardSkeleton = () => {
 export const MembersTabContent = ({
     members,
     getMembersInvitationsData,
-    isCurrentUserOwner
+    isCurrentUserOwner,
+    params
 }: {
     members: EachMember[],
     getMembersInvitationsData: (urlType: string, teamId: string) => Promise<void>,
-    isCurrentUserOwner: boolean
+    isCurrentUserOwner: boolean,
+    params: { teamId: string }
+
 }) => {
 
     return (
@@ -230,6 +232,8 @@ export const MembersTabContent = ({
                                     isInvitationtab={false}
                                     getMembersInvitationsData={getMembersInvitationsData}
                                     isCurrentUserOwner={isCurrentUserOwner}
+                                    params={params}
+
                                 />
                             </>
                         )
@@ -248,12 +252,15 @@ export const InvitationTabContent = ({
     invites,
     invitesDataLoading,
     getMembersInvitationsData,
-    isCurrentUserOwner
+    isCurrentUserOwner,
+    params
 }: {
     invites: EachInvite[],
     invitesDataLoading: boolean,
     getMembersInvitationsData: (urlType: string, teamId: string) => Promise<void>,
-    isCurrentUserOwner: boolean
+    isCurrentUserOwner: boolean,
+    params: { teamId: string }
+
 }) => {
     return (
         <>
@@ -272,6 +279,8 @@ export const InvitationTabContent = ({
                                     isInvitationtab={true}
                                     getMembersInvitationsData={getMembersInvitationsData}
                                     isCurrentUserOwner={isCurrentUserOwner}
+                                    params={params}
+
                                 />
                             </>
                         )
