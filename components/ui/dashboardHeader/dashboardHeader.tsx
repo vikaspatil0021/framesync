@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react"
 import { toast } from "../use-toast"
 
 import DropdownTeamMenu from "./dropdownTeamMenu"
+import { ManageMembersModal } from "../membersModal/membersModal"
 
 type EachTeam = {
 
@@ -81,6 +82,7 @@ export const DashboardHeader = ({ params }: { params: { teamId: string } }) => {
                         activeTeam={activeTeam}
                      />
 
+                    <ManageMembersModal params={params} />
                 </div>
 
             </div>

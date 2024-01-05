@@ -16,7 +16,7 @@ export default function Page({ params }: {
 
         <DashboardHeader params={customParams} />
         <div className="p-10 h-screen">
-          <ManageMembersModal params={customParams} />
+          {/* <ManageMembersModal params={customParams} /> */}
         </div>
       </div>
     </>
