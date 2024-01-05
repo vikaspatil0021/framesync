@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useSession } from "next-auth/react"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 /* eslint-disable react/no-unescaped-entities */
 import { Users } from "lucide-react"
 import {
@@ -32,13 +32,10 @@ type Session = {
     id: string
 
 } | null
-export const ManageMembersModal = () => {
+export const ManageMembersModal = ({ params }: { params: { teamId: string } }) => {
     const session = useSession();
     const currentUser = session && session.data?.user as Session;
 
-    // get the teamId
-    const pathname = usePathname();
-    const currentTeamId = pathname.replace('/t/','').split("&&")[0];
 
     const [members, setMembers] = useState([]);
     const [invites, setInvites] = useState([])
@@ -73,11 +70,11 @@ export const ManageMembersModal = () => {
 
 
     useEffect(() => {
-        getMembersInvitationsData("memberships", currentTeamId);
+        getMembersInvitationsData("memberships", params.teamId);
 
-        getMembersInvitationsData("invite", currentTeamId);
+        getMembersInvitationsData("invite", params.teamId);
 
-    }, [currentTeamId]);
+    }, [params.teamId]);
 
     // check if the current user is the owner
     let isCurrentUserOwner = false;
@@ -110,6 +107,7 @@ export const ManageMembersModal = () => {
                     {isCurrentUserOwner &&
                         <InviteInput
                             getMembersInvitationsData={getMembersInvitationsData}
+                            params={params}
                         />
                     }
 
@@ -125,6 +123,8 @@ export const ManageMembersModal = () => {
                                     members={members}
                                     getMembersInvitationsData={getMembersInvitationsData}
                                     isCurrentUserOwner={isCurrentUserOwner}
+                                    params={params}
+
                                 />
 
                             </ScrollArea>
@@ -137,6 +137,8 @@ export const ManageMembersModal = () => {
                                     invitesDataLoading={invitesDataLoading}
                                     getMembersInvitationsData={getMembersInvitationsData}
                                     isCurrentUserOwner={isCurrentUserOwner}
+                                    params={params}
+
                                 />
 
                             </ScrollArea>
