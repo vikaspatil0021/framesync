@@ -34,7 +34,8 @@ model Team {
   id             String           @id @default(uuid())
   name           String
   TeamMembership TeamMembership[]
-  invite         invite[]
+  invite         Invite[]
+  project Project[]
 }
 
 model TeamMembership {
@@ -50,7 +51,7 @@ model TeamMembership {
   @@unique([userId, teamId])
 }
 
-model invite {
+model Invite {
   id        String   @id @default(uuid())
   email     String
   teamId    String
@@ -58,4 +59,11 @@ model invite {
   expiresAt DateTime
 
   @@unique([email, teamId])
+}
+
+model Project {
+  id String @id @default(uuid()) 
+  name String
+  teamId String
+  team Team @relation(fields: [teamId], references:[id])
 }

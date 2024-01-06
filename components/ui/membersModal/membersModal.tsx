@@ -1,152 +1,151 @@
-import { useEffect, useState } from "react"
 import { useSession } from "next-auth/react"
-import { usePathname, useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
 /* eslint-disable react/no-unescaped-entities */
-import { Users } from "lucide-react"
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog"
-import { Button } from "../button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import InviteInput from "./inviteInput"
+import { Users } from "lucide-react"
+import { Button } from "../button"
 import { ScrollArea } from "../scroll-area"
-import { InvitationTabContent, MembersTabContent } from "./tabsContent"
 import { toast } from "../use-toast"
+import InviteInput from "./inviteInput"
+import { InvitationTabContent, MembersTabContent } from "./tabsContent"
 
 
 type EachMember = {
-    user: {
-        name: string,
-        email: string,
-        id: string,
-        picture: string
-    },
-    role: "OWNER" | "MEMBER"
+  user: {
+    name: string,
+    email: string,
+    id: string,
+    picture: string
+  },
+  role: "OWNER" | "MEMBER"
 }
 type Session = {
-    id: string
+  id: string
 
 } | null
 export const ManageMembersModal = ({ params }: { params: { teamId: string } }) => {
-    const session = useSession();
-    const currentUser = session && session.data?.user as Session;
+  const session = useSession();
+  const currentUser = session && session.data?.user as Session;
 
 
-    const [members, setMembers] = useState([]);
-    const [invites, setInvites] = useState([])
-    const [invitesDataLoading, setInvitesDataLoading] = useState(false); //check if invites are being fetched
+  const [members, setMembers] = useState([]);
+  const [invites, setInvites] = useState([])
+  const [invitesDataLoading, setInvitesDataLoading] = useState(false); //check if invites are being fetched
 
-    const getMembersInvitationsData = async (urlType: string, teamId: string) => {
+  const getMembersInvitationsData = async (urlType: string, teamId: string) => {
 
-        if (urlType === "invite") setInvitesDataLoading(true);
+    if (urlType === "invite") setInvitesDataLoading(true);
 
-        const result = await fetch(`/api/${urlType}?teamId=${teamId}`, {
-            method: "GET"
-        });
+    const result = await fetch(`/api/${urlType}?teamId=${teamId}`, {
+      method: "GET"
+    });
 
-        if (!result.ok) {
-            const errorMsg = await result.json();
-            toast({
-                variant: "destructive",
-                title: errorMsg.error,
-            });
-            return;
-        }
-
-        const data = await result.json();
-        if (urlType === "memberships") {
-            setMembers(data?.memberships);
-        } else {
-            setInvites(data?.invites.reverse());
-            setInvitesDataLoading(false);
-        }
-
+    if (!result.ok) {
+      const errorMsg = await result.json();
+      toast({
+        variant: "destructive",
+        title: errorMsg.error,
+      });
+      return;
     }
 
+    const data = await result.json();
+    if (urlType === "memberships") {
+      setMembers(data?.memberships);
+    } else {
+      setInvites(data?.invites.reverse());
+      setInvitesDataLoading(false);
+    }
 
-    useEffect(() => {
-        getMembersInvitationsData("memberships", params.teamId);
+  }
 
-        getMembersInvitationsData("invite", params.teamId);
 
-    }, [params.teamId]);
+  useEffect(() => {
+    getMembersInvitationsData("memberships", params.teamId);
 
-    // check if the current user is the owner
-    let isCurrentUserOwner = false;
+    getMembersInvitationsData("invite", params.teamId);
 
-    members.length != 0 && members.forEach((eachMember: EachMember) => {
-        if (currentUser && eachMember.user.id === currentUser?.id) {
-            if (eachMember?.role === 'OWNER') {
-                isCurrentUserOwner = true
-                return;
-            }
-        }
-    })
+  }, [params.teamId]);
 
-    return (
-        <>
-            <Dialog>
-                <DialogTrigger asChild>
-                    <Button variant='secondary' className="rounded-full p-3 h-11 w-11">
-                        <Users />
-                    </Button>
-                </DialogTrigger>
-                <DialogContent>
-                    <DialogHeader >
-                        <DialogTitle>People</DialogTitle>
-                        <DialogDescription >
-                            Teammates that have access to this team projects.
-                        </DialogDescription>
-                    </DialogHeader>
+  // check if the current user is the owner
+  let isCurrentUserOwner = false;
 
-                    {isCurrentUserOwner &&
-                        <InviteInput
-                            getMembersInvitationsData={getMembersInvitationsData}
-                            params={params}
-                        />
-                    }
+  members.length != 0 && members.forEach((eachMember: EachMember) => {
+    if (currentUser && eachMember.user.id === currentUser?.id) {
+      if (eachMember?.role === 'OWNER') {
+        isCurrentUserOwner = true
+        return;
+      }
+    }
+  })
 
-                    <Tabs defaultValue="members">
-                        <TabsList>
-                            <TabsTrigger value="members">Members</TabsTrigger>
-                            <TabsTrigger value="invitations">Invitations</TabsTrigger>
-                        </TabsList>
-                        <TabsContent value="members" className="">
-                            <ScrollArea className="h-52 w-full pr-3">
+  return (
+    <>
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button variant='secondary' className="rounded-full p-3 h-11 w-11">
+            <Users />
+          </Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader >
+            <DialogTitle>People</DialogTitle>
+            <DialogDescription >
+              Teammates that have access to this team projects.
+            </DialogDescription>
+          </DialogHeader>
 
-                                <MembersTabContent
-                                    members={members}
-                                    getMembersInvitationsData={getMembersInvitationsData}
-                                    isCurrentUserOwner={isCurrentUserOwner}
-                                    params={params}
+          {isCurrentUserOwner &&
+            <InviteInput
+              getMembersInvitationsData={getMembersInvitationsData}
+              params={params}
+            />
+          }
 
-                                />
+          <Tabs defaultValue="members">
+            <TabsList>
+              <TabsTrigger value="members">Members</TabsTrigger>
+              <TabsTrigger value="invitations">Invitations</TabsTrigger>
+            </TabsList>
+            <TabsContent value="members" className="">
+              <ScrollArea className="h-52 w-full pr-3">
 
-                            </ScrollArea>
-                        </TabsContent>
-                        <TabsContent value="invitations">
-                            <ScrollArea className="h-52 w-full pr-3">
+                <MembersTabContent
+                  members={members}
+                  getMembersInvitationsData={getMembersInvitationsData}
+                  isCurrentUserOwner={isCurrentUserOwner}
+                  params={params}
 
-                                <InvitationTabContent
-                                    invites={invites}
-                                    invitesDataLoading={invitesDataLoading}
-                                    getMembersInvitationsData={getMembersInvitationsData}
-                                    isCurrentUserOwner={isCurrentUserOwner}
-                                    params={params}
+                />
 
-                                />
+              </ScrollArea>
+            </TabsContent>
+            <TabsContent value="invitations">
+              <ScrollArea className="h-52 w-full pr-3">
 
-                            </ScrollArea>
-                        </TabsContent>
-                    </Tabs>
-                </DialogContent>
-            </Dialog>
+                <InvitationTabContent
+                  invites={invites}
+                  invitesDataLoading={invitesDataLoading}
+                  getMembersInvitationsData={getMembersInvitationsData}
+                  isCurrentUserOwner={isCurrentUserOwner}
+                  params={params}
 
-        </>
-    )
+                />
+
+              </ScrollArea>
+            </TabsContent>
+          </Tabs>
+        </DialogContent>
+      </Dialog>
+
+    </>
+  )
 }

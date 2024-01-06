@@ -1,19 +1,16 @@
-"use client"
-import { signOut } from "next-auth/react";
+import { options } from "@/lib/auth/options";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 
-import { Button } from "@/components/ui/button";
+type Session = {
+  user: {
+    personalTeamId: string
+  }
+}
+export default async function Home() {
+  const session: Session | null = await getServerSession(options);
 
-export default function Home() {
+  if (!session) redirect('/auth');
 
-  return (
-    <>
-      <div className="flex min-h-screen flex-col items-center justify-between p-24">
-        All ok
-          
-        <Button variant='secondary' onClick={() => signOut()}>
-          Sign Out
-        </Button>
-      </div>
-    </>
-  )
+  redirect('/t/' + session.user.personalTeamId)
 }
