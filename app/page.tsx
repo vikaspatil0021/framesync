@@ -12,5 +12,5 @@ export default async function Home() {
 
   if (!session) redirect('/auth');
 
-  redirect('/t/' + session.user.personalTeamId)
+  return redirect('/t/' + session.user.personalTeamId)
 }
