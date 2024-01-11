@@ -1,23 +1,22 @@
 "use client"
-import { ManageMembersModal } from "@/components/ui/membersModal/membersModal";
 import { DashboardHeader } from "@/components/ui/dashboardHeader/dashboardHeader";
+import { DashboardControlsContainer } from "@/components/ui/dashboardControls/dashboardControlsContainer";
 
 export default function Page({ params }: {
-  params: {
-    slug: [teamId: string, projectId: string]
-  }
+   params: {
+      slug: [teamId: string, projectId: string]
+   }
 }) {
-  const customParams = {
-    teamId: params.slug[0] as string
-  }
-  return (
-    <>
-      <div>
+   const customParams = {
+      teamId: params.slug[0] as string
+   }
+   return (
+      <>
+         <div>
+            <DashboardHeader params={customParams} />
 
-        <DashboardHeader params={customParams} />
-        <div className="p-10 h-screen">
-        </div>
-      </div>
-    </>
-  )
+            <DashboardControlsContainer />
+         </div>
+      </>
+   )
 }
