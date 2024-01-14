@@ -62,21 +62,27 @@ export default function ProjectContainer({
    const [noProjectStatus, setNoProjectStatus] = useState(false);
    const [searchValue, setSearchValue] = useState('')
 
-
+   //filter projects by searchValue
    useEffect(() => {
       if (searchValue === '') {
+
          setNoProjectStatus(false);
          setFilterProjects(projects);
       } else {
+
          const filterData = projects.filter((each: EachProject) => {
-            if (each?.name.toLowerCase().includes(searchValue)) return each;
+            if (each?.name.toLowerCase().includes(searchValue.toLowerCase())) return each;
          });
+
+
          if (filterData.length === 0) {
             setNoProjectStatus(true)
-         }
-         setFilterProjects(filterData);
-      }
+         } else {
 
+            setFilterProjects(filterData);
+            setNoProjectStatus(false);
+         }
+      }
 
    }, [searchValue])
 
@@ -108,7 +114,6 @@ export default function ProjectContainer({
 
       setProjects(data.projects);
       setFilterProjects(data.projects)
-      setNoProjectStatus(false)
    }
 
    useEffect(() => {
