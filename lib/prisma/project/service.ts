@@ -8,3 +8,11 @@ export const createProject = async (name: string, teamId: string) => {
       }
    })
 }
+
+export const getProjectsByTeamId = async (teamId: string) => {
+   return await prisma?.project.findMany({
+      where: {
+         teamId
+      }
+   })
+}
