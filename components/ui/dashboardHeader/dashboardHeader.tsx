@@ -6,93 +6,97 @@ import { toast } from "../use-toast"
 
 import DropdownTeamMenu from "./dropdownTeamMenu"
 import { ManageMembersModal } from "../membersModal/membersModal"
+import Link from "next/link"
 
 type EachTeam = {
 
-  team: {
-    id: string,
-    name: string
-  },
-  id: string,
-  role: string
+   team: {
+      id: string,
+      name: string
+   },
+   id: string,
+   role: string
 
 }
 
 
 export const DashboardHeader = ({ params }: { params: { teamId: string } }) => {
-  const session = useSession();
-  //@ts-expect-error
-  const userId = session?.data?.user?.id;
+   const session = useSession();
+   //@ts-expect-error
+   const userId = session?.data?.user?.id;
 
-  const [personalTeam, setPersonalTeam] = useState<EachTeam | null>(null);
-  const [sharedTeam, setSharedTeam] = useState<[] | null>(null);
-  const [activeTeam, setActiveTeam] = useState<EachTeam | null>(null)
+   const [personalTeam, setPersonalTeam] = useState<EachTeam | null>(null);
+   const [sharedTeam, setSharedTeam] = useState<[] | null>(null);
+   const [activeTeam, setActiveTeam] = useState<EachTeam | null>(null)
 
-  const getTeamsByUserId = async (userId: string) => {
-    const result = await fetch(`/api/teams?userId=${userId}`, {
-      method: "GET"
-    });
-
-    if (!result.ok) {
-      const errorMsg = await result.json();
-      toast({
-        variant: "destructive",
-        title: errorMsg.error,
+   const getTeamsByUserId = async (userId: string) => {
+      const result = await fetch(`/api/teams?userId=${userId}`, {
+         method: "GET"
       });
-      return;
-    }
 
-    const data = await result.json();
-
-    const sharedTeamArr = data.teams.filter((eachTeam: EachTeam) => {
-      if (eachTeam?.team.id === params.teamId) {
-        setActiveTeam(eachTeam);
+      if (!result.ok) {
+         const errorMsg = await result.json();
+         toast({
+            variant: "destructive",
+            title: errorMsg.error,
+         });
+         return;
       }
-      if (eachTeam.role === 'OWNER') {
-        setPersonalTeam(eachTeam);
-      } else if (eachTeam.role === "MEMBER") {
-        return eachTeam;
+
+      const data = await result.json();
+
+      const sharedTeamArr = data.teams.filter((eachTeam: EachTeam) => {
+         if (eachTeam?.team.id === params.teamId) {
+            setActiveTeam(eachTeam);
+         }
+         if (eachTeam.role === 'OWNER') {
+            setPersonalTeam(eachTeam);
+         } else if (eachTeam.role === "MEMBER") {
+            return eachTeam;
+         }
+      })
+      setSharedTeam(sharedTeamArr)
+   }
+
+
+   useEffect(() => {
+      if (personalTeam === null && sharedTeam === null && userId) {
+
+         getTeamsByUserId(userId as string)
       }
-    })
-    setSharedTeam(sharedTeamArr)
-  }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [personalTeam, sharedTeam, userId]);
+   return (
+      <>
+         <div className="flex items-center justify-between bg-[#111] border-b border-[#555]/50 w-full px-10 py-3  text-lg">
 
+            <div className="flex items-center gap-10">
 
-  useEffect(() => {
-    if (personalTeam === null && sharedTeam === null && userId) {
+               <Skeleton className="h-8 w-8 bg-[#222]" /> {/* //replace with logog */}
+               <div className="inline-flex items-center gap-3 ">
+                  <div className="flex items-center gap-2 cursor-pointer py-2">
 
-      getTeamsByUserId(userId as string)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [personalTeam, sharedTeam, userId]);
-  return (
-    <>
-      <div className="flex items-center justify-between bg-[#111] border-b border-[#555]/50 w-full px-10 py-3  text-lg">
+                     <Skeleton className="h-6 w-6 rounded-full " />
+                     {
+                        activeTeam ?
+                           <Link href={'/t/' + activeTeam?.team.id}>
+                              <span>{activeTeam?.team.name}</span>
+                           </Link>
+                           :
+                           <Skeleton className="h-4 w-[140px] bg-[#444]" />
+                     }
+                  </div>
 
-        <div className="flex items-center gap-10">
+                  <DropdownTeamMenu
+                     personalTeam={personalTeam}
+                     sharedTeam={sharedTeam}
+                     activeTeam={activeTeam}
+                  />
 
-          <Skeleton className="h-8 w-8 bg-[#222]" /> {/* //replace with logog */}
-          <div className="inline-flex items-center gap-3 ">
-            <div className="flex items-center gap-2 cursor-pointer py-2">
-
-              <Skeleton className="h-6 w-6 rounded-full " />
-              {
-                activeTeam ?
-                  <span>{activeTeam?.team.name}</span> :
-                  <Skeleton className="h-4 w-[140px] bg-[#444]" />
-              }
+               </div>
             </div>
-
-            <DropdownTeamMenu
-              personalTeam={personalTeam}
-              sharedTeam={sharedTeam}
-              activeTeam={activeTeam}
-            />
-
-          </div>
-        </div>
-        <ManageMembersModal params={params} />
-      </div >
-    </>
-  )
+            <ManageMembersModal params={params} />
+         </div >
+      </>
+   )
 }

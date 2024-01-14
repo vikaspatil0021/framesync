@@ -5,32 +5,32 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
 export async function generateMetadata({
-  params
+   params
 }: {
-  params: {
-    slug: [teamId: string, projectId: string]
-  }
+   params: {
+      slug: [teamId: string, projectId: string]
+   }
 }): Promise<Metadata> {
-  const team = await getTeamById(params.slug[0] as string)
-  return {
-    title: `${team?.name} | Framesync.in`,
-  }
+   const team = await getTeamById(params.slug[0] as string)
+   return {
+      title: `${team?.name} | Framesync.in`,
+   }
 }
 
 export default async function RootLayout({
-  children,
+   children,
 }: {
-  children: React.ReactNode
+   children: React.ReactNode
 }) {
-  const session = await getServerSession();
+   const session = await getServerSession();
 
-  if (!session) redirect('/auth');
+   if (!session) redirect('/auth');
 
-  return (
-    <>
-      <div>
-        {children}
-      </div>
-    </>
-  )
+   return (
+      <>
+         <div>
+            {children}
+         </div>
+      </>
+   )
 }

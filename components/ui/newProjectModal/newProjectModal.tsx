@@ -6,11 +6,13 @@ import { useState } from "react"
 import { toast } from "../use-toast"
 
 export const NewProjectModal = ({
-   params
+   params,
+   getProjects
 }: {
    params: {
       teamId: string
-   }
+   },
+   getProjects: () => void
 }) => {
 
    const [open, setOpen] = useState(false);
@@ -52,6 +54,7 @@ export const NewProjectModal = ({
          title: projectName + " - Project Created"
       });
 
+      getProjects();
       setProjectname('')
       setOpen(false);
    }
