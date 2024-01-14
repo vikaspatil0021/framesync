@@ -176,6 +176,7 @@ export default function ProjectContainer({
                               <ProjectsCardSkeleton />
                               <ProjectsCardSkeleton />
                               <ProjectsCardSkeleton />
+                              <ProjectsCardSkeleton />
                            </>
                      }
 
