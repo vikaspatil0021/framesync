@@ -16,6 +16,7 @@ export default function Page({ params }: {
       <>
          <div>
             <DashboardHeader params={customParams} />
+
             <div className="flex justify-center py-6">
                <div className="max-w-[1400px] w-full flex gap-4">
                   <div className="relative flex items-center w-full">
