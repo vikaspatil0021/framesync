@@ -50,7 +50,6 @@ const ProjectsCardSkeleton = () => {
    )
 }
 
-
 export default function ProjectContainer({
    params
 }: {
@@ -58,7 +57,29 @@ export default function ProjectContainer({
 }) {
 
    const [projects, setProjects] = useState([]);
+   const [filterProjects, setFilterProjects] = useState([]);
+
    const [noProjectStatus, setNoProjectStatus] = useState(false);
+   const [searchValue, setSearchValue] = useState('')
+
+
+   useEffect(() => {
+      if (searchValue === '') {
+         setNoProjectStatus(false);
+         setFilterProjects(projects);
+      } else {
+         const filterData = projects.filter((each: EachProject) => {
+            if (each?.name.toLowerCase().includes(searchValue)) return each;
+         });
+         if (filterData.length === 0) {
+            setNoProjectStatus(true)
+         }
+         setFilterProjects(filterData);
+      }
+
+
+   }, [searchValue])
+
 
    const getProjects = async () => {
 
@@ -85,7 +106,8 @@ export default function ProjectContainer({
          return
       }
 
-      setProjects(data.projects)
+      setProjects(data.projects);
+      setFilterProjects(data.projects)
       setNoProjectStatus(false)
    }
 
@@ -95,13 +117,18 @@ export default function ProjectContainer({
          getProjects()
       }
    }, [])
+
    return (
       <>
          <div className="flex justify-center py-6">
             <div className="max-w-[1400px] w-full flex gap-4">
                <div className="relative flex items-center w-full">
                   <Search className="absolute left-0 h-4 w-4 mx-3 text-gray-400/70" />
-                  <Input className="w-full border border-white/20 bg-[#191919] py-5 ps-10 text-[16px] focus-visible:ring-white/20" placeholder="Search Projects..." />
+                  <Input className="w-full border border-white/20 bg-[#191919] py-5 ps-10 text-[16px] focus-visible:ring-white/20"
+                     placeholder="Search Projects..."
+                     value={searchValue}
+                     onChange={(e) => setSearchValue(e.target.value)}
+                  />
                </div>
                <div>
                   <NewProjectModal
@@ -119,13 +146,14 @@ export default function ProjectContainer({
                      <SearchIcon />
                      No Projects Found
                   </div>
-               </> :
+               </>
+               :
                <ScrollArea className="h-[75vh] max-w-[1430px] mx-auto ">
                   <div className="max-w-[1400px] mx-auto grid grid-cols-3 gap-4">
 
                      {
                         projects.length !== 0 ?
-                           projects.map((eachProject: EachProject) => {
+                           filterProjects.map((eachProject: EachProject) => {
                               return (
                                  <>
 
