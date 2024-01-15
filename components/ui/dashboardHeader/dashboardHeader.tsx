@@ -1,12 +1,13 @@
 
 import { Skeleton } from "../skeleton"
 import { useEffect, useState } from "react"
-import { useSession } from "next-auth/react"
+import { signOut, useSession } from "next-auth/react"
 import { toast } from "../use-toast"
 
 import DropdownTeamMenu from "./dropdownTeamMenu"
 import { ManageMembersModal } from "../membersModal/membersModal"
 import Link from "next/link"
+import { Button } from "../button"
 
 type EachTeam = {
 
@@ -68,22 +69,22 @@ export const DashboardHeader = ({ params }: { params: { teamId: string } }) => {
    }, [personalTeam, sharedTeam, userId]);
    return (
       <>
-         <div className="flex items-center justify-between bg-[#111] border-b border-[#555]/50 w-full px-10 py-3  text-lg">
+         <div className="flex items-center justify-between bg-[#111] border-b border-[#555]/50 w-full px-10 py-2.5  text-lg">
 
             <div className="flex items-center gap-10">
 
-               <Skeleton className="h-8 w-8 bg-[#222]" /> {/* //replace with logog */}
+               <Skeleton className="h-7 w-7 bg-[#222]" /> {/* //replace with logog */}
                <div className="inline-flex items-center gap-3 ">
-                  <div className="flex items-center gap-2 cursor-pointer py-2">
+                  <div className="flex items-center gap-2 cursor-pointer">
 
-                     <Skeleton className="h-6 w-6 rounded-full " />
+                     <Skeleton className="h-5 w-5 rounded-full " />
                      {
                         activeTeam ?
-                           <Link href={'/t/' + activeTeam?.team.id}>
-                              <span>{activeTeam?.team.name}</span>
+                           <Link href={'/t/' + activeTeam?.team.id} className="flex items-center">
+                              <span className="text-sm">{activeTeam?.team.name}</span>
                            </Link>
                            :
-                           <Skeleton className="h-4 w-[140px] bg-[#444]" />
+                           <Skeleton className="h-4 w-[120px] bg-[#444]" />
                      }
                   </div>
 
@@ -96,6 +97,8 @@ export const DashboardHeader = ({ params }: { params: { teamId: string } }) => {
                </div>
             </div>
             <ManageMembersModal params={params} />
+            <Button onClick={() => signOut()} variant='secondary' size='sm'>sign out
+            </Button>
          </div >
       </>
    )

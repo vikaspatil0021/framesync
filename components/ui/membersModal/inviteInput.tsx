@@ -60,6 +60,7 @@ export default function InviteInput({
       <>
          <div className="flex w-full items-center space-x-2 gap-2">
             <Input type="email" placeholder="Email"
+               className="h-9 text-xs"
                onChange={(e) => {
                   setEmail(e.target.value);
                }}
@@ -68,6 +69,7 @@ export default function InviteInput({
             />
             <Button
                variant='secondary'
+               size='sm'
                onClick={inviteUser}
                disabled={(isLoading || email === '') ? true : false}
                loading={isLoading}

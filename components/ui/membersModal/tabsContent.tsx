@@ -138,19 +138,19 @@ const ProfileCard = ({
          <div className="flex items-center justify-between bg-[#151515] p-3  border-[.5px] border-white/10 mt-1 rounded-lg">
             <div className="flex items-center  gap-3">
 
-               <Avatar>
+               <Avatar className="h-7 w-7">
                   <AvatarImage src={imageURL} />
                   <AvatarFallback>CN</AvatarFallback>
                </Avatar>
                <div>
-                  <div className="text-sm font-bold flex items-center gap-2">
+                  <div className="text-xs font-bold flex items-center gap-2">
                      {name}
                      {
                         !isInvitationtab && role === 'OWNER' &&
-                        <Badge variant={"custom"}>{role}</Badge>
+                        <Badge variant={"custom"} className="h-4 text-[8px]">{role}</Badge>
                      }
                   </div>
-                  <div className="text-xs text-[#f2f2f2]/70">
+                  <div className="text-[11px] text-[#f2f2f2]/70">
                      {email}
                   </div>
                </div>
@@ -182,10 +182,11 @@ const ProfileCard = ({
 
                         </PopoverTrigger>
                         <PopoverContent className="flex gap-3 items-center">
-                           <div className="text-sm text-center text-white/70">
+                           <div className="text-xs text-center text-white/70">
                               {isInvitationtab ? "Revoke invite?" : "Remove member?"}
                            </div>
                            <Button variant='destructive'
+                              size='sm'
                               loading={isLoading}
                               onClick={() => {
                                  isInvitationtab ? revokeInviteHandler(id as string) : removeMemberHandler(id as string)
@@ -208,9 +209,9 @@ const ProfileCardSkeleton = () => {
          <div className="flex items-center justify-between bg-[#151515] p-3 gap-3 border-[.5px] border-white/10 mt-1 rounded-lg">
 
             <div>
-               <Skeleton className="rounded-full h-9 w-9 bg-[#444]" />
+               <Skeleton className="rounded-full h-7 w-7 bg-[#444]" />
             </div>
-            <div className="flex flex-col gap-2 py-1 w-full">
+            <div className="flex flex-col gap-1 py-1 w-full">
                <Skeleton className="h-3 w-1/4 bg-[#555]" />
                <Skeleton className="h-2 w-1/2 bg-[#444]" />
             </div>

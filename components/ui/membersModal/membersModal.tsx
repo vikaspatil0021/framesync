@@ -91,14 +91,14 @@ export const ManageMembersModal = ({ params }: { params: { teamId: string } }) =
       <>
          <Dialog key={"membersModal"}>
             <DialogTrigger asChild>
-               <Button variant='secondary' className="rounded-full p-3 h-11 w-11">
+               <Button variant='secondary' className="rounded-full p-2 h-8 w-8">
                   <Users />
                </Button>
             </DialogTrigger>
             <DialogContent>
                <DialogHeader >
-                  <DialogTitle>People</DialogTitle>
-                  <DialogDescription >
+                  <DialogTitle className="text-sm">People</DialogTitle>
+                  <DialogDescription className="text-xs">
                      Teammates that have access to this team projects.
                   </DialogDescription>
                </DialogHeader>
@@ -112,8 +112,8 @@ export const ManageMembersModal = ({ params }: { params: { teamId: string } }) =
 
                <Tabs defaultValue="members">
                   <TabsList>
-                     <TabsTrigger value="members">Members</TabsTrigger>
-                     <TabsTrigger value="invitations">Invitations</TabsTrigger>
+                     <TabsTrigger value="members" className="h-7 text-xs">Members</TabsTrigger>
+                     <TabsTrigger value="invitations" className="h-7 text-xs">Invitations</TabsTrigger>
                   </TabsList>
                   <TabsContent value="members" className="">
                      <ScrollArea className="h-52 w-full pr-3">
