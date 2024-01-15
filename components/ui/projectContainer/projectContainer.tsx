@@ -20,10 +20,10 @@ const ProjectCard = ({ eachProject }: { eachProject: EachProject }) => {
          <Link href={'/t/' + eachProject.teamId + '/' + eachProject.id}>
             <div className="relative group bg-[#191919] hover:bg-[#222] border border-white/10 hover:border-white/50 cursor-pointer transition-all rounded-lg min-w-[300px] min-h-[200px] p-5 ">
                <div className="flex flex-col">
-                  <span>
+                  <span className="text-sm">
                      {eachProject.name}
                   </span>
-                  <div className="text-sm opacity-50 mt-2">
+                  <div className="text-xs opacity-50 mt-2">
                      2 item | 273 kb
                   </div>
 
@@ -126,10 +126,10 @@ export default function ProjectContainer({
    return (
       <>
          <div className="flex justify-center py-6">
-            <div className="max-w-[1400px] w-full flex gap-4">
+            <div className="max-w-[1400px] w-[90vw] flex gap-4">
                <div className="relative flex items-center w-full">
                   <Search className="absolute left-0 h-4 w-4 mx-3 text-gray-400/70" />
-                  <Input className="w-full border border-white/20 bg-[#191919] py-5 ps-10 text-[16px] focus-visible:ring-white/20"
+                  <Input className="w-full border border-white/20 bg-[#191919] py-5 ps-10 text-[14px] focus-visible:ring-white/20"
                      placeholder="Search Projects..."
                      value={searchValue}
                      onChange={(e) => setSearchValue(e.target.value)}
@@ -153,8 +153,8 @@ export default function ProjectContainer({
                   </div>
                </>
                :
-               <ScrollArea className="h-[75vh] max-w-[1430px] mx-auto ">
-                  <div className="max-w-[1400px] mx-auto grid grid-cols-3 gap-4">
+               <ScrollArea className="h-[75vh] max-w-[1430px] w-[calc(90vw+30px)] mx-auto ">
+                  <div className="max-w-[1400px] w-[90vw] mx-auto grid grid-cols-3 gap-4 pb-4">
 
                      {
                         projects.length !== 0 ?

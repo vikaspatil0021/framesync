@@ -62,19 +62,19 @@ export const NewProjectModal = ({
       <>
          <Dialog key={"newProjectModal"} open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-               <Button variant='secondary' size='lg'
-                  className="text-[16px]"
+               <Button variant='secondary'
+                  size='lg'
                >
                   New Project
                </Button>
             </DialogTrigger>
             <DialogContent>
                <DialogHeader>
-                  <DialogTitle>New Project</DialogTitle>
+                  <DialogTitle className="text-sm">New Project</DialogTitle>
                </DialogHeader>
 
                <ScrollArea className="max-h-[40vh] flex">
-                  <div className="py-3 ps-1 pe-3 ">
+                  <div className="py-3 px-0.5 ">
                      <Input placeholder="Project Name"
                         value={projectName}
                         onChange={(e) => {
@@ -84,7 +84,7 @@ export const NewProjectModal = ({
                   </div>
                </ScrollArea>
 
-               <DialogFooter className="1m:justify-start">
+               <DialogFooter >
                   <Button
                      variant='secondary'
                      className="w-full"
