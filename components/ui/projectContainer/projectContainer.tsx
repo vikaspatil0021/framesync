@@ -18,7 +18,7 @@ const ProjectCard = ({ eachProject }: { eachProject: EachProject }) => {
    return (
       <>
          <Link href={'/t/' + eachProject.teamId + '/' + eachProject.id}>
-            <div className="relative group bg-[#191919] hover:bg-[#222] border border-white/10 hover:border-white/50 cursor-pointer transition-all rounded-lg min-w-[300px] min-h-[200px] p-5 ">
+            <div className="relative group bg-[#191919] hover:bg-[#222] border border-white/10 hover:border-white/50 cursor-pointer transition-all rounded-lg min-w-[250px] min-h-[150px] p-5 ">
                <div className="flex flex-col">
                   <span className="text-sm">
                      {eachProject.name}
@@ -41,7 +41,7 @@ const ProjectCard = ({ eachProject }: { eachProject: EachProject }) => {
 const ProjectsCardSkeleton = () => {
    return (
       <>
-         <div className="bg-[#191919] border border-white/10 rounded-lg min-w-[300px] min-h-[200px] p-5 ">
+         <div className="bg-[#191919] border border-white/10 rounded-lg min-w-[250px] min-h-[150px] p-5 ">
             <Skeleton className="h-4 w-[200px] bg-[#555] mt-1" />
             <Skeleton className="h-3 w-[150px] mt-3 bg-[#333]" />
          </div>
@@ -125,7 +125,7 @@ export default function ProjectContainer({
 
    return (
       <>
-         <div className="flex justify-center py-6">
+         <div className="flex justify-center py-4 md:py-6">
             <div className="max-w-[1400px] w-[90vw] flex gap-4">
                <div className="relative flex items-center w-full">
                   <Search className="absolute left-0 h-4 w-4 mx-3 text-gray-400/70" />
@@ -153,7 +153,7 @@ export default function ProjectContainer({
                   </div>
                </>
                :
-               <ScrollArea className="h-[75vh] max-w-[1430px] w-[calc(90vw+30px)] mx-auto ">
+               <ScrollArea className="h-[calc(100vh-137px)] md:h-[calc(100vh-152px)] max-w-[1430px] w-[calc(90vw+30px)] mx-auto ">
                   <div className="max-w-[1400px] w-[90vw] mx-auto grid  sm:grid-cols-2 lg:grid-cols-3 gap-4 pb-4">
 
                      {

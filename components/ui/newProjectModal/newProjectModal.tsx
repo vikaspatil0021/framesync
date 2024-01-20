@@ -4,6 +4,7 @@ import { Input } from "../input"
 import { ScrollArea } from "../scroll-area"
 import { useState } from "react"
 import { toast } from "../use-toast"
+import { Plus } from "lucide-react"
 
 export const NewProjectModal = ({
    params,
@@ -61,12 +62,22 @@ export const NewProjectModal = ({
    return (
       <>
          <Dialog key={"newProjectModal"} open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-               <Button variant='secondary'
-                  size='lg'
-               >
-                  New Project
-               </Button>
+            <DialogTrigger >
+               <>
+                  <Button variant='secondary'
+                     size='lg'
+                     className="hidden sm:block"
+                  >
+                     New Project
+                  </Button>
+
+                  <Button variant='secondary'
+                     size='lg'
+                     className="px-2 block sm:hidden"
+                  >
+                     <Plus className="h-5" />
+                  </Button>
+               </>
             </DialogTrigger>
             <DialogContent>
                <DialogHeader>
