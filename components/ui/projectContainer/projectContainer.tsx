@@ -53,7 +53,7 @@ const ProjectsCardSkeleton = () => {
 export default function ProjectContainer({
    params
 }: {
-   params: { teamId: string }
+   params: { teamId: string, projectId: string }
 }) {
 
    const [projects, setProjects] = useState([]);

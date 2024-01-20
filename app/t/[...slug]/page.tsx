@@ -8,7 +8,8 @@ export default function Page({ params }: {
    }
 }) {
    const customParams = {
-      teamId: params.slug[0] as string
+      teamId: params.slug[0] as string,
+      projectId: params.slug[1]
    }
 
    const projectId = params.slug[1];

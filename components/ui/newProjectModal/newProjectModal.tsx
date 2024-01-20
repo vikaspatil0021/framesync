@@ -62,8 +62,8 @@ export const NewProjectModal = ({
    return (
       <>
          <Dialog key={"newProjectModal"} open={open} onOpenChange={setOpen}>
-            <DialogTrigger >
-               <>
+            <DialogTrigger asChild>
+               <div>
                   <Button variant='secondary'
                      size='lg'
                      className="hidden sm:block"
@@ -77,7 +77,7 @@ export const NewProjectModal = ({
                   >
                      <Plus className="h-5" />
                   </Button>
-               </>
+               </div>
             </DialogTrigger>
             <DialogContent>
                <DialogHeader>
