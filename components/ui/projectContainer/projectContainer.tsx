@@ -154,7 +154,7 @@ export default function ProjectContainer({
                </>
                :
                <ScrollArea className="h-[75vh] max-w-[1430px] w-[calc(90vw+30px)] mx-auto ">
-                  <div className="max-w-[1400px] w-[90vw] mx-auto grid grid-cols-3 gap-4 pb-4">
+                  <div className="max-w-[1400px] w-[90vw] mx-auto grid  sm:grid-cols-2 lg:grid-cols-3 gap-4 pb-4">
 
                      {
                         projects.length !== 0 ?

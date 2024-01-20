@@ -1,8 +1,10 @@
 
-import { getTeamById } from "@/lib/prisma/teams/service";
 import { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
+
+import { getProjectById } from "@/lib/prisma/project/service";
+import { getTeamById } from "@/lib/prisma/teams/service";
 
 export async function generateMetadata({
    params
@@ -11,9 +13,11 @@ export async function generateMetadata({
       slug: [teamId: string, projectId: string]
    }
 }): Promise<Metadata> {
-   const team = await getTeamById(params.slug[0] as string)
+   const team = await getTeamById(params.slug[0] as string);
+   const project = await getProjectById(params.slug[1] as string || '');
+
    return {
-      title: `${team?.name} | Framesync.in`,
+      title: `${project?.name || team?.name} | Framesync.in`,
    }
 }
 

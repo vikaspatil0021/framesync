@@ -74,7 +74,7 @@ export const NewProjectModal = ({
                </DialogHeader>
 
                <ScrollArea className="max-h-[40vh] flex">
-                  <div className="py-3 px-0.5 ">
+                  <div className="py-3 ps-0.5 ">
                      <Input placeholder="Project Name"
                         value={projectName}
                         onChange={(e) => {

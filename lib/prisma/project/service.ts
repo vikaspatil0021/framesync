@@ -16,3 +16,11 @@ export const getProjectsByTeamId = async (teamId: string) => {
       }
    })
 }
+
+export const getProjectById = async (projectId: string) => {
+   return await prisma?.project.findUnique({
+      where: {
+         id: projectId
+      }
+   })
+}
