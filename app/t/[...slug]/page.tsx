@@ -10,10 +10,14 @@ export default function Page({ params }: {
 
    const teamId = params.slug[0];
    const projectId = params.slug[1];
+
+   const customParams = {
+      teamId,
+   }
    return (
       <>
          <div>
-            <ManageMembersModal params={...{teamId}} />
+            <ManageMembersModal params={customParams} />
          </div>
       </>
    )
