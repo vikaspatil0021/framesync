@@ -54,7 +54,7 @@ export const options: NextAuthOptions = {
 
             existingUser = await getUserByEmail(user?.email as string);
          } catch (error: any) {
-            throw new Error(JSON.stringify(error.msg))
+            throw new Error(JSON.stringify(error))
          }
          if (!existingUser) {
 
