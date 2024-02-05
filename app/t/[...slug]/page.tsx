@@ -20,7 +20,7 @@ export default function Page({ params }: {
       <>
          <div>
             <ManageMembersModal params={customParams} />
-            <Button onClick={signOut}>Sign out</Button>
+            <Button onClick={() => signOut()}>Sign out</Button>
          </div>
       </>
    )
