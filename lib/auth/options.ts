@@ -49,13 +49,10 @@ export const options: NextAuthOptions = {
          const providerType = (account?.provider === 'google' ? "Google" : "Github");
 
          let existingUser;
-         try {
 
 
-            existingUser = await getUserByEmail(user?.email as string);
-         } catch (error: any) {
-            throw new Error(JSON.stringify(error))
-         }
+         existingUser = await getUserByEmail(user?.email as string);
+
          if (!existingUser) {
 
             const data = {
