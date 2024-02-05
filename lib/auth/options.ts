@@ -53,7 +53,7 @@ export const options: NextAuthOptions = {
 
 
             existingUser = await getUserByEmail(user?.email as string);
-         } catch (error) {
+         } catch (error: any) {
             throw new Error(JSON.stringify(error.msg))
          }
          if (!existingUser) {
