@@ -1,3 +1,4 @@
+import { SideBarComponent } from "@/components/ui/db/sidebar/sideBar"
 
 export default function RootLayout({
    children
@@ -7,8 +8,11 @@ export default function RootLayout({
 
    return (
       <>
-         <div>
-            {children}
+         <div className="bg-[#222] flex min-h-screen">
+            <SideBarComponent />
+            <div>
+               {children}
+            </div>
          </div>
       </>
    )

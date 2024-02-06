@@ -152,3 +152,59 @@ export const AngleRight = () => {
       </>
    )
 }
+
+export const AngleDown = () => {
+   return (
+      <>
+
+         <svg className="py-1" width="14px" height="15px" viewBox="0 0 7 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 0.708L0.708 0L3.354 2.647L6 0L6.708 0.708L3.354 4.061L0 0.708Z" fill="white" />
+         </svg>
+      </>
+   )
+}
+
+export const NotificationIcon = () => {
+   return (
+      <>
+
+         <svg width="31px" height="31px" viewBox="0 0 32 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M20 13V16C20 16.768 20.289 17.47 20.764 18H11.236C11.711 17.47 12 16.768 12 16V13C12 10.79 13.79 9 16 9C18.21 9 20 10.79 20 13ZM21 13V16C21 17.105 21.895 18 23 18V19H9V18C10.105 18 11 17.105 11 16V13C11 10.239 13.239 8 16 8C18.761 8 21 10.239 21 13ZM16 22C14.895 22 14 21.105 14 20H13C13 21.657 14.343 23 16 23C17.657 23 19 21.657 19 20H18C18 21.105 17.105 22 16 22Z" fill="white" fill-opacity="0.9" />
+         </svg>
+      </>
+   )
+}
+
+
+export const RecentIcon = () => {
+   return (
+      <>
+
+         <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M3 8.59261C3 5.62709 5.239 3.22224 8 3.22224C10.761 3.22224 13 5.62709 13 8.59261C13 11.5581 10.761 13.963 8 13.963C5.239 13.963 3 11.5581 3 8.59261ZM8 2.14816C4.686 2.14816 2 5.03313 2 8.59261C2 12.1521 4.686 15.0371 8 15.0371C11.314 15.0371 14 12.1521 14 8.59261C14 5.03313 11.314 2.14816 8 2.14816ZM7.5 5.37038V9.66668H11.5V8.59261H8.5V5.37038H7.5Z" fill="white" fill-opacity="0.9" />
+         </svg>
+      </>
+   )
+}
+
+export const AppsIcon = () => {
+   return (
+      <>
+
+         <svg width="16" height="16" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#clip0_44_8)">
+               <path d="M11.875 1.875H3.125C2.43464 1.875 1.875 2.43464 1.875 3.125V11.875C1.875 12.5654 2.43464 13.125 3.125 13.125H11.875C12.5654 13.125 13.125 12.5654 13.125 11.875V3.125C13.125 2.43464 12.5654 1.875 11.875 1.875Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+               <path d="M1.875 5.625H13.125" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+               <path d="M1.875 9.375H13.125" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+               <path d="M5.625 1.875V13.125" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+               <path d="M9.375 1.875V13.125" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </g>
+            <defs>
+               <clipPath id="clip0_44_8">
+                  <rect width="15" height="15" fill="white" />
+               </clipPath>
+            </defs>
+         </svg>
+      </>
+   )
+}
