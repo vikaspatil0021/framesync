@@ -6,7 +6,7 @@ CREATE TYPE "MembershipRole" AS ENUM ('OWNER', 'MEMBER');
 
 -- CreateTable
 CREATE TABLE "User" (
-    "id" TEXT NOT NULL,
+    "id" TEXT NOT NULL DEFAULT '',
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "picture" TEXT NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE "User" (
 
 -- CreateTable
 CREATE TABLE "Team" (
-    "id" TEXT NOT NULL,
+    "id" TEXT NOT NULL DEFAULT '',
     "name" TEXT NOT NULL,
 
     CONSTRAINT "Team_pkey" PRIMARY KEY ("id")
@@ -26,7 +26,7 @@ CREATE TABLE "Team" (
 
 -- CreateTable
 CREATE TABLE "TeamMembership" (
-    "id" TEXT NOT NULL,
+    "id" TEXT NOT NULL DEFAULT '',
     "role" "MembershipRole" NOT NULL,
     "accepted" BOOLEAN NOT NULL DEFAULT false,
     "userId" TEXT NOT NULL,
@@ -37,7 +37,7 @@ CREATE TABLE "TeamMembership" (
 
 -- CreateTable
 CREATE TABLE "Invite" (
-    "id" TEXT NOT NULL,
+    "id" TEXT NOT NULL DEFAULT '',
     "email" TEXT NOT NULL,
     "teamId" TEXT NOT NULL,
     "expiresAt" TIMESTAMP(3) NOT NULL,
@@ -47,7 +47,7 @@ CREATE TABLE "Invite" (
 
 -- CreateTable
 CREATE TABLE "Project" (
-    "id" TEXT NOT NULL,
+    "id" TEXT NOT NULL DEFAULT '',
     "name" TEXT NOT NULL,
     "teamId" TEXT NOT NULL,
 
@@ -64,10 +64,10 @@ CREATE UNIQUE INDEX "TeamMembership_userId_teamId_key" ON "TeamMembership"("user
 CREATE UNIQUE INDEX "Invite_email_teamId_key" ON "Invite"("email", "teamId");
 
 -- AddForeignKey
-ALTER TABLE "TeamMembership" ADD CONSTRAINT "TeamMembership_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "TeamMembership" ADD CONSTRAINT "TeamMembership_teamId_fkey" FOREIGN KEY ("teamId") REFERENCES "Team"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "TeamMembership" ADD CONSTRAINT "TeamMembership_teamId_fkey" FOREIGN KEY ("teamId") REFERENCES "Team"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "TeamMembership" ADD CONSTRAINT "TeamMembership_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Invite" ADD CONSTRAINT "Invite_teamId_fkey" FOREIGN KEY ("teamId") REFERENCES "Team"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,6 +5,53 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String           @id @default("")
+  name           String
+  email          String           @unique
+  picture        String
+  authProvider   AuthProvider
+  authProviderId String
+  TeamMembership TeamMembership[]
+}
+
+model Team {
+  id             String           @id @default("")
+  name           String
+  invite         Invite[]
+  project        Project[]
+  TeamMembership TeamMembership[]
+}
+
+model TeamMembership {
+  id       String         @id @default("")
+  role     MembershipRole
+  accepted Boolean        @default(false)
+  userId   String
+  teamId   String
+  team     Team           @relation(fields: [teamId], references: [id])
+  user     User           @relation(fields: [userId], references: [id])
+
+  @@unique([userId, teamId])
+}
+
+model Invite {
+  id        String   @id @default("")
+  email     String
+  teamId    String
+  expiresAt DateTime
+  team      Team     @relation(fields: [teamId], references: [id])
+
+  @@unique([email, teamId])
+}
+
+model Project {
+  id     String @id @default("")
+  name   String
+  teamId String
+  team   Team   @relation(fields: [teamId], references: [id])
 }
 
 enum AuthProvider {
@@ -18,52 +62,4 @@ enum AuthProvider {
 enum MembershipRole {
   OWNER
   MEMBER
-}
-
-model User {
-  id             String           @id @default(uuid())
-  name           String
-  email          String           @unique
-  picture        String
-  authProvider   AuthProvider
-  authProviderId String
-  TeamMembership TeamMembership[]
-}
-
-model Team {
-  id             String           @id @default(uuid())
-  name           String
-  TeamMembership TeamMembership[]
-  invite         Invite[]
-  project Project[]
-}
-
-model TeamMembership {
-  id       String         @id @default(uuid())
-  role     MembershipRole
-  accepted Boolean        @default(false)
-  userId   String
-  teamId   String
-
-  user User @relation(fields: [userId], references: [id])
-  team Team @relation(fields: [teamId], references: [id])
-
-  @@unique([userId, teamId])
-}
-
-model Invite {
-  id        String   @id @default(uuid())
-  email     String
-  teamId    String
-  team      Team     @relation(fields: [teamId], references: [id])
-  expiresAt DateTime
-
-  @@unique([email, teamId])
-}
-
-model Project {
-  id String @id @default(uuid()) 
-  name String
-  teamId String
-  team Team @relation(fields: [teamId], references:[id])
 }

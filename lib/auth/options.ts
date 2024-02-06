@@ -1,7 +1,5 @@
 import { type NextAuthOptions } from "next-auth"
 
-import prisma from "@/lib/prisma/client"
-
 import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
 
@@ -28,12 +26,7 @@ export const options: NextAuthOptions = {
    callbacks: {
       async jwt({ token }) {
          const existingUser = await getUserByEmail(token?.email as string);
-         const personalTeam = await prisma?.teamMembership.findFirst({
-            where: {
-               role: "OWNER",
-               userId: existingUser?.id
-            }
-         })
+
          if (!existingUser) {
             return token
          }
@@ -41,11 +34,9 @@ export const options: NextAuthOptions = {
          return {
             ...token,
             id: existingUser.id,
-            personalTeamId: personalTeam?.teamId
          }
       },
       async signIn({ account, user }) {
-         console.log("2", user)
          const providerType = (account?.provider === 'google' ? "Google" : "Github");
 
          let existingUser;
@@ -85,8 +76,7 @@ export const options: NextAuthOptions = {
       async session({ session, token }) {
          // @ts-expect-error
          session.user.id = token?.id;
-         //@ts-expect-error
-         session.user.personalTeamId = token?.personalTeamId;
+
          return session
       }
    }
