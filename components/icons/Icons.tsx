@@ -132,12 +132,10 @@ export const LoadingIcon = () => {
 export const SwitchTeamIcon = () => {
    return (
       <>
-         <div className="px-1 py-3">
 
-            <svg fill="#f4f4f4" height="18" width='18' viewBox="0 0 16 24" className="">
-               <path d="M13 8.517L8 3 3 8.517M3 15.48l5 5.517 5-5.517"></path>
-            </svg>
-         </div>
+         <svg fill="#f4f4f4" height="16" width='16' viewBox="0 0 16 24" className="">
+            <path d="M13 8.517L8 3 3 8.517M3 15.48l5 5.517 5-5.517"></path>
+         </svg>
       </>
    )
 }
@@ -204,6 +202,49 @@ export const AppsIcon = () => {
                   <rect width="15" height="15" fill="white" />
                </clipPath>
             </defs>
+         </svg>
+      </>
+   )
+}
+
+export const ManyUsersIcon = () => {
+   return (
+      <>
+
+         <svg width="15px" height="15px" viewBox="0 0 15 15" fill="#fff" xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#clip0_9_46)">
+               <path d="M10 13.1346V11.9423C10 11.3099 9.73661 10.7033 9.26777 10.2561C8.79893 9.80894 8.16304 9.55771 7.5 9.55771H3.75C3.08696 9.55771 2.45107 9.80894 1.98223 10.2561C1.51339 10.7033 1.25 11.3099 1.25 11.9423V13.1346" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+               <path d="M5.625 7.17307C7.00571 7.17307 8.125 6.10544 8.125 4.78845C8.125 3.47147 7.00571 2.40384 5.625 2.40384C4.24429 2.40384 3.125 3.47147 3.125 4.78845C3.125 6.10544 4.24429 7.17307 5.625 7.17307Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+               <path d="M13.75 13.1346V11.9423C13.7496 11.414 13.5652 10.9007 13.2259 10.4831C12.8865 10.0655 12.4113 9.76728 11.875 9.63519" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+               <path d="M10 2.48135C10.5378 2.61269 11.0144 2.911 11.3548 3.32927C11.6952 3.74754 11.8799 4.26196 11.8799 4.79145C11.8799 5.32094 11.6952 5.83536 11.3548 6.25363C11.0144 6.6719 10.5378 6.97021 10 7.10155" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </g>
+            <defs>
+               <clipPath id="clip0_9_46">
+                  <rect width="15" height="14.3077" fill="white" transform="translate(0 0.615387)" />
+               </clipPath>
+            </defs>
+         </svg>
+      </>
+   )
+}
+
+
+export const ThreeVerticalDotsIcon = () => {
+   return (
+      <>
+         <svg width="18px" height="18px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="#fff" className="bi bi-three-dots-vertical" >
+            <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+         </svg>
+
+      </>
+   )
+}
+
+export const LogoutIcon = () => {
+   return (
+      <>
+         <svg fill="none" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17 16L21 12M21 12L17 8M21 12L7 12M13 16V17C13 18.6569 11.6569 20 10 20H6C4.34315 20 3 18.6569 3 17V7C3 5.34315 4.34315 4 6 4H10C11.6569 4 13 5.34315 13 7V8" stroke="#f2f2f2" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" />
          </svg>
       </>
    )
