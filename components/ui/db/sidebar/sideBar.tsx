@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils"
 
 import { AccountDropDown } from "./dropdowns/Account-DropDown"
 import { NotificationDropDown } from "./dropdowns/Notification-DropDown"
+import { ManageMembersModal } from "../../membersModal/membersModal"
 
 
 
@@ -59,6 +60,9 @@ const TopSection = () => {
 }
 
 const BottomSection = () => {
+   const customParams = {
+      teamId: 'jTCUE8s7n5LMUkz'
+   }
    return (
       <>
          <div>
@@ -66,15 +70,11 @@ const BottomSection = () => {
                <div className="flex-auto flex justify-between items-center cursor-pointer px-3 py-2.5 bg-[#3c3c3c] hover:bg-[#3f3f3f] rounded-lg">
                   <div className="flex gap-2">
                      <div className="h-5 w-5 rounded-full bg-green-400" />
-                     <span className="text-[12px] text-center m-auto">Vikas's Team</span>
+                     <span className="text-[12px] text-center m-auto">Vikas&#39;s Team</span>
                   </div>
                   <SwitchTeamIcon />
                </div>
-               <Button className="rounded-lg p-3 h-10 w-10 bg-[#3c3c3c] hover:bg-[#3f3f3f]">
-
-                  <Users />
-               </Button>
-
+               <ManageMembersModal params={customParams} />
             </div>
             <div>
                <div className="px-3 text-[11px]">Projects</div>

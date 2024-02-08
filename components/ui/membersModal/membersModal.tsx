@@ -91,7 +91,7 @@ export const ManageMembersModal = ({ params }: { params: { teamId: string } }) =
       <>
          <Dialog key={"membersModal"}>
             <DialogTrigger asChild>
-               <Button variant='secondary' className="rounded-full p-2 h-8 w-8">
+               <Button className="rounded-lg p-3 h-10 w-10 bg-[#3c3c3c] hover:bg-[#3f3f3f]">
                   <Users />
                </Button>
             </DialogTrigger>

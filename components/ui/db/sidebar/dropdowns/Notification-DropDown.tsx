@@ -27,7 +27,7 @@ export const NotificationDropDown = () => {
                   </div>
                   <div className="flex-1 flex items-center justify-center">
                      <span className="text-[10px]">
-                        You don't have any notifications.
+                        You don&#39;t have any notifications.
                      </span>
                   </div>
                </div>
