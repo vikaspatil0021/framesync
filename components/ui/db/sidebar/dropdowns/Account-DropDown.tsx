@@ -1,5 +1,5 @@
 
-import { AngleDown, LogoutIcon, RecentIcon } from "@/components/icons/Icons"
+import { AngleDown, LogoutIcon, RecentIcon, SettingIcon } from "@/components/icons/Icons"
 import {
    DropdownMenu,
    DropdownMenuContent,
@@ -28,7 +28,7 @@ export const AccountDropDown = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="text-white w-[290px] rounded-sm px-0 py-2 mx-1 bg-[#222]">
                <div className='flex items-center gap-2 h-8 px-5 cursor-pointer hover:bg-[#348ac8]' >
-                  <RecentIcon />
+                  <SettingIcon />
                   <span className="text-xs">Settings</span>
                </div>
 

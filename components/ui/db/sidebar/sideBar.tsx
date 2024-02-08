@@ -4,10 +4,14 @@ import { AppsIcon, NotificationIcon, RecentIcon, SwitchTeamIcon, ThreeVerticalDo
 import { Input } from "../../input"
 import { Plus, Search, Users } from "lucide-react"
 import { Button } from "../../button"
+
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+
 import { cn } from "@/lib/utils"
-import { AccountDropDown } from "./Account-DropDown"
+
+import { AccountDropDown } from "./dropdowns/Account-DropDown"
+import { NotificationDropDown } from "./dropdowns/Notification-DropDown"
 
 
 
@@ -23,9 +27,7 @@ const TopSection = () => {
                <div className="flex justify-between  items-center">
 
                   <AccountDropDown />
-                  <div className="rounded-sm  hover:bg-[#383838] inline-flex items-center p-0.5 cursor-pointer">
-                     <NotificationIcon />
-                  </div>
+                  <NotificationDropDown />
                </div>
                <div className="relative flex items-center ">
                   <Search className="h-4 absolute left-1.5" />
