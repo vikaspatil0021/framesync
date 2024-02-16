@@ -70,9 +70,6 @@ export const options: NextAuthOptions = {
          }
          return true;
       },
-      async redirect({ baseUrl }) {
-         return baseUrl;
-      },
       async session({ session, token }) {
          // @ts-expect-error
          session.user.id = token?.id;

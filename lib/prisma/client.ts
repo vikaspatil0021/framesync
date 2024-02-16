@@ -18,7 +18,6 @@ const prisma = global.prisma || new PrismaClient()
             }
          }
       }
-
    });
 
    //@ts-expect-error

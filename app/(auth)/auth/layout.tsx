@@ -15,7 +15,7 @@ export default async function RootLayout({
 }) {
    const session = await getServerSession();
 
-   if (session) redirect('/');
+   if (session) redirect('/db/recents');
 
    return (
       <>

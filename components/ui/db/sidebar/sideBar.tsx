@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils"
 import { AccountDropDown } from "./dropdowns/Account-DropDown"
 import { NotificationDropDown } from "./dropdowns/Notification-DropDown"
 import { ManageMembersModal } from "../../membersModal/membersModal"
+import { TeamsSelectOption } from "./selects/teams-selects"
 
 
 
@@ -67,16 +68,10 @@ const BottomSection = () => {
       <>
          <div>
             <div className="flex gap-2 m-3">
-               <div className="flex-auto flex justify-between items-center cursor-pointer px-3 py-2.5 bg-[#3c3c3c] hover:bg-[#3f3f3f] rounded-lg">
-                  <div className="flex gap-2">
-                     <div className="h-5 w-5 rounded-full bg-green-400" />
-                     <span className="text-[12px] text-center m-auto">Vikas&#39;s Team</span>
-                  </div>
-                  <SwitchTeamIcon />
-               </div>
+               <TeamsSelectOption />
                <ManageMembersModal params={customParams} />
             </div>
-            <div>
+            <div className="pt-2">
                <div className="px-3 text-[11px]">Projects</div>
                <div className="mt-2 font-normal text-[#ccc]">
                   <div className="flex items-center gap-1 hover:bg-[#383838] cursor-pointer h-8 px-3">
