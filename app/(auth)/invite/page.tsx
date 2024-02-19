@@ -47,7 +47,6 @@ export default async function Invite({
          return <RightAccountContent />
       }
    } catch (error) {
-      console.log(error)
       return <ExpiredContent />
    }
 }
