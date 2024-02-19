@@ -68,12 +68,6 @@ export const ManageMembersModal = ({ params }: { params: { teamId: string } }) =
    }
 
 
-   useEffect(() => {
-      getMembersInvitationsData("memberships", params.teamId);
-
-      getMembersInvitationsData("invite", params.teamId);
-
-   }, [params.teamId]);
 
    // check if the current user is the owner
    let isCurrentUserOwner = false;
