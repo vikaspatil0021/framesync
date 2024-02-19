@@ -6,18 +6,17 @@ export const getInvitesHandler = async ({
     teamId: string
 }) => {
 
-    let invites;
 
     try {
-        
-        invites = await getInvitesByTeamId(teamId as string);
 
-    } catch (error) {
-        throw new Error("Bad request, Try again.")
+        const invites = await getInvitesByTeamId(teamId as string);
+
+        return {
+            invites,
+        }
+    } catch (error: any) {
+        throw new Error(error?.message)
     }
 
-    return {
-        invites,
-    }
 }
 

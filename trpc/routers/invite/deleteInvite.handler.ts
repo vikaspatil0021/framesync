@@ -7,21 +7,22 @@ export const deleteInviteHandler = async ({
     inviteId: string,
 }) => {
 
-    let invite;
 
     try {
 
         if (!inviteId) throw new Error('Missing inviteID');
 
-        invite = await deleteInvite(inviteId as string);
+        const invite = await deleteInvite(inviteId as string);
+
+        return {
+            invite
+        }
 
     } catch (error: any) {
         const msg = error?.code === 'P2025' && "Invite does not exist."
         throw new Error(msg || error?.message);
     }
 
-    return {
-        invite
-    }
+ 
 }
 

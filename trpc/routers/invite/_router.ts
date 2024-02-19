@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { TRPCError } from "@trpc/server";
 
 import { router } from "@/trpc/trpc";
 import { authedProcedure } from "@/trpc/procedures/authedProcedure";

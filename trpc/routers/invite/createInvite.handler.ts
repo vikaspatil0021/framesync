@@ -13,7 +13,6 @@ export const createInviteHandler = async ({
     userId: string
 }) => {
 
-    let invite;
 
     try {
 
@@ -39,14 +38,15 @@ export const createInviteHandler = async ({
         const expiresIn = 7 * 24 * 60 * 60 * 1000; // 7 days
         const expiresAt = new Date(Date.now() + expiresIn);
 
-        invite = await createInvite(teamId as string, email as string, expiresAt as Date)
+        const invite = await createInvite(teamId as string, email as string, expiresAt as Date)
+
+        return {
+            invite
+        }
 
     } catch (error: any) {
         throw new Error(error?.message)
     }
 
-    return {
-        invite
-    }
 }
 
