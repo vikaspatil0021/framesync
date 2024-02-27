@@ -11,6 +11,8 @@ export const getInvitesHandler = async ({
 
         const invites = await getInvitesByTeamId(teamId as string);
 
+        invites.reverse();
+        
         return {
             invites,
         }

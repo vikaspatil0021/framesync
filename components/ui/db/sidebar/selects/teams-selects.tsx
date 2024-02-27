@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react"
-import { useSession } from "next-auth/react";
-import { trpc } from "@/trpc/client/trpcClient";
+import { trpc } from "@/trpc/client/trpcClient"
 
 import {
    Select,
@@ -10,21 +8,35 @@ import {
    SelectTrigger,
    SelectValue,
 } from "@/components/ui/select"
+import { useEffect, useState } from "react"
 
-
+type EachTeam = {
+   team: {
+       id: string;
+       name: string;
+   };
+   id: string;
+   role: "OWNER" | "MEMBER"
+}
 
 export const TeamsSelectOption = () => {
-   const session = useSession();
 
-   const [selectValue, setSelectValue] = useState('');
+   const [selectValue, setSelectValue] = useState<string>('')
 
-   //@ts-expect-error
-   const { data } = trpc.teams.getTeams.useQuery({ userId:  session?.data?.user?.id })
+   const { data } = trpc.teams.getTeams.useQuery()
 
+   useEffect(() => {
+      setSelectValue(data?.teams[0].team.id as string)
+   }, [data])
 
-   useEffect(()=>{
-      setSelectValue(data?.teams[0]?.team?.id as string)
-   },[data])
+   useEffect(() => {
+      if (![undefined, ""].includes(selectValue)) {
+         localStorage.setItem('teamId', selectValue);
+         window.dispatchEvent(new Event('storage'))
+
+      }
+   }, [selectValue])
+
 
    return (
       <>
@@ -35,7 +47,7 @@ export const TeamsSelectOption = () => {
             <SelectContent className="bg-[#222] text-white border-white/10 ">
                <SelectGroup>
                   {
-                     data?.teams.map(eachTeam => {
+                     data?.teams?.map((eachTeam:EachTeam) => {
                         return (
                            <>
                               <SelectItem value={eachTeam.team.id} key={'key' + eachTeam.team.id}>
@@ -52,7 +64,6 @@ export const TeamsSelectOption = () => {
                </SelectGroup>
             </SelectContent>
          </Select>
-
       </>
    )
 }

@@ -1,59 +1,49 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import { Button } from "../button"
 import { Input } from "../input"
 import { toast } from "../use-toast"
+import { trpc } from "@/trpc/client/trpcClient"
+import type { QueryObserverResult, RefetchOptions } from "@tanstack/react-query"
 
 
 export default function InviteInput({
-   getMembersInvitationsData,
-   params
+   teamId,
+   refetchInvites
 }: {
-   getMembersInvitationsData: (urlType: string, teamId: string) => Promise<void>,
-   params: { teamId: string }
+   teamId: string,
+   refetchInvites: (options?: RefetchOptions) => Promise<QueryObserverResult<unknown,Error>>
 }) {
    const [isLoading, setLoading] = useState(false);
    const [email, setEmail] = useState('');
 
-   const inviteUser = async () => {
-      if (email === '') return;
+   const createInvite = trpc.invite.createInvite.useMutation();
 
-      if (!email.includes("@")) {
+   const { error: inviteError, isPending, isSuccess } = createInvite;
+
+   useEffect(() => {
+      setLoading(isPending);
+
+   }, [isPending]);
+
+   useEffect(()=>{
+
+      if (inviteError) {
          toast({
-            variant: "destructive",
-            title: "Enter a valid email.",
-         });
-         return;
-      }
-
-      setLoading(true);
-      const result = await fetch('/api/invite', {
-         method: "POST",
-         body: JSON.stringify({
-            teamId: params.teamId,
-            email
+            title: inviteError?.message,
+            variant: "destructive"
          })
-      });
-
-      setLoading(false);
-
-      if (!result.ok) {
-         const errorMsg = await result.json();
-         toast({
-            variant: "destructive",
-            title: errorMsg.error,
-         });
-         return;
       }
-
-      toast({
-         variant: "success",
-         title: "Invite Sent Successfully"
-      });
-
-      getMembersInvitationsData("invite", params.teamId); //update the invites
-      setEmail('');
-   }
+      
+      if (isSuccess) {
+         toast({
+            title: "Invite Sent Successfully",
+            variant: "success"
+         });
+         setEmail('');
+         refetchInvites();
+      }
+   },[inviteError,isSuccess,refetchInvites])
 
 
    return (
@@ -70,10 +60,14 @@ export default function InviteInput({
             <Button
                variant='secondary'
                size='sm'
-               onClick={inviteUser}
+               onClick={() => {
+                  createInvite.mutate({ email, teamId });
+               }}
                disabled={(isLoading || email === '') ? true : false}
                loading={isLoading}
-            >Invite</Button>
+            >
+               Invite
+            </Button>
          </div>
       </>
    )

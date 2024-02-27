@@ -11,7 +11,9 @@ import { Skeleton } from "../skeleton"
 import { toast } from "../use-toast"
 import { CopyIcon } from "@/components/icons/Icons"
 import { createInviteToken } from "@/lib/jwt"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { trpc } from "@/trpc/client/trpcClient"
+import { QueryObserverBaseResult, QueryObserverResult, RefetchOptions } from "@tanstack/react-query"
 
 type EachMember = {
    user: {
@@ -35,10 +37,8 @@ const ProfileCard = ({
    email,
    role,
    isInvitationtab,
-   getMembersInvitationsData,
    isCurrentUserOwner,
-   params
-
+   refetchLatestData
 }: {
    id: string,
    imageURL: string,
@@ -46,78 +46,65 @@ const ProfileCard = ({
    email: string,
    role: "OWNER" | "MEMBER",
    isInvitationtab: boolean,
-   getMembersInvitationsData: (urlType: string, teamId: string) => Promise<void>,
    isCurrentUserOwner: boolean,
-   params: { teamId: string }
-
+   refetchLatestData: (type: string) => void
 }) => {
    const [isLoading, setLoading] = useState(false);
 
-   //here id is the membership ID
-   const removeMemberHandler = async (id: string) => {
+   const deleteInvite = trpc.invite.deleteInvite.useMutation()
+   const { error: inviteError, isPending: isInvitePending, isSuccess: isInviteDeleted } = deleteInvite;
 
-      setLoading(true);
+   useEffect(() => {
+      setLoading(isInvitePending);
+   }, [isInvitePending]);
 
-      const result = await fetch(`/api/memberships?membershipId=${id}`, {
-         method: "DELETE"
-      });
+   useEffect(() => {
 
-      setTimeout(() => {
-
-         setLoading(false);
-      }, 1000)
-
-      if (!result.ok) {
-         const errorMsg = await result.json();
+      if (inviteError) {
          toast({
-            variant: "destructive",
-            title: errorMsg.error,
-         });
-         return;
+            title: inviteError?.message,
+            variant: "destructive"
+         })
       }
 
-      toast({
-         variant: "success",
-         title: "Member removed successfully"
-      });
-
-      getMembersInvitationsData("memberships", params.teamId);
-
-   }
-
-   //here id is the inviteId
-   const revokeInviteHandler = async (id: string) => {
-
-      setLoading(true);
-
-      const result = await fetch(`/api/invite?inviteId=${id}`, {
-         method: "DELETE"
-      });
-
-      setTimeout(() => {
-
-         setLoading(false);
-      }, 1000)
-
-      if (!result.ok) {
-         const errorMsg = await result.json();
+      if (isInviteDeleted) {
+         refetchLatestData("invites");
          toast({
-            variant: "destructive",
-            title: errorMsg.error,
+            title: "Invitation revoked successfully",
+            variant: 'success'
          });
-         return;
       }
 
-      toast({
-         variant: "success",
-         title: "Invitation revoked successfully"
-      });
+   }, [isInviteDeleted, inviteError, refetchLatestData])
 
-      getMembersInvitationsData("invite", params.teamId);
 
-   }
 
-   //here id is the inviteId
+
+   const deleteMember = trpc.memberships.deleteMembership.useMutation();
+   const { error: memberError, isPending: isMemberPending, isSuccess: isMemberDeleted } = deleteMember;
+
+   useEffect(() => {
+      setLoading(isMemberPending);
+   }, [isMemberPending]);
+
+   useEffect(() => {
+      if (memberError) {
+         toast({
+            title: memberError?.message,
+            variant: "destructive"
+         })
+      }
+
+      if (isMemberDeleted) {
+         refetchLatestData("members");
+         toast({
+            title: "Member removed successfully",
+            variant: 'success'
+         })
+      }
+
+   }, [isMemberDeleted, memberError, refetchLatestData])
+
    const copyInviteToken = async (id: string, email: string) => {
 
       const token = await createInviteToken(email, id);
@@ -189,8 +176,9 @@ const ProfileCard = ({
                               size='sm'
                               loading={isLoading}
                               onClick={() => {
-                                 isInvitationtab ? revokeInviteHandler(id as string) : removeMemberHandler(id as string)
-                              }}>
+                                 isInvitationtab ? deleteInvite.mutate({ inviteId: id }) : deleteMember.mutate({ membershipId: id })
+                              }}
+                           >
                               Confirm
                            </Button>
                         </PopoverContent>
@@ -223,21 +211,19 @@ const ProfileCardSkeleton = () => {
 
 export const MembersTabContent = ({
    members,
-   getMembersInvitationsData,
    isCurrentUserOwner,
-   params
+   refetchLatestData
 }: {
    members: EachMember[],
-   getMembersInvitationsData: (urlType: string, teamId: string) => Promise<void>,
    isCurrentUserOwner: boolean,
-   params: { teamId: string }
+   refetchLatestData: (type: string) => void
 
 }) => {
 
    return (
       <>
          {
-            (members.length !== 0) ?
+            (members && members?.length !== 0) ?
                members?.map((eachMember: EachMember) => {
                   return (
                      <>
@@ -249,10 +235,8 @@ export const MembersTabContent = ({
                            email={eachMember.user.email}
                            role={eachMember.role}
                            isInvitationtab={false}
-                           getMembersInvitationsData={getMembersInvitationsData}
                            isCurrentUserOwner={isCurrentUserOwner}
-                           params={params}
-
+                           refetchLatestData={refetchLatestData}
                         />
                      </>
                   )
@@ -270,21 +254,19 @@ export const MembersTabContent = ({
 export const InvitationTabContent = ({
    invites,
    invitesDataLoading,
-   getMembersInvitationsData,
    isCurrentUserOwner,
-   params
+   refetchLatestData
 }: {
    invites: EachInvite[],
    invitesDataLoading: boolean,
-   getMembersInvitationsData: (urlType: string, teamId: string) => Promise<void>,
    isCurrentUserOwner: boolean,
-   params: { teamId: string }
+   refetchLatestData: (type: string) => void
 
 }) => {
    return (
       <>
          {
-            (invites.length !== 0) ?
+            (invites && invites.length !== 0) ?
                invites?.map((eachInvite: EachInvite) => {
                   return (
                      <>
@@ -296,9 +278,8 @@ export const InvitationTabContent = ({
                            role={"MEMBER"}//here role does nothing & need to find a way to remove it 
                            email={eachInvite.email}
                            isInvitationtab={true}
-                           getMembersInvitationsData={getMembersInvitationsData}
                            isCurrentUserOwner={isCurrentUserOwner}
-                           params={params}
+                           refetchLatestData={refetchLatestData}
 
                         />
                      </>

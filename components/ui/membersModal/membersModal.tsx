@@ -1,5 +1,5 @@
 import { useSession } from "next-auth/react"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 /* eslint-disable react/no-unescaped-entities */
 import {
    Dialog,
@@ -16,7 +16,10 @@ import { ScrollArea } from "../scroll-area"
 import { toast } from "../use-toast"
 import InviteInput from "./inviteInput"
 import { InvitationTabContent, MembersTabContent } from "./tabsContent"
+import { trpc } from "@/trpc/client/trpcClient"
+import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query"
 
+type Refetch = (options?: RefetchOptions) => Promise<QueryObserverResult<unknown,Error>>
 
 type EachMember = {
    user: {
@@ -25,54 +28,44 @@ type EachMember = {
       id: string,
       picture: string
    },
+   id: string,
    role: "OWNER" | "MEMBER"
 }
 type Session = {
    id: string
 
 } | null
-export const ManageMembersModal = ({ params }: { params: { teamId: string } }) => {
+type EachInvite = {
+   email: string,
+   id: string
+}
+export const ManageMembersModal = () => {
    const session = useSession();
    const currentUser = session && session.data?.user as Session;
 
 
-   const [members, setMembers] = useState([]);
-   const [invites, setInvites] = useState([])
-   const [invitesDataLoading, setInvitesDataLoading] = useState(false); //check if invites are being fetched
+   const [teamId, setTeamId] = useState('');
 
-   const getMembersInvitationsData = async (urlType: string, teamId: string) => {
+   const { data: invitesData, isFetching: invitesDataLoading,refetch:refetchInvites } = trpc.invite.getInvites.useQuery({ teamId });
+   const { data: membersData, refetch:refetchMembers } = trpc.memberships.getMembership.useQuery({ teamId })
 
-      if (urlType === "invite") setInvitesDataLoading(true);
 
-      const result = await fetch(`/api/${urlType}?teamId=${teamId}`, {
-         method: "GET"
-      });
-
-      if (!result.ok) {
-         const errorMsg = await result.json();
-         toast({
-            variant: "destructive",
-            title: errorMsg.error,
-         });
-         return;
-      }
-
-      const data = await result.json();
-      if (urlType === "memberships") {
-         setMembers(data?.memberships);
-      } else {
-         setInvites(data?.invites.reverse());
-         setInvitesDataLoading(false);
-      }
-
+   window.onstorage = () => {
+      setTeamId(localStorage.getItem('teamId') as string)
    }
 
-
+   const refetchLatestData = (type:string)=>{
+      if(type==="invites"){
+         refetchInvites()
+      }else{
+         refetchMembers()
+      }
+   }
 
    // check if the current user is the owner
    let isCurrentUserOwner = false;
 
-   members.length != 0 && members.forEach((eachMember: EachMember) => {
+   membersData?.memberships?.length != 0 && membersData?.memberships.forEach((eachMember: EachMember) => {
       if (currentUser && eachMember.user.id === currentUser?.id) {
          if (eachMember?.role === 'OWNER') {
             isCurrentUserOwner = true
@@ -89,7 +82,7 @@ export const ManageMembersModal = ({ params }: { params: { teamId: string } }) =
                   <Users />
                </Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="text-[#f2f2f2]">
                <DialogHeader >
                   <DialogTitle className="text-sm">People</DialogTitle>
                   <DialogDescription className="text-xs">
@@ -99,8 +92,8 @@ export const ManageMembersModal = ({ params }: { params: { teamId: string } }) =
 
                {isCurrentUserOwner &&
                   <InviteInput
-                     getMembersInvitationsData={getMembersInvitationsData}
-                     params={params}
+                     teamId={teamId}
+                     refetchInvites={refetchInvites as Refetch}
                   />
                }
 
@@ -113,11 +106,9 @@ export const ManageMembersModal = ({ params }: { params: { teamId: string } }) =
                      <ScrollArea className="h-52 w-full pr-3">
 
                         <MembersTabContent
-                           members={members}
-                           getMembersInvitationsData={getMembersInvitationsData}
+                           members={membersData?.memberships as EachMember[]}
                            isCurrentUserOwner={isCurrentUserOwner}
-                           params={params}
-
+                           refetchLatestData={refetchLatestData}
                         />
 
                      </ScrollArea>
@@ -126,12 +117,10 @@ export const ManageMembersModal = ({ params }: { params: { teamId: string } }) =
                      <ScrollArea className="h-52 w-full pr-3">
 
                         <InvitationTabContent
-                           invites={invites}
+                           invites={invitesData?.invites as EachInvite[]}
                            invitesDataLoading={invitesDataLoading}
-                           getMembersInvitationsData={getMembersInvitationsData}
                            isCurrentUserOwner={isCurrentUserOwner}
-                           params={params}
-
+                           refetchLatestData={refetchLatestData}
                         />
 
                      </ScrollArea>

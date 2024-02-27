@@ -8,7 +8,6 @@ import { getTeamsHandler } from "./getTeams.handler";
 export const teamsRouter = router({
 
     getTeams: authedProcedure
-        .input(z.object({ userId: z.string() }))
-        .query(({ input }) => getTeamsHandler(input))
+        .query(() => getTeamsHandler())
 
 })

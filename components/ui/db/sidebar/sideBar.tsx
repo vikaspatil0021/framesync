@@ -61,15 +61,13 @@ const TopSection = () => {
 }
 
 const BottomSection = () => {
-   const customParams = {
-      teamId: 'jTCUE8s7n5LMUkz'
-   }
+
    return (
       <>
          <div>
             <div className="flex gap-2 m-3">
                <TeamsSelectOption />
-               <ManageMembersModal params={customParams} />
+               <ManageMembersModal />
             </div>
             <div className="pt-2">
                <div className="px-3 text-[11px]">Projects</div>
