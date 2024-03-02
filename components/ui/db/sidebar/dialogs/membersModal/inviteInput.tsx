@@ -43,7 +43,8 @@ export default function InviteInput({
          setEmail('');
          refetchInvites();
       }
-   },[inviteError,isSuccess,refetchInvites])
+   // eslint-disable-next-line react-hooks/exhaustive-deps
+   },[inviteError,isSuccess])
 
 
    return (

@@ -16,9 +16,16 @@ import { ManageMembersModal } from "./dialogs/membersModal/membersModal"
 import { TeamsSelectOption } from "./selects/teams-selects"
 import { NewProjectModal } from "./dialogs/newProjectModal/newProjectModal"
 import { useEffect, useState } from "react"
+import { trpc } from "@/trpc/client/trpcClient"
 
 
 
+
+type EachProject = {
+   teamId: string;
+   id: string;
+   name: string;
+}
 
 const TopSection = () => {
    const pathName = usePathname();
@@ -72,6 +79,11 @@ const BottomSection = () => {
       }
    }, [])
 
+   const { data: projectsData, refetch: refetchProjects } = trpc.project.getProjects.useQuery({ teamId });
+
+   const refetchProjectsdata = () => refetchProjects();
+
+
    return (
       <>
          <div>
@@ -86,24 +98,26 @@ const BottomSection = () => {
                <div className="mt-2 font-normal text-[#ccc]">
                   <NewProjectModal
                      teamId={teamId}
+                     refetchProjectsdata={refetchProjectsdata}
                   />
-                  <div className="group flex items-center justify-between hover:bg-[#383838] cursor-pointer h-8 pe-3 ps-10">
-                     <span className="text-[13px]">
-                        Sarah new video
-                     </span>
-                     <div className="rounded-sm hidden hover:bg-[#444] group-hover:flex items-center justify-center h-8 w-8">
+                  {
+                     projectsData?.projects.map((eachProject: EachProject, index) => {
+                        return (
+                           <>
+                              <div key={index} className="group flex items-center justify-between hover:bg-[#383838] cursor-pointer h-8 pe-3 ps-10">
+                                 <span className="text-[13px]">
+                                    {eachProject.name}
+                                 </span>
+                                 <div className="rounded-sm hidden hover:bg-[#444] group-hover:flex items-center justify-center h-8 w-8">
 
-                        <ThreeVerticalDotsIcon />
-                     </div>
-                  </div>
-                  <div className="group flex items-center justify-between hover:bg-[#383838] cursor-pointer h-8 pe-3 ps-10">
-                     <span className="text-[13px]">
-                        One Love
-                     </span>
-                     <div className="rounded-sm hover:bg-[#444] hidden group-hover:flex items-center justify-center h-8 w-8">
-                        <ThreeVerticalDotsIcon />
-                     </div>
-                  </div>
+                                    <ThreeVerticalDotsIcon />
+                                 </div>
+                              </div>
+                           </>
+
+                        )
+                     })
+                  }
                </div>
             </div>
          </div >

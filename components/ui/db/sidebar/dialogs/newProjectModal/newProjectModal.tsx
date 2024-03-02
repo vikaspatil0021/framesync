@@ -18,9 +18,11 @@ import { toast } from "@/components/ui/use-toast";
 
 
 export const NewProjectModal = ({
-    teamId
-}:{
-    teamId:string
+    teamId,
+    refetchProjectsdata
+}: {
+    teamId: string,
+    refetchProjectsdata: () => void
 }) => {
 
     const [open, setOpen] = useState(false);
@@ -30,7 +32,7 @@ export const NewProjectModal = ({
 
     const createProject = trpc.project.createProject.useMutation();
 
-    const { error, isPending, isSuccess,data } = createProject;
+    const { error, isPending, isSuccess, data } = createProject;
 
     useEffect(() => {
         setLoading(isPending);
@@ -46,14 +48,21 @@ export const NewProjectModal = ({
             })
         }
 
-        if (isSuccess) {
+        if (isSuccess && data) {
             toast({
                 title: data?.project.name + " - Project Created",
                 variant: "success"
             });
             setProjectName('');
+            refetchProjectsdata()
+            setOpen(false);
+
         }
-    }, [data?.project.name, error, isSuccess])
+        
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [data?.project.name, error, isSuccess]);
+    
+
     return (
         <>
             <Dialog key={"newProjectModal"} open={open} onOpenChange={setOpen}>
