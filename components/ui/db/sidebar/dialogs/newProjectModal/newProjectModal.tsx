@@ -15,6 +15,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Plus } from "lucide-react";
 import { trpc } from "@/trpc/client/trpcClient";
 import { toast } from "@/components/ui/use-toast";
+import {  useRouter } from "next/navigation";
 
 
 export const NewProjectModal = ({
@@ -24,6 +25,7 @@ export const NewProjectModal = ({
     teamId: string,
     refetchProjectsdata: () => void
 }) => {
+    const router = useRouter();
 
     const [open, setOpen] = useState(false);
     const [isLoading, setLoading] = useState(false);
@@ -56,13 +58,13 @@ export const NewProjectModal = ({
             setProjectName('');
             refetchProjectsdata()
             setOpen(false);
+            router.push('/db/project/' + data?.project.id)
 
         }
         
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data?.project.name, error, isSuccess]);
     
-
     return (
         <>
             <Dialog key={"newProjectModal"} open={open} onOpenChange={setOpen}>
@@ -98,7 +100,7 @@ export const NewProjectModal = ({
                             className="w-full"
                             loading={isLoading}
                             onClick={() => {
-                                createProject.mutate({ name: projectName as string, teamId: teamId as string })
+                                createProject.mutate({ name: projectName as string, teamId: teamId as string });
                             }}
                         >
                             Create Project

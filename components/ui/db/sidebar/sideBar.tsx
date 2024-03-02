@@ -2,11 +2,10 @@
 
 import { AppsIcon, NotificationIcon, RecentIcon, SwitchTeamIcon, ThreeVerticalDotsIcon } from "@/components/icons/Icons"
 import { Input } from "../../input"
-import { Plus, Search, Users } from "lucide-react"
-import { Button } from "../../button"
+import { Search } from "lucide-react"
 
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 
 import { cn } from "@/lib/utils"
 
@@ -17,6 +16,7 @@ import { TeamsSelectOption } from "./selects/teams-selects"
 import { NewProjectModal } from "./dialogs/newProjectModal/newProjectModal"
 import { useEffect, useState } from "react"
 import { trpc } from "@/trpc/client/trpcClient"
+import { ScrollArea } from "../../scroll-area"
 
 
 
@@ -27,10 +27,12 @@ type EachProject = {
    name: string;
 }
 
-const TopSection = () => {
-   const pathName = usePathname();
+const TopSection = ({
+   activePath
+}: {
+   activePath: string
+}) => {
 
-   const activePage = pathName.replace('/db/', '');
    return (
       <>
          <div className="border-b-[1px] border-[#555]">
@@ -49,13 +51,13 @@ const TopSection = () => {
             </div>
             <div className="my-3">
                <Link href='/db/recents'>
-                  <div className={cn(`flex items-center gap-2 h-8 px-5 cursor-pointer ${activePage === "recents" ? "bg-[#4a5878]" : 'hover:bg-[#3c3c3c]'}`)} >
+                  <div className={cn(`flex items-center gap-2 h-8 px-5 cursor-pointer ${activePath === "recents" ? "bg-[#4a5878]" : 'hover:bg-[#3c3c3c]'}`)} >
                      <RecentIcon />
                      <span className="text-xs">Recents</span>
                   </div>
                </Link>
                <Link href='/db/apps'>
-                  <div className={cn(`flex items-center gap-2 h-8 px-5 cursor-pointer ${activePage === "apps" ? "bg-[#4a5878]" : 'hover:bg-[#3c3c3c]'}`)} >
+                  <div className={cn(`flex items-center gap-2 h-8 px-5 cursor-pointer ${activePath === "apps" ? "bg-[#4a5878]" : 'hover:bg-[#3c3c3c]'}`)} >
                      <AppsIcon />
                      <span className="text-xs">
                         Apps
@@ -69,7 +71,14 @@ const TopSection = () => {
    )
 }
 
-const BottomSection = () => {
+const BottomSection = ({
+   activePath
+}: {
+   activePath: string
+}) => {
+   const router = useRouter();
+
+
    const [teamId, setTeamId] = useState('');
 
    useEffect(() => {
@@ -84,9 +93,26 @@ const BottomSection = () => {
    const refetchProjectsdata = () => refetchProjects();
 
 
+   const activePathProject = activePath.replace('project/', '');
+
+
+   useEffect(()=>{ // change the url to the current first project  if team changes
+      let allProjectIds = projectsData?.projects.map((each:EachProject)=>{
+         return each.id
+         
+      }) as string[];
+
+      if(allProjectIds && !allProjectIds?.includes(activePathProject)){
+         const currentId = allProjectIds[0]
+         router.push('/db/project/' + currentId) 
+      }
+   // eslint-disable-next-line react-hooks/exhaustive-deps
+   },[projectsData])
+
+
    return (
       <>
-         <div>
+         <div className="flex flex-col flex-1 overflow-y-auto">
             <div className="flex gap-2 m-3">
                <TeamsSelectOption />
                <ManageMembersModal
@@ -100,11 +126,19 @@ const BottomSection = () => {
                      teamId={teamId}
                      refetchProjectsdata={refetchProjectsdata}
                   />
-                  {
-                     projectsData?.projects.map((eachProject: EachProject, index) => {
-                        return (
-                           <>
-                              <div key={index} className="group flex items-center justify-between hover:bg-[#383838] cursor-pointer h-8 pe-3 ps-10">
+
+               </div>
+            </div>
+
+            <ScrollArea className="flex-1">
+
+               {
+                  projectsData?.projects.map((eachProject: EachProject, index) => {
+                     return (
+                        <>
+                           <Link href={"/db/project/" + eachProject.id}>
+
+                              <div key={index} className={`group flex items-center justify-between cursor-pointer h-8 pe-3 ps-10 ${activePathProject === eachProject.id ? "bg-[#4a5878]" : 'hover:bg-[#3c3c3c]'}`}>
                                  <span className="text-[13px]">
                                     {eachProject.name}
                                  </span>
@@ -113,23 +147,32 @@ const BottomSection = () => {
                                     <ThreeVerticalDotsIcon />
                                  </div>
                               </div>
-                           </>
-
-                        )
-                     })
-                  }
-               </div>
+                           </Link>
+                        </>
+                     )
+                  })
+               }
+         </ScrollArea>
             </div>
-         </div >
+
       </>
    )
 }
+
+
 export const SideBarComponent = () => {
+   const pathName = usePathname();
+
+   const activePath = pathName.replace('/db/', '');
    return (
       <>
-         <div className="bg-[#2c2c2c] text-white min-w-[300px] border-r-[.5px] border-[#555] py-3">
-            <TopSection />
-            <BottomSection />
+         <div className="bg-[#2c2c2c] text-white min-w-[300px] border-r-[.5px] border-[#555] py-3 flex flex-col h-screen overflow-hidden">
+            <TopSection
+               activePath={activePath}
+            />
+            <BottomSection
+               activePath={activePath}
+            />
          </div>
       </>
    )

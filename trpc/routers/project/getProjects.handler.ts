@@ -11,6 +11,7 @@ export const getProjectsHandler = async ({
     try {
         const projects = await getProjectsByTeamId(teamId as string)
 
+        projects.reverse()
         return {
             projects
         }
