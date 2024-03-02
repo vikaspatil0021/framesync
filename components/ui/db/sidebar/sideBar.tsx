@@ -12,8 +12,10 @@ import { cn } from "@/lib/utils"
 
 import { AccountDropDown } from "./dropdowns/Account-DropDown"
 import { NotificationDropDown } from "./dropdowns/Notification-DropDown"
-import { ManageMembersModal } from "../../membersModal/membersModal"
+import { ManageMembersModal } from "./dialogs/membersModal/membersModal"
 import { TeamsSelectOption } from "./selects/teams-selects"
+import { NewProjectModal } from "./dialogs/newProjectModal/newProjectModal"
+import { useEffect, useState } from "react"
 
 
 
@@ -61,23 +63,30 @@ const TopSection = () => {
 }
 
 const BottomSection = () => {
+   const [teamId, setTeamId] = useState('');
+
+   useEffect(() => {
+
+      window.onstorage = () => {
+         setTeamId(localStorage.getItem('teamId') as string)
+      }
+   }, [])
 
    return (
       <>
          <div>
             <div className="flex gap-2 m-3">
                <TeamsSelectOption />
-               <ManageMembersModal />
+               <ManageMembersModal
+                  teamId={teamId}
+               />
             </div>
             <div className="pt-2">
                <div className="px-3 text-[11px]">Projects</div>
                <div className="mt-2 font-normal text-[#ccc]">
-                  <div className="flex items-center gap-1 hover:bg-[#383838] cursor-pointer h-8 px-3">
-                     <Plus className="h-5" />
-                     <span className="text-[13px]">
-                        New Project
-                     </span>
-                  </div>
+                  <NewProjectModal
+                     teamId={teamId}
+                  />
                   <div className="group flex items-center justify-between hover:bg-[#383838] cursor-pointer h-8 pe-3 ps-10">
                      <span className="text-[13px]">
                         Sarah new video
