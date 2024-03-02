@@ -96,18 +96,20 @@ const BottomSection = ({
    const activePathProject = activePath.replace('project/', '');
 
 
-   useEffect(()=>{ // change the url to the current first project  if team changes
-      let allProjectIds = projectsData?.projects.map((each:EachProject)=>{
+   useEffect(() => { // change the url to the current first project  if team changes
+      let allProjectIds = projectsData?.projects.map((each: EachProject) => {
          return each.id
-         
+
       }) as string[];
 
-      if(allProjectIds && !allProjectIds?.includes(activePathProject)){
+      if (activePath.includes('project') && allProjectIds && !allProjectIds?.includes(activePathProject)) {
+
          const currentId = allProjectIds[0]
-         router.push('/db/project/' + currentId) 
+         router.push('/db/project/' + currentId)
       }
-   // eslint-disable-next-line react-hooks/exhaustive-deps
-   },[projectsData])
+
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [projectsData])
 
 
    return (
@@ -152,8 +154,8 @@ const BottomSection = ({
                      )
                   })
                }
-         </ScrollArea>
-            </div>
+            </ScrollArea>
+         </div>
 
       </>
    )

@@ -6,6 +6,7 @@ import GithubProvider from "next-auth/providers/github";
 import { createMembership } from "../prisma/teamMembership/service";
 import { createUser, getUserByEmail } from "../prisma/user/service";
 import { createTeam } from "../prisma/teams/service";
+import { createProject } from "../prisma/project/service";
 
 export const options: NextAuthOptions = {
    providers: [
@@ -59,7 +60,11 @@ export const options: NextAuthOptions = {
 
             const teamName = newUser ? ((newUser.name).split(' ')[0]).toUpperCase() + "'s Team" : ''
 
-            const newTeam = await createTeam(teamName)
+            const newTeam = await createTeam(teamName);
+
+            const projectName = 'Demo Framesync Project' ;
+
+            await createProject(projectName as string , newTeam.id as string);
 
             await createMembership(newTeam?.id as string, newUser?.id as string, "OWNER");
             return true;
