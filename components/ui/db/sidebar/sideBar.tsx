@@ -138,11 +138,11 @@ const BottomSection = ({
                         <>
                            <Link href={"/db/project/" + eachProject.id}>
 
-                              <div key={index} className={`group flex items-center justify-between cursor-pointer h-8 pe-3 ps-10 ${activePathProject === eachProject.id ? "bg-[#4a5878]" : 'hover:bg-[#3c3c3c]'}`}>
-                                 <span className="text-[13px]">
+                              <div key={index} className={`group flex items-center justify-between cursor-pointer h-8 pe-5 max-w-[300px] ps-10 ${activePathProject === eachProject.id ? "bg-[#4a5878]" : 'hover:bg-[#3c3c3c]'}`}>
+                                 <span className="text-[13px] truncate w-[85%]">
                                     {eachProject.name}
                                  </span>
-                                 <div className="rounded-sm hidden hover:bg-[#444] group-hover:flex items-center justify-center h-8 w-8">
+                                 <div className="rounded-sm hidden group-hover:flex items-center justify-center h-8 w-8">
 
                                     <ThreeVerticalDotsIcon />
                                  </div>
@@ -166,7 +166,7 @@ export const SideBarComponent = () => {
    const activePath = pathName.replace('/db/', '');
    return (
       <>
-         <div className="bg-[#2c2c2c] text-white min-w-[300px] border-r-[.5px] border-[#555] py-3 flex flex-col h-screen overflow-hidden">
+         <div className="bg-[#2c2c2c] text-white min-w-[300px] w-[300px] border-r-[.5px] border-[#555] py-3 flex flex-col h-screen overflow-hidden">
             <TopSection
                activePath={activePath}
             />
