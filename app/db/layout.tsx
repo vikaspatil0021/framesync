@@ -14,7 +14,7 @@ export default async function RootLayout({
       <>
          <div className="bg-[#222] flex min-h-screen">
             <SideBarComponent />
-            <div>
+            <div className="w-full">
                {children}
             </div>
          </div>

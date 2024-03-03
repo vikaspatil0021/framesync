@@ -1,6 +1,6 @@
 "use client"
 
-import { AppsIcon, NotificationIcon, RecentIcon, SwitchTeamIcon, ThreeVerticalDotsIcon } from "@/components/icons/Icons"
+import { AppsIcon, RecentIcon, ThreeVerticalDotsIcon } from "@/components/icons/Icons"
 import { Input } from "../../input"
 import { Search } from "lucide-react"
 
@@ -84,7 +84,10 @@ const BottomSection = ({
    useEffect(() => {
 
       window.onstorage = () => {
-         setTeamId(localStorage.getItem('teamId') as string)
+         const currentTeam = localStorage.getItem('currentTeam');
+         const {id, name} = currentTeam && JSON.parse(currentTeam);
+         
+         setTeamId(id as string)
       }
    }, [])
 
@@ -128,7 +131,6 @@ const BottomSection = ({
                      teamId={teamId}
                      refetchProjectsdata={refetchProjectsdata}
                   />
-
                </div>
             </div>
 

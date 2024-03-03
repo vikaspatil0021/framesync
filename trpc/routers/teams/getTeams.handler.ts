@@ -18,8 +18,6 @@ export const getTeamsHandler = async () => {
             return 0;
         });
 
-
-
         return {
             teams
         }

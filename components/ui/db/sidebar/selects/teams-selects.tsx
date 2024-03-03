@@ -31,10 +31,14 @@ export const TeamsSelectOption = () => {
 
    useEffect(() => {
       if (![undefined, ""].includes(selectValue)) {
-         localStorage.setItem('teamId', selectValue);
+         const currentTeam = data?.teams.flatMap((eachTeam:EachTeam) => eachTeam.team.id === selectValue ? eachTeam.team : []);
+         
+         localStorage.setItem('currentTeam', JSON.stringify(currentTeam && currentTeam[0]));
+
          window.dispatchEvent(new Event('storage'))
 
       }
+   // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [selectValue])
 
 
