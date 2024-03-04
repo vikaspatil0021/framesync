@@ -155,7 +155,7 @@ export const AngleDown = () => {
    return (
       <>
 
-         <svg className="py-1" width="14px" height="15px" viewBox="0 0 7 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+         <svg height="6px" viewBox="0 0 7 5" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M0 0.708L0.708 0L3.354 2.647L6 0L6.708 0.708L3.354 4.061L0 0.708Z" fill="white" />
          </svg>
       </>

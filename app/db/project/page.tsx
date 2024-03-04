@@ -2,9 +2,9 @@
 
 import { redirect, usePathname  } from "next/navigation";
 
-export default function DB() {
+export default function Project() {
   const pathName = usePathname()
 
-  if(pathName == '/db')  return redirect('/db/recents');
-   
+  if(pathName == '/db/project')  return redirect('/db/recents');
+
 }

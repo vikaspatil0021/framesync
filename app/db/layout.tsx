@@ -3,13 +3,14 @@ import { getServerSession } from "next-auth"
 import { redirect } from "next/navigation";
 
 export default async function RootLayout({
-   children
+   children,
 }: {
-   children: React.ReactNode
+   children: React.ReactNode,
 }) {
    const session = await getServerSession();
 
-   if (!session) redirect('/auth')
+   if (!session) redirect('/auth');
+
    return (
       <>
          <div className="bg-[#222] flex min-h-screen">
