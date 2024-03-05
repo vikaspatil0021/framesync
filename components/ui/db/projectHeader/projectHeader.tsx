@@ -3,6 +3,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button } from "../../button";
 import { AngleDown, SettingIcon } from "@/components/icons/Icons";
+import { NewUploadDropDown } from "./dropdowns/newUploadDropDown";
 
 type Team = {
     id: string,
@@ -30,30 +31,28 @@ export default function ProjectHeader() {
                     {currentTeam?.name}
                 </div>
 
-                
+
                 <div className="flex items-center justify-between">
                     <div className="text-[16px] my-3 py-1">
                         {data?.project?.name}
                     </div>
                     <div>
-                        <Button size='sm' variant='default' className="gap-1 flex items-center bg-[#4a5878] hover:bg-[#536795] transition-all">
-                            New
-                            <AngleDown />
-                        </Button>
+                        <NewUploadDropDown />
+                        
                     </div>
                 </div>
 
 
                 <div className="flex items-center justify-end gap-4 py-1">
-                        <div className="text-[11px] text-[#999] text-center ">3 item, 90 MB</div>
+                    <div className="text-[11px] text-[#999] text-center ">3 item, 90 MB</div>
                     <div className="cursor-pointer flex gap-1 items-center text-[11px] text-[#cbcbcb]">
-                            Last modified
+                        Last modified
 
                         <AngleDown />
                     </div>
                     <div className="cursor-pointer">
 
-                    <SettingIcon />
+                        <SettingIcon />
                     </div>
                 </div>
             </div>
