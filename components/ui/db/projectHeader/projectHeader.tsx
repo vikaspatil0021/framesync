@@ -46,8 +46,9 @@ export default function ProjectHeader() {
                         }
                     </div>
                     <div>
-                        <NewUploadDropDown />
-
+                        <NewUploadDropDown
+                            projectId={projectId}
+                        />
                     </div>
                 </div>
 

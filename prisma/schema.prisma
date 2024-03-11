@@ -48,10 +48,25 @@ model Invite {
 }
 
 model Project {
-  id     String @id @default("")
+  id     String  @id @default("")
   name   String
   teamId String
-  team   Team   @relation(fields: [teamId], references: [id])
+  team   Team    @relation(fields: [teamId], references: [id])
+  Media  Media[]
+}
+
+model Media {
+  id        String    @id @default("")
+  key       String
+  size      Int
+  type      MediaType
+  projectId String
+  project   Project   @relation(fields: [projectId], references: [id])
+}
+
+enum MediaType {
+  VideoFile
+  Folder
 }
 
 enum AuthProvider {

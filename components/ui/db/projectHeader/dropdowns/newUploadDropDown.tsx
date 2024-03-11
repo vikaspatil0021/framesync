@@ -11,23 +11,33 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { getPreSignedUrl } from "@/lib/aws/s3/preSignedUrl";
 import { toast } from "@/components/ui/use-toast";
 
+import { trpc } from "@/trpc/client/trpcClient";
+import { getPreSignedUrl } from "@/lib/aws/s3/preSignedUrl";
 
 
-export const NewUploadDropDown = () => {
+
+export const NewUploadDropDown = ({
+    projectId
+}: {
+    projectId: string
+}) => {
 
     const [openStatus, setOpenStatus] = useState<boolean>(false);
 
+    const createMedia = trpc.media.createMedia.useMutation()
 
-    const fileInputUploadHandler = async (e: ChangeEvent<HTMLInputElement>) => {
+    
+
+    const mediaUploadHandler = async (e: ChangeEvent<HTMLInputElement>) => {
         const file = e?.target?.files?.[0];
 
         if (file) {
+            let key = nanoid(21);
 
             const url = await getPreSignedUrl({ //get the presigned url to upload
-                key: nanoid(21),
+                key,
                 contentType: 'video/mp4'
             });
 
@@ -41,17 +51,23 @@ export const NewUploadDropDown = () => {
                 body: file,
             }).then((result) => {
 
-                console.log(result.status, "video uploaded to s3");
+                console.log(result, "video uploaded to s3");
+
+                createMedia.mutate({ //after upload to  s3 create a media record in database
+                    key,
+                    projectId,
+                    size: file.size,
+                    type: "VideoFile"
+                })
 
             }).catch((err) => {
+
                 toast({
                     title: err?.message,
-                    variant:'destructive'
+                    variant: 'destructive'
                 })
             })
-
         }
-
     }
 
 
@@ -70,7 +86,7 @@ export const NewUploadDropDown = () => {
                             <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" width="12" height="12"><path fill-rule="evenodd" fill="currentColor" d="M3.75 8.81l-2.22 2.22A.75.75 0 0 1 .47 9.97l3.5-3.5a.75.75 0 0 1 1.06 0l3.5 3.5a.75.75 0 0 1-1.06 1.06L5.25 8.81v6.59a.75.75 0 1 1-1.5 0V8.81zM9 1.5H4.625c-.074 0-.125.05-.125.1v2.149L3 5.102V1.6C3 .716 3.728 0 4.625 0h5.688L16 5.6v8.8c0 .884-.728 1.6-1.625 1.6h-7v-1.5h7c.074 0 .125-.05.125-.1V7H9.75A.75.75 0 0 1 9 6.25V1.5zm1.5.79V5.5h3.26L10.5 2.29z"></path></svg>
                             File upload
                             <input type="file" className="opacity-0 absolute h-full w-full left-0 top-0" accept=".mp4"
-                                onChange={fileInputUploadHandler}
+                                onChange={mediaUploadHandler}
                             />
                         </div>
                         <div className="px-2.5 py-1.5 rounded-sm hover:bg-[#4c4c4c] flex items-center gap-2 cursor-default">
