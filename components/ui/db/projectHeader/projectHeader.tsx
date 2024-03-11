@@ -1,7 +1,5 @@
 import { trpc } from "@/trpc/client/trpcClient";
-import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Button } from "../../button";
 import { AngleDown, SettingIcon } from "@/components/icons/Icons";
 import { NewUploadDropDown } from "./dropdowns/newUploadDropDown";
 import { Skeleton } from "../../skeleton";
@@ -11,9 +9,12 @@ type Team = {
     name: string
 }
 
-export default function ProjectHeader() {
-    const pathName = usePathname()
-    const projectId = pathName.replace('/db/project/', '');
+export default function ProjectHeader({
+    projectId
+}:{
+    projectId:string
+}) {
+  
 
     const [currentTeam, setCurrentTeam] = useState<Team | null>(null)
 
