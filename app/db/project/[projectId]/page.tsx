@@ -1,9 +1,16 @@
 'use client'
-import ProjectHeader from "@/components/ui/db/projectHeader/projectHeader";
-import { trpc } from "@/trpc/client/trpcClient";
+
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 
+import { trpc } from "@/trpc/client/trpcClient";
+
+import ProjectHeader from "@/components/ui/db/projectHeader/projectHeader";
+
+
 export default function Page() {
+    const awsCdnDomain = process.env.NEXT_PUBLIC_AWS_CDN_DOMAIN + "/";
+
     const pathName = usePathname();
     const projectId = pathName.replace('/db/project/', '');
 
@@ -19,7 +26,15 @@ export default function Page() {
                     data && data.allMedia?.map((each) => {
                         return (
                             <>
-                                <video src={"https://d3c077k1fiz41j.cloudfront.net/" + each.key} className=" rounded-lg"></video>
+                                <Image
+                                
+                                    loading="lazy"
+                                    src={awsCdnDomain + each.key + ".jpg"}
+                                    width={100}
+                                    height={100}
+                                    className="rounded-lg w-full aspect-video"
+                                    alt={'media-Image'}
+                                />
                             </>
                         )
                     })
