@@ -19,16 +19,18 @@ import { getPreSignedUrl } from "@/lib/aws/s3/preSignedUrl";
 
 
 export const NewUploadDropDown = ({
-    projectId
+    projectId,
+    refetchMedia
 }: {
-    projectId: string
+    projectId: string,
+    refetchMedia: () => void
 }) => {
 
     const [openStatus, setOpenStatus] = useState<boolean>(false);
 
     const createMedia = trpc.media.createMedia.useMutation()
 
-    
+
 
     const mediaUploadHandler = async (e: ChangeEvent<HTMLInputElement>) => {
         const file = e?.target?.files?.[0];
@@ -51,14 +53,18 @@ export const NewUploadDropDown = ({
                 body: file,
             }).then((result) => {
 
-                console.log(result, "video uploaded to s3");
-
                 createMedia.mutate({ //after upload to  s3 create a media record in database
                     key,
                     projectId,
                     size: file.size,
                     type: "VideoFile"
-                })
+                });
+
+                if (result.ok) {
+                    setTimeout(() => {
+                        refetchMedia()
+                    }, 10000);
+                }
 
             }).catch((err) => {
 

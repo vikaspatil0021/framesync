@@ -1,8 +1,12 @@
-import { trpc } from "@/trpc/client/trpcClient";
 import { useEffect, useState } from "react";
+import { trpc } from "@/trpc/client/trpcClient";
+
 import { AngleDown, SettingIcon } from "@/components/icons/Icons";
 import { NewUploadDropDown } from "./dropdowns/newUploadDropDown";
 import { Skeleton } from "../../skeleton";
+
+import convertBytes from "@/lib/convertBytesFunction";
+
 
 type Team = {
     id: string,
@@ -10,11 +14,17 @@ type Team = {
 }
 
 export default function ProjectHeader({
-    projectId
-}:{
-    projectId:string
+    projectId,
+    totalItems,
+    totalMediaSize,
+    refetchMedia
+}: {
+    projectId: string,
+    totalItems: number,
+    totalMediaSize: number,
+    refetchMedia: () => void
 }) {
-  
+
 
     const [currentTeam, setCurrentTeam] = useState<Team | null>(null)
 
@@ -28,7 +38,7 @@ export default function ProjectHeader({
 
     return (
         <>
-            <div className="py-5 px-10 text-[#f2f2f2]">
+            <div className="p-5 text-[#f2f2f2]">
                 <div className="text-[12px] text-[#999]">
                     {
                         currentTeam ?
@@ -38,7 +48,7 @@ export default function ProjectHeader({
                 </div>
 
 
-                <div className="flex items-center justify-between  my-3">
+                <div className="flex items-center justify-between  mt-3">
                     <div className="text-[16px] py-1">
                         {
                             data ?
@@ -49,13 +59,19 @@ export default function ProjectHeader({
                     <div>
                         <NewUploadDropDown
                             projectId={projectId}
+                            refetchMedia={refetchMedia}
                         />
                     </div>
                 </div>
-
-
-                <div className="flex items-center justify-end gap-4 py-1">
-                    <div className="text-[11px] text-[#999] text-center ">3 item, 90 MB</div>
+                <div className="flex items-center justify-end gap-4 pt-5">
+                    <div className="text-[11px] text-[#999] text-center ">
+                        {
+                            totalItems && totalMediaSize ?
+                                totalItems + " items, " + convertBytes(totalMediaSize)
+                                :
+                                '0 items, 0 bytes'
+                        }
+                    </div>
                     <div className="cursor-pointer flex gap-1 items-center text-[11px] text-[#cbcbcb]">
                         Last modified
 

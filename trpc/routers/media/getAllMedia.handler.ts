@@ -11,8 +11,15 @@ export const getAllMediaHandler = async ({
     try {
         const allMedia = await getAllMediaByProjectId(projectId as string)
 
+        allMedia.reverse();
+        let totalMediaSize = 0;
+        allMedia.map((each) => {
+            totalMediaSize += each.size
+        })
         return {
-            allMedia
+            allMedia,
+            totalMediaSize,
+            totalItems: allMedia.length
         }
 
     } catch (error: any) {
