@@ -58,6 +58,7 @@ model Project {
 model Media {
   id        String    @id @default("")
   key       String
+  name      String
   size      Int
   type      MediaType
   projectId String

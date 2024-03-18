@@ -7,7 +7,15 @@ import { trpc } from "@/trpc/client/trpcClient";
 import { Skeleton } from "../../skeleton";
 
 import ProjectHeader from "../projectHeader/projectHeader";
+import ImageComponent from "./imageComponent.tsx/imageComponent";
 
+type Media = {
+    id: String
+    key: String
+    size: number
+    type: "VideoFile" | "Folder"
+    projectId: String
+}
 
 
 export default function ProjectsContainer({
@@ -16,10 +24,8 @@ export default function ProjectsContainer({
     projectId: string
 }) {
 
-    const awsCdnDomain = process.env.NEXT_PUBLIC_AWS_CDN_DOMAIN + "/";
 
     const { data, refetch: refetchMedia } = trpc.media.getAllMedia.useQuery({ projectId });
-
 
 
     return (
@@ -30,26 +36,20 @@ export default function ProjectsContainer({
                 totalMediaSize={data?.totalMediaSize as number}
                 refetchMedia={refetchMedia}
             />
+
             <div className="px-5 pb-5">
 
 
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
 
                     {
-                        data ? data.allMedia?.map((each) => {
+                        data ? data.allMedia?.map((each: Media) => {
+
                             return (
                                 <>
-                                    <div>
-                                        <Image
-                                            key={each.id}
-                                            loading="eager"
-                                            src={awsCdnDomain + each.key + ".jpg"}
-                                            width={100}
-                                            height={100}
-                                            className="rounded-lg w-full aspect-video"
-                                            alt={'media-Image'}
-                                        />
-                                    </div>
+                                    <ImageComponent
+                                        each={each}
+                                    />
                                 </>
                             )
                         })

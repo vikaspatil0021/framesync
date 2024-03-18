@@ -9,11 +9,12 @@ import {
    SelectValue,
 } from "@/components/ui/select"
 import { useEffect, useState } from "react"
+import { Skeleton } from "@/components/ui/skeleton";
 
 type EachTeam = {
    team: {
-       id: string;
-       name: string;
+      id: string;
+      name: string;
    };
    id: string;
    role: "OWNER" | "MEMBER"
@@ -26,48 +27,56 @@ export const TeamsSelectOption = () => {
    const { data } = trpc.teams.getTeams.useQuery()
 
    useEffect(() => {
-      setSelectValue(data?.teams[0].team.id as string)
+      setSelectValue(data?.teams[0]?.team?.id as string)
    }, [data])
 
    useEffect(() => {
       if (![undefined, ""].includes(selectValue)) {
-         const currentTeam = data?.teams.flatMap((eachTeam:EachTeam) => eachTeam.team.id === selectValue ? eachTeam.team : []);
-         
+         const currentTeam = data?.teams.flatMap((eachTeam: EachTeam) => eachTeam.team.id === selectValue ? eachTeam.team : []);
+
          localStorage.setItem('currentTeam', JSON.stringify(currentTeam && currentTeam[0]));
 
          window.dispatchEvent(new Event('storage'))
 
       }
-   // eslint-disable-next-line react-hooks/exhaustive-deps
+      // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [selectValue])
 
 
    return (
       <>
-         <Select value={selectValue} onValueChange={setSelectValue}>
-            <SelectTrigger className="flex-auto w-[180px] bg-[#3c3c3c] text-white border-none focus:ring-offset-0 focus:ring-0">
-               <SelectValue placeholder="Select a Team" />
-            </SelectTrigger>
-            <SelectContent className="bg-[#222] text-white border-white/10 ">
-               <SelectGroup>
-                  {
-                     data?.teams?.map((eachTeam:EachTeam) => {
-                        return (
-                           <>
-                              <SelectItem value={eachTeam.team.id} key={'key' + eachTeam.team.id}>
-                                 <div className="flex gap-2">
-                                    <div className="h-5 w-5 rounded-full bg-green-400" />
-                                    <span className="text-[12px] text-center m-auto">{eachTeam.team.name}</span>
-                                 </div>
-                              </SelectItem>
-                           </>
-                        )
-                     })
-                  }
+         {
+            !data ?
+               <div className="flex-auto ">
+                  <Skeleton className="w-full h-9 bg-[#555]" />
+               </div>
+               :
 
-               </SelectGroup>
-            </SelectContent>
-         </Select>
+               <Select value={selectValue} onValueChange={setSelectValue}>
+                  <SelectTrigger className="flex-auto w-[180px] bg-[#3c3c3c] text-white border-none focus:ring-offset-0 focus:ring-0">
+                     <SelectValue placeholder="Select a Team" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-[#222] text-white border-white/10 ">
+                     <SelectGroup>
+                        {
+                           data?.teams?.map((eachTeam: EachTeam) => {
+                              return (
+                                 <>
+                                    <SelectItem value={eachTeam.team.id} key={'key' + eachTeam.team.id}>
+                                       <div className="flex gap-2">
+                                          <div className="h-5 w-5 rounded-full bg-green-400" />
+                                          <span className="text-[12px] text-center m-auto">{eachTeam.team.name}</span>
+                                       </div>
+                                    </SelectItem>
+                                 </>
+                              )
+                           })
+                        }
+
+                     </SelectGroup>
+                  </SelectContent>
+               </Select>
+         }
       </>
    )
 }

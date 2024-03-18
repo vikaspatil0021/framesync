@@ -34,7 +34,7 @@ export const NewUploadDropDown = ({
 
     const mediaUploadHandler = async (e: ChangeEvent<HTMLInputElement>) => {
         const file = e?.target?.files?.[0];
-
+        console.log(file)
         if (file) {
             let key = nanoid(21);
 

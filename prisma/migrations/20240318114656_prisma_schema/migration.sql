@@ -1,4 +1,7 @@
 -- CreateEnum
+CREATE TYPE "MediaType" AS ENUM ('VideoFile', 'Folder');
+
+-- CreateEnum
 CREATE TYPE "AuthProvider" AS ENUM ('Google', 'Github');
 
 -- CreateEnum
@@ -54,6 +57,18 @@ CREATE TABLE "Project" (
     CONSTRAINT "Project_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "Media" (
+    "id" TEXT NOT NULL DEFAULT '',
+    "key" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "size" INTEGER NOT NULL,
+    "type" "MediaType" NOT NULL,
+    "projectId" TEXT NOT NULL,
+
+    CONSTRAINT "Media_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
@@ -74,3 +89,6 @@ ALTER TABLE "Invite" ADD CONSTRAINT "Invite_teamId_fkey" FOREIGN KEY ("teamId") 
 
 -- AddForeignKey
 ALTER TABLE "Project" ADD CONSTRAINT "Project_teamId_fkey" FOREIGN KEY ("teamId") REFERENCES "Team"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Media" ADD CONSTRAINT "Media_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

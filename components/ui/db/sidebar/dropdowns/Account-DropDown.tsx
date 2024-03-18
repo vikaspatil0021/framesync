@@ -5,6 +5,7 @@ import {
    DropdownMenuContent,
    DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { Skeleton } from "@/components/ui/skeleton";
 import { signOut, useSession } from "next-auth/react";
 import { useState } from "react";
 
@@ -22,7 +23,13 @@ export const AccountDropDown = () => {
                <div className={`inline-flex items-center gap-2 cursor-pointer pl-2 py-1.5 pr-3 hover:bg-[#383838]  rounded-sm ${openStatus && 'bg-[#383838]'}`}>
 
                   <div className="h-6 w-6 rounded-full bg-green-400" />
-                  <span className="text-[13px]">{session && session.data?.user?.name}</span>
+                  {
+                     session.data ?
+                        <span className="text-[13px]">
+                           {session.data?.user?.name}
+                        </span>
+                        : <Skeleton className="w-[100px] h-4 bg-[#555]" />
+                  }
                   <AngleDown />
                </div>
             </DropdownMenuTrigger>

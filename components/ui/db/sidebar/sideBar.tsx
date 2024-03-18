@@ -17,6 +17,7 @@ import { NewProjectModal } from "./dialogs/newProjectModal/newProjectModal"
 import { useEffect, useState } from "react"
 import { trpc } from "@/trpc/client/trpcClient"
 import { ScrollArea } from "../../scroll-area"
+import { Skeleton } from "../../skeleton"
 
 
 
@@ -85,8 +86,8 @@ const BottomSection = ({
 
       window.onstorage = () => {
          const currentTeam = localStorage.getItem('currentTeam');
-         const {id, name} = currentTeam && JSON.parse(currentTeam);
-         
+         const { id, name } = currentTeam && JSON.parse(currentTeam);
+
          setTeamId(id as string)
       }
    }, [])
@@ -137,24 +138,35 @@ const BottomSection = ({
             <ScrollArea className="flex-1">
 
                {
-                  projectsData?.projects.map((eachProject: EachProject, index) => {
-                     return (
-                        <>
-                           <Link href={"/db/project/" + eachProject.id}>
+                  projectsData?.projects ?
+                     projectsData?.projects.map((eachProject: EachProject, index) => {
+                        return (
+                           <>
+                              <Link href={"/db/project/" + eachProject.id}>
 
-                              <div key={index} className={`group flex items-center justify-between cursor-pointer h-8 pe-5 max-w-[300px] ps-10 ${activePathProject === eachProject.id ? "bg-[#4a5878]" : 'hover:bg-[#3c3c3c]'}`}>
-                                 <span className="text-[13px] truncate w-[85%]">
-                                    {eachProject.name}
-                                 </span>
-                                 <div className="rounded-sm hidden group-hover:flex items-center justify-center h-8 w-8">
+                                 <div key={index} className={`group flex items-center justify-between cursor-pointer h-8 pe-5 max-w-[300px] ps-10 ${activePathProject === eachProject.id ? "bg-[#4a5878]" : 'hover:bg-[#3c3c3c]'}`}>
+                                    <span className="text-[13px] truncate w-[85%]">
+                                       {eachProject.name}
+                                    </span>
+                                    <div className="rounded-sm hidden group-hover:flex items-center justify-center h-8 w-8">
 
-                                    <ThreeVerticalDotsIcon />
+                                       <ThreeVerticalDotsIcon />
+                                    </div>
                                  </div>
-                              </div>
-                           </Link>
-                        </>
-                     )
-                  })
+                              </Link>
+                           </>
+                        )
+                     })
+                     :
+                     <>
+                        <div className='flex items-center justify-between cursor-pointer h-8 pe-5 max-w-[300px] ps-10'>
+                           <Skeleton className="bg-[#444] h-4 w-[50%]" />
+                        </div>
+                        <div className='flex items-center justify-between cursor-pointer h-8 pe-5 max-w-[300px] ps-10'>
+                           <Skeleton className="bg-[#444] h-4 w-[60%]" />
+                        </div>
+
+                     </>
                }
             </ScrollArea>
          </div>
