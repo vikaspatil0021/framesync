@@ -1,5 +1,8 @@
-import { useState } from "react";
 import type { ChangeEvent } from "react"
+
+import { useState } from "react";
+
+import axios from 'axios';
 
 import { nanoid } from "nanoid";
 
@@ -10,11 +13,11 @@ import {
     DropdownMenuContent,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
 import { toast } from "@/components/ui/use-toast";
 
 import { trpc } from "@/trpc/client/trpcClient";
 import { getPreSignedUrl } from "@/lib/aws/s3/preSignedUrl";
+import getVideoDuration from "@/lib/getVideoDuration";
 
 
 
@@ -30,11 +33,11 @@ export const NewUploadDropDown = ({
 
     const createMedia = trpc.media.createMedia.useMutation()
 
-
-
     const mediaUploadHandler = async (e: ChangeEvent<HTMLInputElement>) => {
         const file = e?.target?.files?.[0];
-        console.log(file)
+
+        const fileDuration = await getVideoDuration(file);
+
         if (file) {
             let key = nanoid(21);
 
@@ -45,26 +48,30 @@ export const NewUploadDropDown = ({
 
             setOpenStatus(false);
 
-            await fetch(url, { //upload to s3
-                method: 'PUT',
+
+            await axios.put(url, file, {
                 headers: {
-                    'Content-type': 'video/mp4',
+                    "Content-Type": 'video/mp4'
                 },
-                body: file,
+                onUploadProgress: (e) => {
+                    let number = e.progress as number;
+                    localStorage.setItem('uploadProgress', JSON.stringify(Math.floor(number * 100)))
+                }
             }).then((result) => {
+
 
                 createMedia.mutate({ //after upload to  s3 create a media record in database
                     key,
                     projectId,
+                    name: file.name,
+                    duration: fileDuration as number,
                     size: file.size,
                     type: "VideoFile"
                 });
 
-                if (result.ok) {
-                    setTimeout(() => {
-                        refetchMedia()
-                    }, 10000);
-                }
+                setTimeout(() => {
+                    refetchMedia()
+                }, 10000);
 
             }).catch((err) => {
 

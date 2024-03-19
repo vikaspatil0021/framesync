@@ -136,7 +136,6 @@ const BottomSection = ({
             </div>
 
             <ScrollArea className="flex-1">
-
                {
                   projectsData?.projects ?
                      projectsData?.projects.map((eachProject: EachProject, index) => {
@@ -165,7 +164,6 @@ const BottomSection = ({
                         <div className='flex items-center justify-between cursor-pointer h-8 pe-5 max-w-[300px] ps-10'>
                            <Skeleton className="bg-[#444] h-4 w-[60%]" />
                         </div>
-
                      </>
                }
             </ScrollArea>

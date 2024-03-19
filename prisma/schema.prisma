@@ -60,6 +60,7 @@ model Media {
   key       String
   name      String
   size      Int
+  duration  Float
   type      MediaType
   projectId String
   project   Project   @relation(fields: [projectId], references: [id])

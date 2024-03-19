@@ -63,6 +63,7 @@ CREATE TABLE "Media" (
     "key" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "size" INTEGER NOT NULL,
+    "duration" DOUBLE PRECISION NOT NULL,
     "type" "MediaType" NOT NULL,
     "projectId" TEXT NOT NULL,
 

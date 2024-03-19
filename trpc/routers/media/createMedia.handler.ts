@@ -8,19 +8,23 @@ export const createMediaHandler = async ({
     key,
     projectId,
     type,
-    size
+    size,
+    name,
+    duration
 }: {
     key: string,
     projectId: string
     size: number,
-    type: MediaType
+    type: MediaType,
+    name: string,
+    duration: number
 }) => {
 
 
     try {
 
 
-        const media = await createMedia(key, projectId, size, type);
+        const media = await createMedia(key, projectId, size, type, name, duration);
 
         return {
             media

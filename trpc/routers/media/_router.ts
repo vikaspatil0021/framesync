@@ -13,7 +13,9 @@ export const mediaRouter = router({
             key: z.string(),
             projectId: z.string(),
             size: z.number(),
-            type: z.enum(["VideoFile", "Folder"])
+            type: z.enum(["VideoFile", "Folder"]),
+            name: z.string(),
+            duration: z.number()
         }))
         .mutation(({ input }) => createMediaHandler({ ...input })),
 
