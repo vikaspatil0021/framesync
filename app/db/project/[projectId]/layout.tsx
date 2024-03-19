@@ -1,5 +1,5 @@
 import { getProjectByIdHandler } from "@/trpc/routers/project/getProject.handler";
-import { Metadata, ResolvingMetadata } from "next"
+import { Metadata } from "next"
 
 type Props = {
     params: { projectId: string }
