@@ -1,5 +1,10 @@
 import { trpc } from "@/trpc/client/trpcClient"
 
+import { useEffect, useState } from "react"
+
+import { useAppDispatch } from "@/lib/redux-toolkit/hook";
+import { updateTeam } from "@/lib/redux-toolkit/slices/currentTeamSlice";
+
 import {
    Select,
    SelectContent,
@@ -8,8 +13,8 @@ import {
    SelectTrigger,
    SelectValue,
 } from "@/components/ui/select"
-import { useEffect, useState } from "react"
 import { Skeleton } from "@/components/ui/skeleton";
+
 
 type EachTeam = {
    team: {
@@ -21,22 +26,26 @@ type EachTeam = {
 }
 
 export const TeamsSelectOption = () => {
+   const dispatch = useAppDispatch();
 
    const [selectValue, setSelectValue] = useState<string>('')
 
    const { data } = trpc.teams.getTeams.useQuery()
 
+
    useEffect(() => {
-      setSelectValue(data?.teams[0]?.team?.id as string)
-   }, [data])
+      const team = data?.teams[0]?.team;
+
+      setSelectValue(team?.id as string);
+
+   }, [data, dispatch])
+
 
    useEffect(() => {
       if (![undefined, ""].includes(selectValue)) {
          const currentTeam = data?.teams.flatMap((eachTeam: EachTeam) => eachTeam.team.id === selectValue ? eachTeam.team : []);
 
-         localStorage.setItem('currentTeam', JSON.stringify(currentTeam && currentTeam[0]));
-
-         window.dispatchEvent(new Event('storage'))
+         dispatch(updateTeam(currentTeam?.[0]));
 
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps

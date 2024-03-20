@@ -8,6 +8,8 @@ import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 
 import { cn } from "@/lib/utils"
+import { trpc } from "@/trpc/client/trpcClient"
+import { useAppSelector } from "@/lib/redux-toolkit/hook"
 
 import { AccountDropDown } from "./dropdowns/Account-DropDown"
 import { NotificationDropDown } from "./dropdowns/Notification-DropDown"
@@ -15,9 +17,9 @@ import { ManageMembersModal } from "./dialogs/membersModal/membersModal"
 import { TeamsSelectOption } from "./selects/teams-selects"
 import { NewProjectModal } from "./dialogs/newProjectModal/newProjectModal"
 import { useEffect, useState } from "react"
-import { trpc } from "@/trpc/client/trpcClient"
 import { ScrollArea } from "../../scroll-area"
 import { Skeleton } from "../../skeleton"
+
 
 
 
@@ -79,20 +81,10 @@ const BottomSection = ({
 }) => {
    const router = useRouter();
 
+   const { currentTeam } = useAppSelector((state) => state.currentTeam);
 
-   const [teamId, setTeamId] = useState('');
 
-   useEffect(() => {
-
-      window.onstorage = () => {
-         const currentTeam = localStorage.getItem('currentTeam');
-         const { id, name } = currentTeam && JSON.parse(currentTeam);
-
-         setTeamId(id as string)
-      }
-   }, [])
-
-   const { data: projectsData, refetch: refetchProjects } = trpc.project.getProjects.useQuery({ teamId });
+   const { data: projectsData, refetch: refetchProjects } = trpc.project.getProjects.useQuery({ teamId: currentTeam?.id });
 
    const refetchProjectsdata = () => refetchProjects();
 
@@ -122,14 +114,14 @@ const BottomSection = ({
             <div className="flex gap-2 m-3">
                <TeamsSelectOption />
                <ManageMembersModal
-                  teamId={teamId}
+                  teamId={currentTeam?.id}
                />
             </div>
             <div className="pt-2">
                <div className="px-3 text-[11px]">Projects</div>
                <div className="mt-2 font-normal text-[#ccc]">
                   <NewProjectModal
-                     teamId={teamId}
+                     teamId={currentTeam?.id}
                      refetchProjectsdata={refetchProjectsdata}
                   />
                </div>
@@ -138,7 +130,7 @@ const BottomSection = ({
             <ScrollArea className="flex-1">
                {
                   projectsData?.projects ?
-                     projectsData?.projects.map((eachProject: EachProject, index) => {
+                     projectsData?.projects.map((eachProject: EachProject, index:number) => {
                         return (
                            <>
                               <Link href={"/db/project/" + eachProject.id}>
