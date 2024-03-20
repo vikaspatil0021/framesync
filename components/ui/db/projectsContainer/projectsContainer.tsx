@@ -40,8 +40,7 @@ export default function ProjectsContainer({
             <div className="px-5 pb-5">
 
 
-                <div id='grid' className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
-
+                <div id='grid' className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-3">
                     {
                         data ? data.allMedia?.map((each: Media, index: number) => {
 

@@ -30,7 +30,7 @@ export default function ImageComponent({
 
     return (
         <>
-            <div className="relative text-[#c7c6c6]">
+            <div className="relative rounded-lg text-[#c7c6c6] shadow-md shadow-[#111]">
                 <div className="relative">
                     
                     <Image
@@ -54,7 +54,7 @@ export default function ImageComponent({
                     </span>
                 </div>
 
-                <div className="flex justify-between text-[10px] bg-[#3c3c3c] rounded-b-lg p-2">
+                <div className="flex justify-between text-[10px] bg-[#333] rounded-b-lg p-2">
                     <span className="truncate w-[70%]">
                         {each?.name}
                     </span>

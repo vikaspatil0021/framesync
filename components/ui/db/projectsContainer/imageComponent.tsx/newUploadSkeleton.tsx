@@ -7,9 +7,9 @@ export default function NewuploadSkelton({
 
     return (
         <>
-            <div className="rounded-lg w-full h-full aspect-video bg-[#555] text-[#fff] flex justify-center items-center">
+            <div className="rounded-lg w-full h-full aspect-video bg-[#555] text-[#fff] shadow-md shadow-[#111] flex justify-center items-center">
                {
-                progress && 0
+                progress
                }
             </div>
         </>
