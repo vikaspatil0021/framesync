@@ -33,12 +33,16 @@ export default async function Invite({
       const isInviteExpired = new Date(invite?.expiresAt) < new Date();
 
       if (!invite || isInviteExpired) {
+
          return <ExpiredContent />
       } else if (!currentUser) {
+
          return <NotLoggedInContent />
       } else if (currentUser.user?.email !== email) {
+
          return <WrongAccountContent />
       } else {
+         
          await deleteInvite(invite.id as string)
 
          //@ts-expect-error

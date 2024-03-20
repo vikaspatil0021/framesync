@@ -113,9 +113,7 @@ const BottomSection = ({
          <div className="flex flex-col flex-1 overflow-y-auto">
             <div className="flex gap-2 m-3">
                <TeamsSelectOption />
-               <ManageMembersModal
-                  teamId={currentTeam?.id}
-               />
+               <ManageMembersModal />
             </div>
             <div className="pt-2">
                <div className="px-3 text-[11px]">Projects</div>

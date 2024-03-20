@@ -9,7 +9,6 @@ export default function Page() {
 
     const pathName = usePathname();
     const projectId = pathName.replace('/db/project/', '');
-
     return (
         <>
             <ProjectsContainer

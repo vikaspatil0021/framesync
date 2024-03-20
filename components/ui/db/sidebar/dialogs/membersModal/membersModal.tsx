@@ -1,6 +1,5 @@
 "use client"
 import { useSession } from "next-auth/react"
-import { useEffect, useState } from "react"
 /* eslint-disable react/no-unescaped-entities */
 import {
    Dialog,
@@ -18,6 +17,7 @@ import InviteInput from "./inviteInput"
 import { InvitationTabContent, MembersTabContent } from "./tabsContent"
 import { trpc } from "@/trpc/client/trpcClient"
 import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query"
+import { useAppSelector } from "@/lib/redux-toolkit/hook"
 
 type Refetch = (options?: RefetchOptions) => Promise<QueryObserverResult<unknown, Error>>
 
@@ -39,18 +39,14 @@ type EachInvite = {
    email: string,
    id: string
 }
-export const ManageMembersModal = ({
-   teamId
-}:{
-   teamId:string
-}) => {
+export const ManageMembersModal = () => {
    const session = useSession();
    const currentUser = session && session.data?.user as Session;
 
+   const { currentTeam } = useAppSelector((state) => state.currentTeam);
 
-
-   const { data: invitesData, isFetching: invitesDataLoading, refetch: refetchInvites } = trpc.invite.getInvites.useQuery({ teamId });
-   const { data: membersData, refetch: refetchMembers } = trpc.memberships.getMembership.useQuery({ teamId })
+   const { data: invitesData, isFetching: invitesDataLoading, refetch: refetchInvites } = trpc.invite.getInvites.useQuery({ teamId: currentTeam.id });
+   const { data: membersData, refetch: refetchMembers } = trpc.memberships.getMembership.useQuery({ teamId: currentTeam.id })
 
 
    const refetchLatestData = (type: string) => {
@@ -91,7 +87,7 @@ export const ManageMembersModal = ({
 
                {isCurrentUserOwner &&
                   <InviteInput
-                     teamId={teamId}
+                     teamId={currentTeam.id}
                      refetchInvites={refetchInvites as Refetch}
                   />
                }

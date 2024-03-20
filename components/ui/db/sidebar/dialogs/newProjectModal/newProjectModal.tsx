@@ -1,4 +1,7 @@
+import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
+
+import {  useRouter } from "next/navigation";
 
 import {
     Dialog,
@@ -11,11 +14,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-
-import { Plus } from "lucide-react";
-import { trpc } from "@/trpc/client/trpcClient";
 import { toast } from "@/components/ui/use-toast";
-import {  useRouter } from "next/navigation";
+
+import { trpc } from "@/trpc/client/trpcClient";
 
 
 export const NewProjectModal = ({
@@ -100,7 +101,7 @@ export const NewProjectModal = ({
                             className="w-full"
                             loading={isLoading}
                             onClick={() => {
-                                createProject.mutate({ name: projectName as string, teamId: teamId as string });
+                                createProject.mutate({ name: projectName as string, teamId });
                             }}
                         >
                             Create Project

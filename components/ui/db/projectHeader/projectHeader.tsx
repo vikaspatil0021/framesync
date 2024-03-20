@@ -6,6 +6,7 @@ import { NewUploadDropDown } from "./dropdowns/newUploadDropDown";
 import { Skeleton } from "../../skeleton";
 
 import convertBytes from "@/lib/convertBytesFunction";
+import { useAppSelector } from "@/lib/redux-toolkit/hook";
 
 
 type Team = {
@@ -26,12 +27,8 @@ export default function ProjectHeader({
 }) {
 
 
-    const [currentTeam, setCurrentTeam] = useState<Team | null>(null)
+    const { currentTeam } = useAppSelector((state) => state.currentTeam);
 
-    useEffect(() => {
-        const team = localStorage.getItem('currentTeam');
-        setCurrentTeam(JSON.parse(team as string));
-    }, []);
 
     const { data } = trpc.project.getProject.useQuery({ projectId })
 
@@ -41,7 +38,7 @@ export default function ProjectHeader({
             <div className="p-5 text-[#f2f2f2]">
                 <div className="text-[12px] text-[#999]">
                     {
-                        currentTeam ?
+                        currentTeam?.name ?
                             currentTeam?.name :
                             <Skeleton className="h-[18px] w-[150px] bg-[#333]" />
                     }

@@ -30,7 +30,7 @@ export default function ImageComponent({
 
     return (
         <>
-            <div className="relative rounded-lg text-[#c7c6c6] shadow-md shadow-[#111]">
+            <div className="relative rounded-lg text-[#c7c6c6] shadow-md shadow-[#111] cursor-pointer">
                 <div className="relative">
                     
                     <Image

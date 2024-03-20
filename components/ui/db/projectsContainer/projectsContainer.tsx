@@ -2,10 +2,12 @@
 
 import { trpc } from "@/trpc/client/trpcClient";
 
+import { motion } from "framer-motion";
+
 import { Skeleton } from "../../skeleton";
 import ProjectHeader from "../projectHeader/projectHeader";
 import ImageComponent from "./imageComponent.tsx/imageComponent";
-import NewuploadSkelton from "./imageComponent.tsx/newUploadSkeleton";
+
 
 type Media = {
     id: String
@@ -40,16 +42,22 @@ export default function ProjectsContainer({
             <div className="px-5 pb-5">
 
 
-                <div id='grid' className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-3">
+                <div id='grid' className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-3">
                     {
                         data ? data.allMedia?.map((each: Media, index: number) => {
 
                             return (
                                 <>
-                                    <ImageComponent
-                                        each={each}
-                                        index={index}
-                                    />
+                                    <motion.div
+                                        initial={{ opacity: 0, scale: 0.99 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        transition={{ duration: 0.5 }}
+                                    >
+                                        <ImageComponent
+                                            each={each}
+                                            index={index}
+                                        />
+                                    </motion.div>
                                 </>
                             )
                         })
