@@ -81,16 +81,14 @@ export const NewUploadDropDown = ({
                 });
 
 
-                setTimeout(() => {
-                    refetchMedia()
+                refetchMedia()
 
-                    dispatch(updateProgress({
-                        uploadProgress: 0,
-                        name: '',
-                        size: 0,
-                        stage: 'none'
-                    }))
-                }, 10000);
+                dispatch(updateProgress({
+                    uploadProgress: 0,
+                    name: '',
+                    size: 0,
+                    stage: 'none'
+                }))
 
             }).catch((err) => {
 
