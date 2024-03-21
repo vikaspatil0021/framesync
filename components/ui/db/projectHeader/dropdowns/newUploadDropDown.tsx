@@ -18,6 +18,8 @@ import { toast } from "@/components/ui/use-toast";
 import { trpc } from "@/trpc/client/trpcClient";
 import { getPreSignedUrl } from "@/lib/aws/s3/preSignedUrl";
 import getVideoDuration from "@/lib/getVideoDuration";
+import { useAppDispatch } from "@/lib/redux-toolkit/hook";
+import { updateProgress } from "@/lib/redux-toolkit/slices/uploadProgress";
 
 
 
@@ -28,6 +30,7 @@ export const NewUploadDropDown = ({
     projectId: string,
     refetchMedia: () => void
 }) => {
+    const dispatch = useAppDispatch();
 
     const [openStatus, setOpenStatus] = useState<boolean>(false);
 
@@ -55,7 +58,15 @@ export const NewUploadDropDown = ({
                 },
                 onUploadProgress: (e) => {
                     let number = e.progress as number;
-                    localStorage.setItem('uploadProgress', JSON.stringify(Math.floor(number * 100)))
+                    let uploadProgress = Math.floor(number * 100) as number;
+
+                    dispatch(updateProgress({
+                        uploadProgress,
+                        name: file.name,
+                        size: file.size,
+                        stage: (uploadProgress == 100) ? 'processing' : 'uploading'
+                    }))
+
                 }
             }).then((result) => {
 
@@ -69,8 +80,16 @@ export const NewUploadDropDown = ({
                     type: "VideoFile"
                 });
 
+
                 setTimeout(() => {
                     refetchMedia()
+
+                    dispatch(updateProgress({
+                        uploadProgress: 0,
+                        name: '',
+                        size: 0,
+                        stage: 'none'
+                    }))
                 }, 10000);
 
             }).catch((err) => {

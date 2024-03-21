@@ -21,4 +21,3 @@ export const { updateTeam } = currentTeamSlice.actions;
 
 export default currentTeamSlice.reducer;
 
-export type CurrentTeam = typeof initialState
