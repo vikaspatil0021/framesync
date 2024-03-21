@@ -32,10 +32,7 @@ export default function ImageComponent({
 
     const awsCdnImgDomain = process.env.NEXT_PUBLIC_AWS_CDN_DOMAIN + "/" + each.key + ".jpg";
 
-    useEffect(() => {
-        const res = axios.get(awsCdnImgDomain);
-        console.log(res)
-    }, [])
+ 
     return (
         <>
             <div className="relative rounded-lg text-[#c7c6c6] shadow-md shadow-[#111] cursor-pointer">
