@@ -38,7 +38,7 @@ export const TeamsSelectOption = () => {
 
       setSelectValue(team?.id as string);
 
-   }, [data, dispatch])
+   }, [data])
 
 
    useEffect(() => {

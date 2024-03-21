@@ -5,6 +5,7 @@ const initialState = {
         uploadProgress: 0,
         name: '',
         size: 0,
+        key:'',
         stage:'none'
     }
 }

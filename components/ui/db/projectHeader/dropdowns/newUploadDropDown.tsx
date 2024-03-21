@@ -64,6 +64,7 @@ export const NewUploadDropDown = ({
                         uploadProgress,
                         name: file.name,
                         size: file.size,
+                        key,
                         stage: (uploadProgress == 100) ? 'processing' : 'uploading'
                     }))
 
@@ -78,17 +79,14 @@ export const NewUploadDropDown = ({
                     duration: fileDuration as number,
                     size: file.size,
                     type: "VideoFile"
-                });
+                })
+                console.log(createMedia.data)
 
 
-                refetchMedia()
+                setTimeout(() => {
 
-                dispatch(updateProgress({
-                    uploadProgress: 0,
-                    name: '',
-                    size: 0,
-                    stage: 'none'
-                }))
+                    refetchMedia()
+                }, 1000);
 
             }).catch((err) => {
 

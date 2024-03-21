@@ -1,9 +1,9 @@
 import Image from "next/image"
-import { useEffect, useState } from "react"
 
 import convertBytes from "@/lib/convertBytesFunction"
 import formatTime from "@/lib/formatTime"
-import axios from "axios"
+
+import { useAppSelector } from "@/lib/redux-toolkit/hook"
 
 
 type Media = {
@@ -18,7 +18,6 @@ type Media = {
 
 
 
-
 export default function ImageComponent({
     each,
     index
@@ -27,19 +26,17 @@ export default function ImageComponent({
     index: number
 }) {
 
-    const [keyy, setKey] = useState(Math.random() + index)
-
-
     const awsCdnImgDomain = process.env.NEXT_PUBLIC_AWS_CDN_DOMAIN + "/" + each.key + ".jpg";
 
- 
+    const { uploadStatus: { key: newUploadedVideoKey, stage } } = useAppSelector((state) => state.uploadProgress);
+
+
     return (
         <>
             <div className="relative rounded-lg text-[#c7c6c6] shadow-md shadow-[#111] cursor-pointer">
                 <div className="relative">
-
                     <Image
-                        key={keyy}
+                        key={index}
                         loading="lazy"
                         src={awsCdnImgDomain}
                         width={100}
@@ -47,11 +44,6 @@ export default function ImageComponent({
                         className="rounded-t-lg w-full aspect-video"
                         alt='media-Image'
                         unoptimized
-                        onError={(e) => {
-                            setTimeout(() => {
-                                setKey(Math.random() + index)
-                            }, 3000);
-                        }}
 
                     />
 
