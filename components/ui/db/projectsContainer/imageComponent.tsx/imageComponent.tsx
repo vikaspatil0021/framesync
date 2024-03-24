@@ -28,8 +28,6 @@ export default function ImageComponent({
 
     const awsCdnImgDomain = process.env.NEXT_PUBLIC_AWS_CDN_DOMAIN + "/" + each.key + ".jpg";
 
-    const { uploadStatus: { key: newUploadedVideoKey, stage } } = useAppSelector((state) => state.uploadProgress);
-
 
     return (
         <>
@@ -44,7 +42,6 @@ export default function ImageComponent({
                         className="rounded-t-lg w-full aspect-video"
                         alt='media-Image'
                         unoptimized
-
                     />
 
                     <span className="text-[9px] font-medium bg-[#222] rounded-sm absolute bottom-0 right-0 px-1 m-1 flex items-center">

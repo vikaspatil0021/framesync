@@ -6,12 +6,20 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 import convertBytes from "@/lib/convertBytesFunction";
 
-import { useAppSelector } from "@/lib/redux-toolkit/hook"
-
-export default function NewuploadSkeleton() {
-
-
-    const { uploadStatus: { uploadProgress, name, size, stage } } = useAppSelector((state) => state.uploadProgress);
+type NewUploadData = {
+    uploadProgress: number,
+    name: string,
+    size: number,
+    key: string,
+    stage: string
+    projectId:string
+}
+export default function NewuploadSkeleton({
+    newUploadData
+}: {
+    newUploadData: NewUploadData
+}) {
+    const { name, size, stage, uploadProgress } = newUploadData;
 
     return (
         <>
@@ -25,18 +33,18 @@ export default function NewuploadSkeleton() {
                                 <motion.div
                                     initial={{ opacity: 0, scale: 1 }}
                                     animate={{ opacity: 1, scale: 1.5 }}
-                                    transition={{ 
+                                    transition={{
                                         duration: 0.3,
                                         ease: [0, 0.71, 0.2, 1.01],
                                         scale: {
-                                          type: "spring",
-                                          damping: 5,
-                                          stiffness: 100,
-                                          restDelta: 0.001,
-                                          repeat:Infinity
-                                        }}}
+                                            type: "spring",
+                                            damping: 5,
+                                            stiffness: 100,
+                                            restDelta: 0.001,
+                                            repeat: Infinity
+                                        }
+                                    }}
                                 >
-
                                     <Skeleton className="h-5 w-5 rounded-full bg-transparent border" aria-label="wave" />
                                 </motion.div>
                         }

@@ -1,14 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 
 import currentTeamReducer from "./slices/currentTeamSlice";
-import uploadProgressReducer from "./slices/uploadProgress";
+import newUploadsMediaData from "./slices/newUploadsMediaData";
 
 
 export const makeStore = () => {
     return configureStore({
         reducer: {
             currentTeam: currentTeamReducer,
-            uploadProgress: uploadProgressReducer
+            newUploadsMediaData
         }
     })
 

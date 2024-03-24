@@ -1,25 +1,25 @@
 import { Dispatch } from "@reduxjs/toolkit";
-import { updateProgress } from "./redux-toolkit/slices/uploadProgress";
+import { deleteUploadMediaData } from "./redux-toolkit/slices/newUploadsMediaData";
 
-export default function checkImageAvailability(imageURL: string, dispatch: Dispatch) {
+
+export default function checkImageAvailability(key: string, dispatch: Dispatch) {
+
+    let imageURL = process.env.NEXT_PUBLIC_AWS_CDN_DOMAIN + "/" + key + ".jpg";
+
     const img: HTMLImageElement = new Image();
 
     img.src = imageURL;
     img.onload = function () {
         console.log('Image is available at the URL:', imageURL);
 
-        dispatch(updateProgress({
-            uploadProgress: 0,
-            name: '',
-            size: 0,
-            key: '',
-            stage: 'none'
+        dispatch(deleteUploadMediaData({
+            key,
         }))
     };
     img.onerror = function () {
         console.log('Image is not available yet. Retrying in 3 seconds...');
         setTimeout(function () {
-            checkImageAvailability(imageURL, dispatch);
+            checkImageAvailability(key, dispatch);
         }, 3000); // Retry every 3 seconds
     };
 }

@@ -19,7 +19,7 @@ import { trpc } from "@/trpc/client/trpcClient";
 import { getPreSignedUrl } from "@/lib/aws/s3/preSignedUrl";
 import getVideoDuration from "@/lib/getVideoDuration";
 import { useAppDispatch } from "@/lib/redux-toolkit/hook";
-import { updateProgress } from "@/lib/redux-toolkit/slices/uploadProgress";
+import { addOrUpdateNewUploadData } from "@/lib/redux-toolkit/slices/newUploadsMediaData";
 
 
 
@@ -60,11 +60,12 @@ export const NewUploadDropDown = ({
                     let number = e.progress as number;
                     let uploadProgress = Math.floor(number * 100) as number;
 
-                    dispatch(updateProgress({
+                    dispatch(addOrUpdateNewUploadData({
                         uploadProgress,
                         name: file.name,
                         size: file.size,
                         key,
+                        projectId,
                         stage: (uploadProgress == 100) ? 'processing' : 'uploading'
                     }))
 
@@ -86,7 +87,7 @@ export const NewUploadDropDown = ({
                 setTimeout(() => {
 
                     refetchMedia()
-                }, 1000);
+                }, 2000);
 
             }).catch((err) => {
 
