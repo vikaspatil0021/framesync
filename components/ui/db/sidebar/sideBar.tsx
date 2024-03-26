@@ -16,7 +16,7 @@ import { NotificationDropDown } from "./dropdowns/Notification-DropDown"
 import { ManageMembersModal } from "./dialogs/membersModal/membersModal"
 import { TeamsSelectOption } from "./selects/teams-selects"
 import { NewProjectModal } from "./dialogs/newProjectModal/newProjectModal"
-import { useEffect, useState } from "react"
+import { Dispatch, SetStateAction, useEffect } from "react"
 import { ScrollArea } from "../../scroll-area"
 import { Skeleton } from "../../skeleton"
 
@@ -31,9 +31,12 @@ type EachProject = {
 }
 
 const TopSection = ({
-   activePath
+   activePath,
+   setOpenSideBar
 }: {
-   activePath: string
+   activePath: string,
+   setOpenSideBar?: Dispatch<SetStateAction<boolean>>
+
 }) => {
 
    return (
@@ -50,18 +53,28 @@ const TopSection = ({
                   <Input className="border-none h-8 bg-[#3c3c3c] placeholder:text-[#999] text-xs p-1 ps-9 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-sky-500 focus-visible:ring-transparent transition-all"
                      placeholder="Search files or projects"
                      autoFocus={false}
-                     
+
                   />
                </div>
             </div>
             <div className="my-3">
-               <Link href='/db/recents'>
+               <Link href='/db/recents' onClick={()=>{
+                   setTimeout(() => {
+                                    
+                     setOpenSideBar && setOpenSideBar(false);
+                  }, 500);
+               }}>
                   <div className={cn(`flex items-center gap-2 h-8 px-5 cursor-pointer ${activePath === "recents" ? "bg-[#4a5878]" : 'hover:bg-[#3c3c3c]'}`)} >
                      <RecentIcon />
                      <span className="text-xs">Recents</span>
                   </div>
                </Link>
-               <Link href='/db/apps'>
+               <Link href='/db/apps' onClick={()=>{
+                   setTimeout(() => {
+                                    
+                     setOpenSideBar && setOpenSideBar(false);
+                  }, 500);
+               }}>
                   <div className={cn(`flex items-center gap-2 h-8 px-5 cursor-pointer ${activePath === "apps" ? "bg-[#4a5878]" : 'hover:bg-[#3c3c3c]'}`)} >
                      <AppsIcon />
                      <span className="text-xs">
@@ -77,9 +90,11 @@ const TopSection = ({
 }
 
 const BottomSection = ({
-   activePath
+   activePath,
+   setOpenSideBar
 }: {
-   activePath: string
+   activePath: string,
+   setOpenSideBar?: Dispatch<SetStateAction<boolean>>
 }) => {
    const router = useRouter();
 
@@ -102,6 +117,10 @@ const BottomSection = ({
 
       if (activePath.includes('project') && allProjectIds && !allProjectIds?.includes(activePathProject)) {
 
+         setTimeout(() => {
+                                    
+            setOpenSideBar && setOpenSideBar(false);
+         }, 500);
          const currentId = allProjectIds[0]
          router.push('/db/project/' + currentId)
       }
@@ -122,7 +141,8 @@ const BottomSection = ({
                <div className="mt-2 font-normal text-[#ccc]">
                   <NewProjectModal
                      teamId={currentTeam?.id}
-                     refetchProjectsdata={refetchProjectsdata}
+                     refetchProjectsdata={refetchProjectsdata}    
+                        setOpenSideBar={setOpenSideBar}
                   />
                </div>
             </div>
@@ -130,10 +150,16 @@ const BottomSection = ({
             <ScrollArea className="flex-1">
                {
                   projectsData?.projects ?
-                     projectsData?.projects.map((eachProject: EachProject, index:number) => {
+                     projectsData?.projects.map((eachProject: EachProject, index: number) => {
                         return (
                            <>
-                              <Link href={"/db/project/" + eachProject.id}>
+                              <Link href={"/db/project/" + eachProject.id} onClick={()=>{
+
+                                 setTimeout(() => {
+                                    
+                                    setOpenSideBar && setOpenSideBar(false);
+                                 }, 500);
+                              }}>
 
                                  <div key={index} className={`group flex items-center justify-between cursor-pointer h-8 pe-5 max-w-[300px] ps-10 ${activePathProject === eachProject.id ? "bg-[#4a5878]" : 'hover:bg-[#3c3c3c]'}`}>
                                     <span className="text-[13px] truncate w-[85%]">
@@ -166,7 +192,11 @@ const BottomSection = ({
 }
 
 
-export const SideBarComponent = () => {
+export const SideBarComponent = ({
+   setOpenSideBar
+}: {
+   setOpenSideBar?: Dispatch<SetStateAction<boolean>>
+}) => {
    const pathName = usePathname();
 
    const activePath = pathName.replace('/db/', '');
@@ -175,8 +205,10 @@ export const SideBarComponent = () => {
          <div className="bg-[#2c2c2c] text-white min-w-[300px] w-[300px] border-r-[.5px] border-[#555] py-3 flex flex-col h-screen overflow-hidden">
             <TopSection
                activePath={activePath}
+               setOpenSideBar={setOpenSideBar}
             />
             <BottomSection
+               setOpenSideBar={setOpenSideBar}
                activePath={activePath}
             />
          </div>

@@ -40,16 +40,15 @@ export const TeamsSelectOption = () => {
 
          setSelectValue(currentTeam.id ? currentTeam.id : team?.id as string);
 
-   }, [data])
-   console.log(selectValue)
+   }, [data]);
    
+      
    useEffect(() => {
       if (![undefined, ""].includes(selectValue)) {
          const selectedTeam = data?.teams.flatMap((eachTeam: EachTeam) => eachTeam.team.id === selectValue ? eachTeam.team : []);
          
          dispatch(updateTeam(selectedTeam?.[0]));
       }
-      console.log('teams',selectValue)
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [selectValue])
 

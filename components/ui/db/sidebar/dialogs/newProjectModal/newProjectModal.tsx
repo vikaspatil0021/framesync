@@ -1,5 +1,5 @@
 import { Plus } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react"
 
 import {  useRouter } from "next/navigation";
 
@@ -21,10 +21,13 @@ import { trpc } from "@/trpc/client/trpcClient";
 
 export const NewProjectModal = ({
     teamId,
-    refetchProjectsdata
+    refetchProjectsdata,
+    setOpenSideBar
 }: {
     teamId: string,
-    refetchProjectsdata: () => void
+    refetchProjectsdata: () => void,
+    setOpenSideBar?:Dispatch<SetStateAction<boolean>>
+
 }) => {
     const router = useRouter();
 
@@ -59,6 +62,7 @@ export const NewProjectModal = ({
             setProjectName('');
             refetchProjectsdata()
             setOpen(false);
+            setOpenSideBar && setOpenSideBar(false);
             router.push('/db/project/' + data?.project.id)
 
         }
