@@ -9,6 +9,8 @@ import convertBytes from "@/lib/convertBytesFunction";
 import { useAppSelector } from "@/lib/redux-toolkit/hook";
 
 
+import { SideBarComponent } from "../sidebar/sideBar";
+
 type Team = {
     id: string,
     name: string
@@ -36,7 +38,9 @@ export default function ProjectHeader({
     return (
         <>
             <div className="p-5 text-[#f2f2f2]">
-                <div className="text-[12px] text-[#999]">
+                   
+                <div className="text-[12px] text-[#999] hidden lg:block lg:ps-0">
+
                     {
                         currentTeam?.name ?
                             currentTeam?.name :
@@ -45,12 +49,12 @@ export default function ProjectHeader({
                 </div>
 
 
-                <div className="flex items-center justify-between  mt-3">
-                    <div className="text-[16px] py-1">
+                <div className="flex items-center justify-between  lg:mt-3">
+                    <div className="text-[16px] py-1 ps-10 lg:ps-0">
                         {
                             data ?
                                 data?.project?.name :
-                                <Skeleton className="h-6 w-[280px] bg-[#444]" />
+                                <Skeleton className="h-6 w-[200px] bg-[#444]" />
                         }
                     </div>
                     <div>

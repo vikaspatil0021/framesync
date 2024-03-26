@@ -49,7 +49,7 @@ export default function ImageComponent({
                     </span>
                 </div>
 
-                <div className="flex justify-between text-[10px] bg-[#333] rounded-b-lg p-2">
+                <div className="flex justify-between text-[10px] bg-[#363c4c] rounded-b-lg p-2">
                     <span className="truncate w-[70%]">
                         {each?.name}
                     </span>

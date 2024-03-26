@@ -48,7 +48,6 @@ export const ManageMembersModal = () => {
    const { data: invitesData, isFetching: invitesDataLoading, refetch: refetchInvites } = trpc.invite.getInvites.useQuery({ teamId: currentTeam.id });
    const { data: membersData, refetch: refetchMembers } = trpc.memberships.getMembership.useQuery({ teamId: currentTeam.id })
 
-
    const refetchLatestData = (type: string) => {
       if (type === "invites") {
          refetchInvites()

@@ -16,7 +16,7 @@ export const NotificationDropDown = () => {
       <>
          <DropdownMenu onOpenChange={setOpenStatus}>
             <DropdownMenuTrigger asChild>
-               <div className={`rounded-sm  hover:bg-[#383838] inline-flex items-center p-0.5 cursor-pointer ${openStatus && "bg-[#383838]"}`}>
+               <div className={`rounded-sm  hover:bg-[#383838] inline-flex items-center p-0.5 me-7 lg:me-0 cursor-pointer ${openStatus && "bg-[#383838]"}`}>
                   <NotificationIcon />
                </div>
             </DropdownMenuTrigger>

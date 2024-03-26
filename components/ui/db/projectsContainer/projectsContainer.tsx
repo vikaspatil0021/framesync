@@ -62,7 +62,7 @@ export default function ProjectsContainer({
 
 
                 <ScrollArea className="px-5 flex-1 ">
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 py-2.5">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 py-2.5">
                         {
                             newUploadsMediaData.length !== 0 ?
                                 newUploadsMediaData.map((each: NewUploadData) => {
