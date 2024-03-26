@@ -49,6 +49,8 @@ const TopSection = ({
                   <Search className="h-4 absolute left-1.5" />
                   <Input className="border-none h-8 bg-[#3c3c3c] placeholder:text-[#999] text-xs p-1 ps-9 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-sky-500 focus-visible:ring-transparent transition-all"
                      placeholder="Search files or projects"
+                     autoFocus={false}
+                     
                   />
                </div>
             </div>
