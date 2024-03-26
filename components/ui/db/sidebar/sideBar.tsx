@@ -136,15 +136,13 @@ const BottomSection = ({
                <TeamsSelectOption />
                <ManageMembersModal />
             </div>
-            <div className="pt-2">
+            <div className="py-2 flex justify-between items-center">
                <div className="px-3 text-[11px]">Projects</div>
-               <div className="mt-2 font-normal text-[#ccc]">
                   <NewProjectModal
                      teamId={currentTeam?.id}
                      refetchProjectsdata={refetchProjectsdata}    
                         setOpenSideBar={setOpenSideBar}
                   />
-               </div>
             </div>
 
             <ScrollArea className="flex-1">

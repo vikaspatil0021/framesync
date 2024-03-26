@@ -74,11 +74,8 @@ export const NewProjectModal = ({
         <>
             <Dialog key={"newProjectModal"} open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
-                    <div className="flex items-center gap-1 hover:bg-[#383838] cursor-pointer h-8 px-3">
-                        <Plus className="h-5" />
-                        <span className="text-[13px]">
-                            New Project
-                        </span>
+                    <div className="flex items-center justify-center gap-1 bg-[#383838] hover:bg-[#444] rounded-full cursor-pointer me-4 p-0.5 h-5 w-5 font-normal text-[#ccc]">
+                        <Plus />
                     </div>
                 </DialogTrigger>
                 <DialogContent className="text-[#f2f2f2]">
