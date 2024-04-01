@@ -11,8 +11,8 @@ type NewUploadData = {
     name: string,
     size: number,
     key: string,
-    stage: string
-    projectId:string
+    stage: string,
+    projectId: string,
 }
 export default function NewuploadSkeleton({
     newUploadData
@@ -55,14 +55,19 @@ export default function NewuploadSkeleton({
                     }
 
                 </div>
-                <div className="flex justify-between pb-auto text-[10px] bg-[#363c4c] rounded-b-lg p-2">
-
-                    <span className="truncate w-[70%]">
-                        {name}
-                    </span>
-                    <span>
-                        {convertBytes(size)}
-                    </span>
+                <div className="text-[11px] bg-[#363c4c] rounded-b-md p-2.5  h-[52px]">
+                    <div className="flex justify-between">
+                        <span className="truncate w-[70%]">
+                            {newUploadData?.name}
+                        </span>
+                        <span>
+                            {convertBytes(newUploadData?.size)}
+                        </span>
+                    </div>
+                    <div className="flex justify-between mt-1.5">
+                        <Skeleton className="h-1.5 w-[30%] bg-[#999]" />
+                        <Skeleton className="h-1.5 w-[20%] bg-[#999]" />
+                    </div>
                 </div>
             </div >
         </>

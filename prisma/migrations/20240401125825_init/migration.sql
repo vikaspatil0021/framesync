@@ -64,7 +64,9 @@ CREATE TABLE "Media" (
     "name" TEXT NOT NULL,
     "size" INTEGER NOT NULL,
     "duration" DOUBLE PRECISION NOT NULL,
+    "uploaded_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "type" "MediaType" NOT NULL,
+    "uploaderId" TEXT NOT NULL,
     "projectId" TEXT NOT NULL,
 
     CONSTRAINT "Media_pkey" PRIMARY KEY ("id")
@@ -93,3 +95,6 @@ ALTER TABLE "Project" ADD CONSTRAINT "Project_teamId_fkey" FOREIGN KEY ("teamId"
 
 -- AddForeignKey
 ALTER TABLE "Media" ADD CONSTRAINT "Media_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Media" ADD CONSTRAINT "Media_uploaderId_fkey" FOREIGN KEY ("uploaderId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

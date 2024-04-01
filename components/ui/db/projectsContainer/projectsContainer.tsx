@@ -14,13 +14,19 @@ import NewuploadSkeleton from "./imageComponent.tsx/newUploadSkeleton";
 
 
 type Media = {
-    id: string
-    key: string
-    size: number
+    projectId: string;
+    id: string;
+    name: string;
     type: "VideoFile" | "Folder"
-    projectId: string
-    name: string
-    duration: number
+    user: {
+        id: string;
+        name: string;
+    };
+    key: string;
+    size: number;
+    duration: number;
+    uploaded_at: string;
+    uploaderId: string;
 }
 
 type NewUploadData = {
@@ -29,7 +35,7 @@ type NewUploadData = {
     size: number,
     key: string,
     stage: string
-    projectId: string
+    projectId: string,
 
 }
 
@@ -68,13 +74,13 @@ export default function ProjectsContainer({
                                 newUploadsMediaData.map((each: NewUploadData) => {
 
                                     if (each.projectId !== projectId) return null;
-                                    
+
                                     return (
                                         <>
                                             <motion.div
                                                 initial={{ opacity: 0, scale: 0.85 }}
                                                 animate={{ opacity: 1, scale: 1 }}
-                                                transition={{ duration: 0.5 }}
+                                                transition={{ duration: 0.3 }}
                                             >
                                                 <NewuploadSkeleton
                                                     newUploadData={each}
@@ -100,9 +106,9 @@ export default function ProjectsContainer({
                                     return (
                                         <>
                                             <motion.div
-                                                initial={{ opacity: 0.4, scale: 0.99 }}
+                                                initial={{ opacity: 0.4, scale: 0.95 }}
                                                 animate={{ opacity: 1, scale: 1 }}
-                                                transition={{ duration: 0.5 }}
+                                                transition={{ duration: 0.3 }}
                                             >
                                                 <ImageComponent
                                                     each={each}
@@ -114,17 +120,38 @@ export default function ProjectsContainer({
                                 })
                                 :
                                 <>
-                                    <Skeleton className="rounded-lg w-full aspect-video bg-[#444]" />
-                                    <Skeleton className="rounded-lg w-full aspect-video bg-[#444]" />
-                                    <Skeleton className="rounded-lg w-full aspect-video bg-[#444]" />
-                                    <Skeleton className="rounded-lg w-full aspect-video bg-[#444]" />
-
+                                    <CardSkeleton />
+                                    <CardSkeleton />
+                                    <CardSkeleton />
+                                    <CardSkeleton />
                                 </>
                         }
                     </div>
                 </ScrollArea>
             </div>
 
+        </>
+    )
+}
+
+
+const CardSkeleton = () => {
+    return (
+        <>
+            <div className="h-full">
+                <Skeleton className="w-full rounded-b-none aspect-video bg-[#444]" />
+                <Skeleton className="text-[11px] bg-[#363c4c] rounded-t-none p-2.5  h-[52px]">
+                    <div className="flex justify-between">
+                        <Skeleton className="h-3 w-[40%] bg-[#666]" />
+                        <Skeleton className="h-3 w-[10%] bg-[#666]" />
+
+                    </div>
+                    <div className="flex justify-between mt-2">
+                        <Skeleton className="h-1.5 w-[30%] bg-[#666]" />
+                        <Skeleton className="h-1.5 w-[25%] bg-[#666]" />
+                    </div>
+                </Skeleton>
+            </div>
         </>
     )
 }

@@ -5,6 +5,12 @@ import { authedProcedure } from "@/trpc/procedures/authedProcedure";
 import { createMediaHandler } from "./createMedia.handler";
 import { getAllMediaHandler } from "./getAllMedia.handler";
 
+type Session = {
+    user: {
+       id: string
+    }
+ }
+
 
 export const mediaRouter = router({
 
@@ -17,7 +23,7 @@ export const mediaRouter = router({
             name: z.string(),
             duration: z.number()
         }))
-        .mutation(({ input }) => createMediaHandler({ ...input })),
+        .mutation(({ input, ctx }) => createMediaHandler({ ...input, session: ctx.session as Session })),
 
     getAllMedia: authedProcedure
         .input(z.object({ projectId: z.string() }))
