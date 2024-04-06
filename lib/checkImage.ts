@@ -10,14 +10,12 @@ export default function checkImageAvailability(key: string, dispatch: Dispatch) 
 
     img.src = imageURL;
     img.onload = function () {
-        console.log('Image is available at the URL:', imageURL);
 
         dispatch(deleteUploadMediaData({
             key,
         }))
     };
     img.onerror = function () {
-        console.log('Image is not available yet. Retrying in 3 seconds...');
         setTimeout(function () {
             checkImageAvailability(key, dispatch);
         }, 3000); // Retry every 3 seconds

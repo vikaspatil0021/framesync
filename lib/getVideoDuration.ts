@@ -1,3 +1,5 @@
+import { toast } from "@/components/ui/use-toast";
+
 interface EventObject extends GlobalEventHandlers {
     duration: number
 }
@@ -23,6 +25,13 @@ export default async function getVideoDuration(file: any) {
             }
         };
 
+        vid.onerror = (e) => {
+            reject(e)
+            toast({
+                title: 'Please only choose videos.',
+                variant:'destructive'
+            })
+        }
     });
 
 }

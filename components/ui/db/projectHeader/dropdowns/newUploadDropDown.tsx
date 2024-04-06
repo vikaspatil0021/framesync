@@ -37,66 +37,73 @@ export const NewUploadDropDown = ({
     const createMedia = trpc.media.createMedia.useMutation()
 
     const mediaUploadHandler = async (e: ChangeEvent<HTMLInputElement>) => {
-        const file = e?.target?.files?.[0];
 
-        const fileDuration = await getVideoDuration(file);
+        const fileList = e?.target?.files as FileList;
+        const files = Array.from(fileList);
 
-        if (file) {
-            let key = nanoid(21);
+        files?.forEach(async (file: File) => {
 
-            const url = await getPreSignedUrl({ //get the presigned url to upload
-                key,
-                contentType: 'video/mp4'
-            });
+            const fileDuration = await getVideoDuration(file);
 
-            setOpenStatus(false);
+            if (file) {
+                let key = nanoid(21);
+
+                const url = await getPreSignedUrl({ //get the presigned url to upload
+                    key,
+                    contentType: 'video/mp4'
+                });
+
+                setOpenStatus(false);
 
 
-            await axios.put(url, file, {
-                headers: {
-                    "Content-Type": 'video/mp4'
-                },
-                onUploadProgress: (e) => {
-                    let number = e.progress as number;
-                    let uploadProgress = Math.floor(number * 100) as number;
+                await axios.put(url, file, {
+                    headers: {
+                        "Content-Type": 'video/mp4'
+                    },
+                    onUploadProgress: (e) => {
+                        let number = e.progress as number;
+                        let uploadProgress = Math.floor(number * 100) as number;
 
-                    dispatch(addOrUpdateNewUploadData({
-                        uploadProgress,
-                        name: file.name,
-                        size: file.size,
+                        dispatch(addOrUpdateNewUploadData({
+                            uploadProgress,
+                            name: file.name,
+                            size: file.size,
+                            key,
+                            projectId,
+                            stage: (uploadProgress == 100) ? 'processing' : 'uploading'
+                        }))
+
+                    }
+                }).then((result) => {
+
+
+                    createMedia.mutate({ //after upload to  s3 create a media record in database
                         key,
                         projectId,
-                        stage: (uploadProgress == 100) ? 'processing' : 'uploading'
-                    }))
+                        name: file.name,
+                        duration: fileDuration as number,
+                        size: file.size,
+                        type: "VideoFile"
+                    })
+                    console.log(createMedia.data)
 
-                }
-            }).then((result) => {
 
+                    setTimeout(() => {
 
-                createMedia.mutate({ //after upload to  s3 create a media record in database
-                    key,
-                    projectId,
-                    name: file.name,
-                    duration: fileDuration as number,
-                    size: file.size,
-                    type: "VideoFile"
+                        refetchMedia()
+                    }, 2000);
+
+                }).catch((err) => {
+
+                    toast({
+                        title: err?.message,
+                        variant: 'destructive'
+                    })
                 })
-                console.log(createMedia.data)
+            }
 
+        })
 
-                setTimeout(() => {
-
-                    refetchMedia()
-                }, 2000);
-
-            }).catch((err) => {
-
-                toast({
-                    title: err?.message,
-                    variant: 'destructive'
-                })
-            })
-        }
     }
 
 
@@ -114,7 +121,10 @@ export const NewUploadDropDown = ({
                         <div className="relative px-2.5 py-1.5 rounded-sm hover:bg-[#4c4c4c] flex items-center gap-2 cursor-default">
                             <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" width="12" height="12"><path fill-rule="evenodd" fill="currentColor" d="M3.75 8.81l-2.22 2.22A.75.75 0 0 1 .47 9.97l3.5-3.5a.75.75 0 0 1 1.06 0l3.5 3.5a.75.75 0 0 1-1.06 1.06L5.25 8.81v6.59a.75.75 0 1 1-1.5 0V8.81zM9 1.5H4.625c-.074 0-.125.05-.125.1v2.149L3 5.102V1.6C3 .716 3.728 0 4.625 0h5.688L16 5.6v8.8c0 .884-.728 1.6-1.625 1.6h-7v-1.5h7c.074 0 .125-.05.125-.1V7H9.75A.75.75 0 0 1 9 6.25V1.5zm1.5.79V5.5h3.26L10.5 2.29z"></path></svg>
                             File upload
-                            <input type="file" className="opacity-0 absolute h-full w-full left-0 top-0" accept=".mp4"
+                            <input type="file"
+                                className="opacity-0 absolute h-full w-full left-0 top-0"
+                                accept=".mp4"
+                                multiple
                                 onChange={mediaUploadHandler}
                             />
                         </div>
