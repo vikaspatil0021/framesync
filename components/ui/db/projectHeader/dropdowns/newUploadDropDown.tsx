@@ -128,10 +128,10 @@ export const NewUploadDropDown = ({
                                 onChange={mediaUploadHandler}
                             />
                         </div>
-                        <div className="px-2.5 py-1.5 rounded-sm hover:bg-[#4c4c4c] flex items-center gap-2 cursor-default">
+                        {/* <div className="px-2.5 py-1.5 rounded-sm hover:bg-[#4c4c4c] flex items-center gap-2 cursor-default">
                             <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" width="12" height="12"><path fill="currentColor" fill-rule="evenodd" d="M3.75 8.81l-2.22 2.22A.75.75 0 0 1 .47 9.97l3.5-3.5a.75.75 0 0 1 1.06 0l3.5 3.5a.75.75 0 0 1-1.06 1.06L5.25 8.81V15a.75.75 0 1 1-1.5 0V8.81zM8.375 16v-1.5H14.4c.041 0 .1-.061.1-.167V5.167c0-.106-.059-.167-.1-.167H7.2a1.5 1.5 0 0 1-1.263-.691L4.779 2.5H1.6c-.041 0-.1.061-.1.167v4.17L0 8.354V2.667C0 1.747.716 1 1.6 1h4l1.6 2.5h7.2c.884 0 1.6.746 1.6 1.667v9.166c0 .92-.716 1.667-1.6 1.667H8.375z"></path></svg>
                             Folder upload
-                        </div>
+                        </div> */}
                     </div>
                 </DropdownMenuContent>
             </DropdownMenu >
