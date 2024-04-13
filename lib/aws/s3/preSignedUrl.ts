@@ -12,6 +12,7 @@ export const getPreSignedUrl = async ({
 }) => {
 
     const bucketName = process.env.AWS_BUCKET as string;
+
     let command =
         (contentType)
             ?
@@ -26,8 +27,9 @@ export const getPreSignedUrl = async ({
                 Key: key
             });
 
+
     const url = await getSignedUrl(s3Client, command);
 
-    return url;
+    return url as string;
 
 }
