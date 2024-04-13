@@ -3,8 +3,17 @@ import Image from "next/image"
 import convertBytes from "@/lib/convertBytesFunction"
 import formatTime from "@/lib/formatTime"
 
-import { useAppSelector } from "@/lib/redux-toolkit/hook"
 import formatDate from "@/lib/formatDate"
+import { ThreeVerticalDotsIcon } from "@/components/icons/Icons"
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { MoreOptionsDropDown } from "./moreOptionsDropDown"
 
 
 type Media = {
@@ -38,7 +47,7 @@ export default function ImageComponent({
 
     return (
         <>
-            <div draggable className="relative rounded-md text-[#fff] shadow-md shadow-[#111] cursor-pointer">
+            <div draggable className="group relative rounded-md text-[#fff] shadow-md shadow-[#111] cursor-pointer">
                 <div className="relative">
                     <Image
                         key={index}
@@ -52,9 +61,21 @@ export default function ImageComponent({
                         draggable={false}
                     />
 
-                    <span className="text-[9px] font-medium bg-[#222] rounded-sm absolute bottom-0 right-0 px-1 m-1 flex items-center">
+                    <span className="text-[9px] font-medium bg-[#222] rounded-sm absolute bottom-0 right-0 px-1 m-1 flex items-center shadow-slate-300/50 shadow-sm">
                         {formatTime(each?.duration)}
                     </span>
+                    {/* <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <div className="absolute right-0 top-0 bg-[#505871] flex items-center justify-center p-1 m-1 rounded-md shadow-sm shadow-black h-6 w-6 border border-white/40 lg:opacity-0 transition-all duration-300 lg:group-hover:opacity-100">
+                                <ThreeVerticalDotsIcon />
+                            </div>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className="text-white w-[160px] rounded-sm px-0 py-2 mx-1 bg-[#222]">
+                            hi
+                        </DropdownMenuContent>
+                    </DropdownMenu> */}
+                    <MoreOptionsDropDown />
+
                 </div>
 
                 <div className="text-[11px] bg-[#363c4c] rounded-b-md p-2.5">
