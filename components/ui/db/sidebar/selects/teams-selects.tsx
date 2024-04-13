@@ -1,3 +1,4 @@
+'use client'
 import { trpc } from "@/trpc/client/trpcClient"
 
 import { useEffect, useState } from "react"
@@ -14,6 +15,7 @@ import {
    SelectValue,
 } from "@/components/ui/select"
 import { Skeleton } from "@/components/ui/skeleton";
+import { usePathname } from "next/navigation";
 
 
 type EachTeam = {
@@ -28,25 +30,31 @@ type EachTeam = {
 export const TeamsSelectOption = () => {
    const dispatch = useAppDispatch();
 
+   const pathName = usePathname();
+   const projectId = pathName.replace('/db/project/', '');
+
+
    const [selectValue, setSelectValue] = useState<string>('')
 
-   const { data } = trpc.teams.getTeams.useQuery()
+
+   const { data: allTeams } = trpc.teams.getTeams.useQuery()
+   const { data: projectDetails } = trpc.project.getProject.useQuery({ projectId });
+
 
    const { currentTeam } = useAppSelector((state) => state.currentTeam);
 
    useEffect(() => {
-      const team = data?.teams[0]?.team;
+      const teamId = projectDetails?.project?.teamId || currentTeam?.id || allTeams?.teams[0]?.team?.id;
+
+      setSelectValue(teamId as string);
+
+   }, [allTeams]);
 
 
-         setSelectValue(currentTeam.id ? currentTeam.id : team?.id as string);
-
-   }, [data]);
-   
-      
    useEffect(() => {
       if (![undefined, ""].includes(selectValue)) {
-         const selectedTeam = data?.teams.flatMap((eachTeam: EachTeam) => eachTeam.team.id === selectValue ? eachTeam.team : []);
-         
+         const selectedTeam = allTeams?.teams.flatMap((eachTeam: EachTeam) => eachTeam.team.id === selectValue ? eachTeam.team : []);
+
          dispatch(updateTeam(selectedTeam?.[0]));
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -56,7 +64,7 @@ export const TeamsSelectOption = () => {
    return (
       <>
          {
-            !data ?
+            !allTeams ?
                <div className="flex-auto ">
                   <Skeleton className="w-full h-9 bg-[#555]" />
                </div>
@@ -69,7 +77,7 @@ export const TeamsSelectOption = () => {
                   <SelectContent className="bg-[#222] text-white border-white/10 ">
                      <SelectGroup>
                         {
-                           data?.teams?.map((eachTeam: EachTeam) => {
+                           allTeams?.teams?.map((eachTeam: EachTeam) => {
                               return (
                                  <>
                                     <SelectItem value={eachTeam.team.id} key={'key' + eachTeam.team.id}>
