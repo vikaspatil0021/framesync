@@ -5,6 +5,7 @@ import { authedProcedure } from "@/trpc/procedures/authedProcedure";
 import { createMediaHandler } from "./createMedia.handler";
 import { getAllMediaHandler } from "./getAllMedia.handler";
 import { renameMediaHandler } from "./renameMedia.handler";
+import { deleteMediaHandler } from "./deleteMedia.handler";
 
 type Session = {
     user: {

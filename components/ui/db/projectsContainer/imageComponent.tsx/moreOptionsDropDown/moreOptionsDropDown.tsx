@@ -13,6 +13,7 @@ import { toast } from "@/components/ui/use-toast";
 import downloadMedia from "@/lib/downloadMedia";
 
 import { RenameMediaModal } from "./renameModel";
+import { DeleteMediaModal } from "./deleteMediaModal";
 
 
 export const MoreOptionsDropDown = ({
@@ -75,6 +76,7 @@ export const MoreOptionsDropDown = ({
                   {downloading &&
                      <LoadingIcon className="right-0 h-4 w-4" />}
                </div>
+
                <hr className="border-t-[.5px] border-white/20 my-2" />
 
                <RenameMediaModal
@@ -85,10 +87,14 @@ export const MoreOptionsDropDown = ({
                   refetchMedia={refetchMedia}
                />
 
-               <div className='flex items-center gap-2 h-7 px-2 cursor-default rounded-sm hover:bg-[#eb6060]' >
-                  <Trash2 className="h-4 w-4" />
-                  <span className="text-xs">Delete</span>
-               </div>
+               <DeleteMediaModal
+                  awsCdnImgDomain={awsCdnImgDomain}
+                  mediaId={mediaId}
+                  mediaName={mediaName}
+                  refetchMedia={refetchMedia}
+                  setOpenStatusDropDown={setOpenStatus}
+
+               />
             </DropdownMenuContent>
          </DropdownMenu>
       </>

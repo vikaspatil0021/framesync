@@ -46,3 +46,14 @@ export const renameMedia = async (id: string, name: string) => {
         }
     })
 }
+
+
+export const deleteMedia = async (id: string) => {
+    return await prisma?.media.delete({
+        where: {
+            id
+        }
+    })
+}
+
+

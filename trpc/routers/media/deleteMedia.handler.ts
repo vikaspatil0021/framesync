@@ -1,20 +1,20 @@
-import { renameMedia } from "@/lib/prisma/media/service"
+import { deleteObjectFromS3 } from "@/lib/aws/s3/deleteObjectFromS3";
+import { deleteMedia } from "@/lib/prisma/media/service"
 
 
-export const renameMediaHandler = async ({
+export const deleteMediaHandler = async ({
     id,
-    name
 }: {
     id: string,
-    name: string
 }) => {
 
 
     try {
-        const data = await renameMedia(id, name);
+        const media = await deleteMedia(id);
+        const data = await deleteObjectFromS3(media?.key);
         
         return {
-            media: data
+            data
         }
 
     } catch (error: any) {

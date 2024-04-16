@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+
 import { Button } from "@/components/ui/button";
 import {
     Dialog,
@@ -6,15 +8,16 @@ import {
     DialogClose,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
+
+import { Trash2 } from "lucide-react";
+
 import { trpc } from "@/trpc/client/trpcClient";
-import { Pencil } from "lucide-react";
 import Image from "next/image";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 
-export const RenameMediaModal = ({
+
+export const DeleteMediaModal = ({
     awsCdnImgDomain,
     mediaId,
     mediaName,
@@ -29,12 +32,11 @@ export const RenameMediaModal = ({
 }) => {
 
     const [open, setOpen] = useState(false);
-    const [inputVal, setInputVal] = useState(mediaName);
     const [loading, setLoading] = useState(false);
 
-    const renamehandler = trpc.media.renameMedia.useMutation();
+    const deleteMediahandler = trpc.media.deleteMedia.useMutation();
 
-    const { isPending, isSuccess } = renamehandler;
+    const { isPending, isSuccess } = deleteMediahandler;
 
     useEffect(() => {
         setLoading(isPending);
@@ -44,7 +46,7 @@ export const RenameMediaModal = ({
         if (isSuccess) {
             toast({
                 variant: 'success',
-                title: inputVal + " renamed successufully!"
+                title: mediaName + " deleted!"
             });
             setOpen(false);
             setOpenStatusDropDown(false);
@@ -56,19 +58,15 @@ export const RenameMediaModal = ({
 
     return (
         <>
-            <Dialog key={"renameModal"} open={open} onOpenChange={setOpen}>
+            <Dialog key={"deleteModal"} open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
-                    <div className='flex items-center gap-2 h-7 px-2 cursor-default rounded-sm hover:bg-[#383838]' >
-                        <Pencil className="h-4 w-4" />
-                        <span className="text-xs">Rename</span>
+                    <div className='flex items-center gap-2 h-7 px-2 cursor-default rounded-sm hover:bg-[#eb6060]' >
+                        <Trash2 className="h-4 w-4" />
+                        <span className="text-xs">Delete</span>
                     </div>
-
                 </DialogTrigger>
-                <DialogContent className="text-[#fff]">
-                    <div>
-                        Rename Media
-                    </div>
-                    <div className="flex items-center gap-3">
+                <DialogContent className="text-[#fff] ">
+                    <div className="flex gap-3 items-center">
                         <Image
                             loading="lazy"
                             src={awsCdnImgDomain}
@@ -79,13 +77,11 @@ export const RenameMediaModal = ({
                             unoptimized
                             draggable={false}
                         />
-                        <Input className="h-9 text-[#fff]"
-                            value={inputVal}
-                            onChange={(e) => {
-                                setInputVal(e.target.value)
-                            }}
-                        />
+                        <span className="line-clamp-2">
+                            {mediaName}
+                        </span>
                     </div>
+
                     <DialogFooter className="flex-row space-x-2 justify-end">
                         <DialogClose className="w-20">
                             <Button
@@ -96,19 +92,16 @@ export const RenameMediaModal = ({
                             </Button>
                         </DialogClose>
                         <Button
-                            variant='secondary'
+                            variant='destructive'
                             className="w-20"
                             loading={loading}
                             onClick={() => {
-                                if (inputVal !== '' && inputVal !== mediaName) {
-                                    renamehandler.mutate({
-                                        id: mediaId,
-                                        name: inputVal
-                                    })
-                                }
+                                deleteMediahandler.mutate({
+                                    id: mediaId,
+                                })
                             }}
                         >
-                            Confirm
+                            Delete
                         </Button>
                     </DialogFooter>
                 </DialogContent>

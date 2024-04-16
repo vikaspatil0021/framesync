@@ -11,7 +11,7 @@ export const getPreSignedUrl = async ({
     contentType?: string
 }) => {
 
-    const bucketName = process.env.AWS_BUCKET as string;
+    const bucketName = process.env.AWS_UPLOAD_BUCKET as string;
 
     let command =
         (contentType)
