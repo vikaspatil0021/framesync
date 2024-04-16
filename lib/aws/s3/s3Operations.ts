@@ -39,6 +39,7 @@ export const copyS3Object = async (key: string) => {
     const uploadBucketName = process.env.AWS_UPLOAD_BUCKET as string;
     const thumbnailsBucketName = process.env.AWS_THUMBNAILS_BUCKET as string;
 
+    
     let newKey = nanoid(21);
     let command1 = new CopyObjectCommand({
         Bucket: uploadBucketName,
