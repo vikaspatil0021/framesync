@@ -99,10 +99,13 @@ export const NewProjectModal = ({
                     <DialogFooter className="1m:justify-start">
                         <Button
                             variant='secondary'
-                            className="w-full"
+                            className="w-ful"
                             loading={isLoading}
                             onClick={() => {
-                                createProject.mutate({ name: projectName as string, teamId });
+                                if(projectName!==''){
+
+                                    createProject.mutate({ name: projectName as string, teamId });
+                                }
                             }}
                         >
                             Create Project

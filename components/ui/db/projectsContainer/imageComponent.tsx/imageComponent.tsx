@@ -13,7 +13,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { MoreOptionsDropDown } from "./moreOptionsDropDown"
+import { MoreOptionsDropDown } from "./moreOptionsDropDown/moreOptionsDropDown"
 
 
 type Media = {
@@ -36,10 +36,12 @@ type Media = {
 
 export default function ImageComponent({
     each,
-    index
+    index,
+    refetchMedia
 }: {
     each: Media,
-    index: number
+    index: number,
+    refetchMedia: () => void
 }) {
 
     const awsCdnImgDomain = process.env.NEXT_PUBLIC_AWS_CDN_DOMAIN + "/" + each.key + ".jpg";
@@ -68,6 +70,9 @@ export default function ImageComponent({
                     <MoreOptionsDropDown
                         mediaKey={each.key}
                         mediaName={each.name}
+                        awsCdnImgDomain={awsCdnImgDomain}
+                        mediaId={each.id}
+                        refetchMedia={refetchMedia}
                     />
 
                 </div>

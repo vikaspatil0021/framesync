@@ -4,12 +4,13 @@ import { z } from "zod";
 import { authedProcedure } from "@/trpc/procedures/authedProcedure";
 import { createMediaHandler } from "./createMedia.handler";
 import { getAllMediaHandler } from "./getAllMedia.handler";
+import { renameMediaHandler } from "./renameMedia.handler";
 
 type Session = {
     user: {
-       id: string
+        id: string
     }
- }
+}
 
 
 export const mediaRouter = router({
@@ -27,7 +28,15 @@ export const mediaRouter = router({
 
     getAllMedia: authedProcedure
         .input(z.object({ projectId: z.string() }))
-        .query(({ input }) => getAllMediaHandler({ ...input }))
+        .query(({ input }) => getAllMediaHandler({ ...input })),
+
+    renameMedia: authedProcedure
+        .input(z.object({ id: z.string(), name: z.string() }))
+        .mutation(({ input }) => renameMediaHandler({ ...input })),
+
+    deleteMedia: authedProcedure
+        .input(z.object({ id: z.string() }))
+        .mutation(({ input }) => deleteMediaHandler({...input }))
 
 
 })

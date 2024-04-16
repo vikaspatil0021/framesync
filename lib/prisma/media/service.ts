@@ -24,11 +24,25 @@ export const getAllMediaByProjectId = async (projectId: string) => {
         },
         include: {
             user: {
-                select:{
-                    id:true,
-                    name:true,
+                select: {
+                    id: true,
+                    name: true,
                 }
             }
+        },
+        orderBy: {
+            uploaded_at: 'asc'
+        }
+    })
+}
+
+export const renameMedia = async (id: string, name: string) => {
+    return await prisma?.media.update({
+        where: {
+            id
+        },
+        data: {
+            name
         }
     })
 }

@@ -113,6 +113,8 @@ export default function ProjectsContainer({
                                                 <ImageComponent
                                                     each={each}
                                                     index={index}
+                                                    refetchMedia={refetchMedia}
+
                                                 />
                                             </motion.div>
                                         </>

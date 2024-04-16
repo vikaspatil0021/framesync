@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Copy, CopyPlus, Download, FolderInput, Pencil, Trash2 } from "lucide-react";
+import { Copy, CopyPlus, Download, FolderInput, Trash2 } from "lucide-react";
 import { LoadingIcon, ThreeVerticalDotsIcon } from "@/components/icons/Icons"
 
 import {
@@ -8,18 +8,25 @@ import {
    DropdownMenuContent,
    DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-
-import downloadMedia from "@/lib/downloadMedia";
 import { toast } from "@/components/ui/use-toast";
 
+import downloadMedia from "@/lib/downloadMedia";
+
+import { RenameMediaModal } from "./renameModel";
 
 
 export const MoreOptionsDropDown = ({
    mediaKey,
-   mediaName
+   mediaName,
+   mediaId,
+   awsCdnImgDomain,
+   refetchMedia
 }: {
    mediaKey: string,
-   mediaName: string
+   mediaName: string,
+   mediaId: string,
+   awsCdnImgDomain: string,
+   refetchMedia: () => void
 }) => {
    const [openStatus, setOpenStatus] = useState(false);
    const [downloading, setDownloading] = useState(false);
@@ -32,11 +39,12 @@ export const MoreOptionsDropDown = ({
          setDownloading(false);
 
          toast({
-            title:mediaName + " file downloaded",
-            variant:'success'
+            title: mediaName + " file downloaded",
+            variant: 'success'
          })
       }
    }
+
    return (
       <>
          <DropdownMenu open={openStatus} onOpenChange={setOpenStatus}>
@@ -69,10 +77,14 @@ export const MoreOptionsDropDown = ({
                </div>
                <hr className="border-t-[.5px] border-white/20 my-2" />
 
-               <div className='flex items-center gap-2 h-7 px-2 cursor-default rounded-sm hover:bg-[#383838]' >
-                  <Pencil className="h-4 w-4" />
-                  <span className="text-xs">Rename</span>
-               </div>
+               <RenameMediaModal
+                  awsCdnImgDomain={awsCdnImgDomain}
+                  mediaId={mediaId}
+                  mediaName={mediaName}
+                  setOpenStatusDropDown={setOpenStatus}
+                  refetchMedia={refetchMedia}
+               />
+
                <div className='flex items-center gap-2 h-7 px-2 cursor-default rounded-sm hover:bg-[#eb6060]' >
                   <Trash2 className="h-4 w-4" />
                   <span className="text-xs">Delete</span>
