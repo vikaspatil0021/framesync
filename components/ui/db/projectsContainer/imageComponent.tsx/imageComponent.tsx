@@ -68,10 +68,8 @@ export default function ImageComponent({
                     </span>
 
                     <MoreOptionsDropDown
-                        mediaKey={each.key}
-                        mediaName={each.name}
+                        each={each}
                         awsCdnImgDomain={awsCdnImgDomain}
-                        mediaId={each.id}
                         refetchMedia={refetchMedia}
                     />
 

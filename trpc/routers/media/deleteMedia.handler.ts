@@ -1,4 +1,4 @@
-import { deleteObjectFromS3 } from "@/lib/aws/s3/deleteObjectFromS3";
+import { deleteObjectFromS3 } from "@/lib/aws/s3/s3Operations";
 import { deleteMedia } from "@/lib/prisma/media/service"
 
 
