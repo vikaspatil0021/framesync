@@ -120,7 +120,6 @@ export const MoveToOrCopyToModal = ({
     }, [isSuccess2]);
 
     const copyMoveToHandler = () => {
-        console.log(each)
         element === 'move' ?
             moveMedia.mutate({
                 ...each,
