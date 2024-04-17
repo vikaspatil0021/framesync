@@ -86,6 +86,7 @@ export const DeleteMediaModal = ({
                         <DialogClose className="w-20">
                             <Button
                                 variant='default'
+                                size='sm'
                                 className="w-20 inline-flex"
                             >
                                 Cancel
@@ -94,6 +95,7 @@ export const DeleteMediaModal = ({
                         <Button
                             variant='destructive'
                             className="w-20"
+                            size='sm'
                             loading={loading}
                             onClick={() => {
                                 deleteMediahandler.mutate({

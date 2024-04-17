@@ -48,6 +48,7 @@ export const TeamsSelectOption = () => {
 
       setSelectValue(teamId as string);
 
+   // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [allTeams]);
 
 
@@ -71,7 +72,7 @@ export const TeamsSelectOption = () => {
                :
 
                <Select value={selectValue} onValueChange={setSelectValue}>
-                  <SelectTrigger className="flex-auto w-[180px] bg-[#3c3c3c] text-white border-none focus:ring-offset-0 focus:ring-0">
+                  <SelectTrigger className="flex-auto min-w-[180px] bg-[#3c3c3c] text-white border-none focus:ring-offset-0 focus:ring-0">
                      <SelectValue placeholder="Select a Team" />
                   </SelectTrigger>
                   <SelectContent className="bg-[#222] text-white border-white/10 ">

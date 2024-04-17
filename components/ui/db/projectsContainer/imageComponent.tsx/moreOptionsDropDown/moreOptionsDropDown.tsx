@@ -15,6 +15,7 @@ import downloadMedia from "@/lib/downloadMedia";
 import { RenameMediaModal } from "./renameModel";
 import { DeleteMediaModal } from "./deleteMediaModal";
 import { trpc } from "@/trpc/client/trpcClient";
+import { MoveToOrCopyToModal } from "./copy&moveModal";
 
 type Media = {
    projectId: string;
@@ -84,15 +85,21 @@ export const MoreOptionsDropDown = ({
                </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="text-white w-[160px] text rounded-md px-0 p-1  bg-[#111] border-white/20 border">
-               <div className='flex items-center gap-2 h-7 px-2 cursor-default rounded-sm hover:bg-[#383838]' >
-                  <FolderInput className="h-4 w-4" />
-                  <span className="text-xs">Move to...</span>
-               </div>
 
-               <div className='flex items-center gap-2 h-7 px-2 cursor-default rounded-sm hover:bg-[#383838]' >
-                  <Copy className="h-4 w-4" />
-                  <span className="text-xs">Copy to...</span>
-               </div>
+               <MoveToOrCopyToModal
+                  element="move"
+                  each={each}
+                  setOpenStatus={setOpenStatus}
+                  refetchMedia={refetchMedia}
+
+               />
+
+               <MoveToOrCopyToModal
+                  element="copy"
+                  each={each}
+                  setOpenStatus={setOpenStatus}
+
+               />
 
                <div className='flex items-center gap-2 h-7 px-2 cursor-default rounded-sm hover:bg-[#383838]'
                   onClick={() => {

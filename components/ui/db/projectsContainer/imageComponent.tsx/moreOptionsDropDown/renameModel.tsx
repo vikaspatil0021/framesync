@@ -89,6 +89,8 @@ export const RenameMediaModal = ({
                     <DialogFooter className="flex-row space-x-2 justify-end">
                         <DialogClose className="w-20">
                             <Button
+                                size='sm'
+
                                 variant='default'
                                 className="w-20 inline-flex"
                             >
@@ -96,6 +98,8 @@ export const RenameMediaModal = ({
                             </Button>
                         </DialogClose>
                         <Button
+                            size='sm'
+
                             variant='secondary'
                             className="w-20"
                             loading={loading}

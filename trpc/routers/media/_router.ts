@@ -7,6 +7,7 @@ import { getAllMediaHandler } from "./getAllMedia.handler";
 import { renameMediaHandler } from "./renameMedia.handler";
 import { deleteMediaHandler } from "./deleteMedia.handler";
 import { copyMediaHandler } from "./copyMedia.handler";
+import { moveMediaHandler } from "./moveMedia.handler";
 
 type Session = {
     user: {
@@ -49,7 +50,19 @@ export const mediaRouter = router({
             name: z.string(),
             duration: z.number()
         }))
-        .mutation(({ input, ctx }) => copyMediaHandler({ ...input, session: ctx.session as Session }))
+        .mutation(({ input, ctx }) => copyMediaHandler({ ...input, session: ctx.session as Session })),
+
+    moveMedia: authedProcedure
+        .input(z.object({
+            key: z.string(),
+            projectId: z.string(),
+            size: z.number(),
+            type: z.enum(["VideoFile", "Folder"]),
+            name: z.string(),
+            duration: z.number(),
+            mediaId: z.string()
+        }))
+        .mutation(({ input, ctx }) => moveMediaHandler({ ...input, session: ctx.session as Session }))
 
 
 })
