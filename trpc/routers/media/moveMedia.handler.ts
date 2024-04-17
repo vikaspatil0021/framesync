@@ -1,4 +1,4 @@
-import { createMedia, deleteMedia } from "@/lib/prisma/media/service"
+import { createMedia, deleteMedia, updateMedia } from "@/lib/prisma/media/service"
 
 type MediaType = "VideoFile" | "Folder"
 
@@ -9,29 +9,20 @@ type Session = {
 }
 
 export const moveMediaHandler = async ({
-    key,
     projectId,
-    type,
-    size,
     name,
-    duration,
-    mediaId,
+    id,
     session
 }: {
-    key: string,
     projectId: string
-    size: number,
-    type: MediaType,
     name: string,
-    duration: number,
-    mediaId: string,
+    id: string,
     session: Session
 }) => {
 
 
     try {
-        const media = await createMedia(key, projectId, size, type, name, duration, session?.user?.id);
-        const data = await deleteMedia(mediaId);
+        const media = await updateMedia(id, projectId, name, session?.user?.id)
 
         return {
             media

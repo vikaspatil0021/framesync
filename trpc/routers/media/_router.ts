@@ -54,13 +54,9 @@ export const mediaRouter = router({
 
     moveMedia: authedProcedure
         .input(z.object({
-            key: z.string(),
             projectId: z.string(),
-            size: z.number(),
-            type: z.enum(["VideoFile", "Folder"]),
             name: z.string(),
-            duration: z.number(),
-            mediaId: z.string()
+            id: z.string()
         }))
         .mutation(({ input, ctx }) => moveMediaHandler({ ...input, session: ctx.session as Session }))
 

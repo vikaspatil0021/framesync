@@ -109,12 +109,11 @@ export const MoveToOrCopyToModal = ({
     useEffect(() => {
         if (isSuccess2) {
             setOpenStatus(false);
-
-            refetchMedia && refetchMedia();
             toast({
                 variant: 'success',
                 title: each?.name + " moved successfully!"
             })
+            refetchMedia && refetchMedia();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSuccess2]);
@@ -122,10 +121,9 @@ export const MoveToOrCopyToModal = ({
     const copyMoveToHandler = () => {
         element === 'move' ?
             moveMedia.mutate({
-                ...each,
+                id: each?.id,
                 name: each?.name + '[MOVED]',
                 projectId: activeProject,
-                mediaId: each?.id
             })
             :
             copyMedia.mutate({
