@@ -173,7 +173,7 @@ export const MoveToOrCopyToModal = ({
                         setActiveProject={setActiveProject}
                     />
 
-                    <DialogFooter>
+                    <DialogFooter className="flex-row space-x-2 justify-end">
                         <DialogClose className="w-20">
                             <Button
                                 size='sm'
