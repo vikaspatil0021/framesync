@@ -17,7 +17,7 @@ export const createMedia = async (key: string, projectId: string, size: number, 
     })
 }
 
-export const getAllMediaByProjectId = async (projectId: string) => {
+export const getAllMediaByProjectId = async (projectId: string, orderBy: Record<string, string>) => {
     return await prisma?.media.findMany({
         where: {
             projectId
@@ -31,7 +31,7 @@ export const getAllMediaByProjectId = async (projectId: string) => {
             }
         },
         orderBy: {
-            name: 'desc'
+            ...orderBy
         }
     })
 }

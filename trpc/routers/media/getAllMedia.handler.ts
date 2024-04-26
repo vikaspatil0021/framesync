@@ -1,15 +1,16 @@
 import { getAllMediaByProjectId } from "@/lib/prisma/media/service"
 
-
 export const getAllMediaHandler = async ({
     projectId,
+    orderBy
 }: {
-    projectId: string
+    projectId: string,
+    orderBy: Record<string, string>
 }) => {
 
 
     try {
-        const allMedia = await getAllMediaByProjectId(projectId as string)
+        const allMedia = await getAllMediaByProjectId(projectId, orderBy);
 
         allMedia.reverse();
         let totalMediaSize = 0;

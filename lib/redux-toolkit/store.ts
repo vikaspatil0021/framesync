@@ -2,13 +2,15 @@ import { configureStore } from "@reduxjs/toolkit";
 
 import currentTeamReducer from "./slices/currentTeamSlice";
 import newUploadsMediaData from "./slices/newUploadsMediaData";
+import mediaOrderOptions from "./slices/mediaOrderOptions";
 
 
 export const makeStore = () => {
     return configureStore({
         reducer: {
             currentTeam: currentTeamReducer,
-            newUploadsMediaData
+            newUploadsMediaData,
+            mediaOrderOptions
         }
     })
 

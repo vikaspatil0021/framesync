@@ -5,17 +5,35 @@ import {
     DropdownMenuContent,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useAppDispatch } from "@/lib/redux-toolkit/hook";
+import { updateOrder } from "@/lib/redux-toolkit/slices/mediaOrderOptions";
 import { Check } from "lucide-react";
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 export default function SortOptions() {
+
+    const dispatch = useAppDispatch();
+
     const order = ["Asc", "Desc"]
     const sortingOption = ['Date uploaded', 'Name', 'Size'];
 
-    const [sortValue, setSortValue] = useState<string>(sortingOption[0]);
     const [orderValue, setOrderValue] = useState<string>(order[0]);
+    const [sortValue, setSortValue] = useState<string>(sortingOption[0]);
 
     const [openStatus, setOpenStatus] = useState<boolean>(false);
+
+
+    useEffect(() => {
+        const data = {} as any;
+        if (sortValue === 'Date uploaded') {
+            data['uploaded_at'] = orderValue.toLocaleLowerCase()
+        } else {
+            data[sortValue.toLocaleLowerCase()] = orderValue.toLocaleLowerCase();
+        }
+
+        dispatch(updateOrder(data));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [sortValue, orderValue]);
 
     return (
         <>

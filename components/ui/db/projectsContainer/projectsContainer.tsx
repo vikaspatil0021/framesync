@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/redux-toolkit/hook";
 import { ScrollArea } from "../../scroll-area";
 import checkImageAvailability from "@/lib/checkImage";
 import NewuploadSkeleton from "./imageComponent.tsx/newUploadSkeleton";
+import { useEffect } from "react";
 
 
 type Media = {
@@ -47,8 +48,14 @@ export default function ProjectsContainer({
 }) {
     const dispatch = useAppDispatch();
 
-    const { data: mediaData, refetch: refetchMedia }: any = trpc.media.getAllMedia.useQuery({ projectId });
+    const { orderBy } = useAppSelector((state) => state.mediaOrderOptions);
 
+    const { data: mediaData, refetch: refetchMedia }: any = trpc.media.getAllMedia.useQuery({ projectId, orderBy });
+
+    useEffect(() => {
+
+        console.log(mediaData, orderBy);
+    }, [mediaData])
     const { newUploadsMediaData } = useAppSelector((state) => state.newUploadsMediaData);
 
     const newUploadkeys = newUploadsMediaData.map((each: NewUploadData) => {

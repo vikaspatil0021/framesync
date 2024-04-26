@@ -30,7 +30,7 @@ export const mediaRouter = router({
         .mutation(({ input, ctx }) => createMediaHandler({ ...input, session: ctx.session as Session })),
 
     getAllMedia: authedProcedure
-        .input(z.object({ projectId: z.string() }))
+        .input(z.object({ projectId: z.string(), orderBy: z.record(z.string(), z.string()) }))
         .query(({ input }) => getAllMediaHandler({ ...input })),
 
     renameMedia: authedProcedure
