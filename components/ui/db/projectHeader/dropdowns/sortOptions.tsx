@@ -5,7 +5,7 @@ import {
     DropdownMenuContent,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useAppDispatch } from "@/lib/redux-toolkit/hook";
+import { useAppDispatch, useAppSelector } from "@/lib/redux-toolkit/hook";
 import { updateOrder } from "@/lib/redux-toolkit/slices/mediaOrderOptions";
 import { Check } from "lucide-react";
 import { useEffect, useState } from "react"
@@ -17,8 +17,20 @@ export default function SortOptions() {
     const order = ["Asc", "Desc"]
     const sortingOption = ['Date uploaded', 'Name', 'Size'];
 
-    const [orderValue, setOrderValue] = useState<string>(order[0]);
-    const [sortValue, setSortValue] = useState<string>(sortingOption[0]);
+
+    const { orderBy } = useAppSelector((state) => state.mediaOrderOptions);
+    let key;
+
+    if (Object.keys(orderBy)[0] === 'uploaded_at') {
+        key = sortingOption[0];
+    } else {
+        key = Object.keys(orderBy)[0].slice(0, 1).toLocaleUpperCase() + Object.keys(orderBy)[0].slice(1);
+    }
+
+    const value = Object.values(orderBy)[0].slice(0, 1).toLocaleUpperCase() + Object.values(orderBy)[0].slice(1);
+
+    const [orderValue, setOrderValue] = useState<string>(value || order[0]);
+    const [sortValue, setSortValue] = useState<string>(key || sortingOption[0]);
 
     const [openStatus, setOpenStatus] = useState<boolean>(false);
 

@@ -52,10 +52,6 @@ export default function ProjectsContainer({
 
     const { data: mediaData, refetch: refetchMedia }: any = trpc.media.getAllMedia.useQuery({ projectId, orderBy });
 
-    useEffect(() => {
-
-        console.log(mediaData, orderBy);
-    }, [mediaData])
     const { newUploadsMediaData } = useAppSelector((state) => state.newUploadsMediaData);
 
     const newUploadkeys = newUploadsMediaData.map((each: NewUploadData) => {
