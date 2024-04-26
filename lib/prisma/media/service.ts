@@ -31,7 +31,7 @@ export const getAllMediaByProjectId = async (projectId: string) => {
             }
         },
         orderBy: {
-            uploaded_at: 'asc'
+            name: 'desc'
         }
     })
 }

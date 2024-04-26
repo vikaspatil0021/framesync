@@ -13,7 +13,7 @@ export const getProjectsByTeamId = async (teamId: string) => {
    return await prisma?.project.findMany({
       where: {
          teamId
-      }
+      },
    })
 }
 

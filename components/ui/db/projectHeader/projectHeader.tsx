@@ -10,6 +10,7 @@ import { useAppSelector } from "@/lib/redux-toolkit/hook";
 
 
 import { SideBarComponent } from "../sidebar/sideBar";
+import SortOptions from "./dropdowns/sortOptions";
 
 type Team = {
     id: string,
@@ -38,9 +39,8 @@ export default function ProjectHeader({
     return (
         <>
             <div className="p-5 text-[#f2f2f2]">
-                   
-                <div className="text-[12px] text-[#999] hidden lg:block lg:ps-0">
 
+                <div className="text-[12px] text-[#999] hidden lg:block lg:ps-0">
                     {
                         currentTeam?.name ?
                             currentTeam?.name :
@@ -73,11 +73,9 @@ export default function ProjectHeader({
                                 '0 items, 0 bytes'
                         }
                     </div>
-                    <div className="cursor-pointer flex gap-1 items-center text-[11px] text-[#cbcbcb]">
-                        Last modified
 
-                        <AngleDown />
-                    </div>
+                    <SortOptions />
+
                     <div className="cursor-pointer">
 
                         <SettingIcon />

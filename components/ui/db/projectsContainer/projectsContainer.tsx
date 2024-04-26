@@ -47,7 +47,7 @@ export default function ProjectsContainer({
 }) {
     const dispatch = useAppDispatch();
 
-    const { data: mediaData, refetch: refetchMedia } = trpc.media.getAllMedia.useQuery({ projectId });
+    const { data: mediaData, refetch: refetchMedia }: any = trpc.media.getAllMedia.useQuery({ projectId });
 
     const { newUploadsMediaData } = useAppSelector((state) => state.newUploadsMediaData);
 
