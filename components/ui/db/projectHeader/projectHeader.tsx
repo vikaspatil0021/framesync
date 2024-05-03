@@ -11,7 +11,7 @@ import { useAppSelector } from "@/lib/redux-toolkit/hook";
 
 import { SideBarComponent } from "../sidebar/sideBar";
 import SortOptions from "./dropdowns/sortOptions";
-import ProjectSetting from "./dropdowns/projectSettings";
+import ProjectSetting from "./dropdowns/ProjectSettings/projectSettings";
 
 type Team = {
     id: string,

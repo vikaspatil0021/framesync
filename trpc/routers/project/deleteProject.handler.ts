@@ -15,11 +15,14 @@ export const deleteProjectHandler = async ({
             return { Key: each?.key }
         })
         // delete media from s3 and DB
-        const data1 = await deleteObjectsFromS3(keys)
-        const data2 = await deleteManyMedia(projectId);
+        let data1, data2;
+        if (keys?.length > 0) {
+            data1 = await deleteObjectsFromS3(keys)
+            data2 = await deleteManyMedia(projectId);
+        }
         // delete the project
         const project = await deleteProjectById(projectId);
-        
+
         return {
             data1,
             data2,
