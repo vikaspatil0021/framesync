@@ -24,3 +24,12 @@ export const getProjectById = async (projectId: string) => {
       }
    })
 }
+
+
+export const deleteProjectById = async (projectId: string) => {
+   return await prisma?.project.delete({
+      where: {
+         id: projectId
+      }
+   })
+}

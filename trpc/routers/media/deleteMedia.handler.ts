@@ -14,7 +14,8 @@ export const deleteMediaHandler = async ({
         const data = await deleteObjectFromS3(media?.key);
         
         return {
-            data
+            data,
+            media
         }
 
     } catch (error: any) {

@@ -2,7 +2,7 @@
 import { nanoid } from "nanoid";
 import s3Client from "./client";
 
-import { CopyObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
+import { CopyObjectCommand, DeleteObjectCommand, DeleteObjectsCommand, ObjectIdentifier } from "@aws-sdk/client-s3";
 
 export const deleteObjectFromS3 = async (key: string) => {
     const uploadBucketName = process.env.AWS_UPLOAD_BUCKET as string;
@@ -35,11 +35,50 @@ export const deleteObjectFromS3 = async (key: string) => {
     }
 }
 
+
+export const deleteObjectsFromS3 = async (objects: ObjectIdentifier[]) => {
+    const uploadBucketName = process.env.AWS_UPLOAD_BUCKET as string;
+    const thumbnailsBucketName = process.env.AWS_THUMBNAILS_BUCKET as string;
+
+    const command1 = new DeleteObjectsCommand({
+        Bucket: uploadBucketName,
+        Delete: {
+            Objects: [...objects],
+        },
+    });
+
+    const obj2 = objects.map((each) => {
+        return {
+            Key: each.Key + '.jpg'
+        }
+    }) as ObjectIdentifier[];
+
+    const command2 = new DeleteObjectsCommand({
+        Bucket: thumbnailsBucketName,
+        Delete: {
+            Objects: [...obj2],
+        },
+    });
+
+    try {
+        const data1 = await s3Client.send(command1);
+        const data2 = await s3Client.send(command2);
+
+        return {
+            data1,
+            data2
+        };
+
+    } catch (err) {
+        console.log("Error", err);
+        return err;
+    }
+}
 export const copyS3Object = async (key: string) => {
     const uploadBucketName = process.env.AWS_UPLOAD_BUCKET as string;
     const thumbnailsBucketName = process.env.AWS_THUMBNAILS_BUCKET as string;
 
-    
+
     let newKey = nanoid(21);
     let command1 = new CopyObjectCommand({
         Bucket: uploadBucketName,

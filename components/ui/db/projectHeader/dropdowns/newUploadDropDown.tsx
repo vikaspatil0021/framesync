@@ -85,8 +85,6 @@ export const NewUploadDropDown = ({
                         size: file.size,
                         type: "VideoFile"
                     })
-                    console.log(createMedia.data)
-
 
                     setTimeout(() => {
 
