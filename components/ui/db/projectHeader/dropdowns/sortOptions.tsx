@@ -1,5 +1,4 @@
 import { AngleDown } from "@/components/icons/Icons";
-import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -49,14 +48,14 @@ export default function SortOptions() {
 
     return (
         <>
-            <DropdownMenu open={openStatus} onOpenChange={setOpenStatus}>
+            <DropdownMenu key={'sortingOption'} open={openStatus} onOpenChange={setOpenStatus}>
                 <DropdownMenuTrigger asChild>
                     <div className="cursor-pointer flex gap-1 font-bold items-center text-[11px] text-[#cbcbcb]">
                         {sortValue}
                         <AngleDown />
                     </div>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="text-white rounded-sm p-1 w-[150px] text-[12px] bg-[#2c2c2c]">
+                <DropdownMenuContent align="end" className="text-white rounded-sm p-1 w-[150px] text-[12px] bg-[#111] border-white/25">
                     <div className="ps-1 text-[10px] py-1 font-semibold text-white/50">Order</div>
                     {
                         order?.map((eachOption: string) => {
@@ -75,6 +74,8 @@ export default function SortOptions() {
                             )
                         })
                     }
+                    <hr className="border-t-[.5px] border-white/20 my-1" />
+
                     <div className="ps-1 text-[10px] py-1 font-semibold text-white/50">Sort by</div>
                     {
                         sortingOption?.map((eachOption: string) => {

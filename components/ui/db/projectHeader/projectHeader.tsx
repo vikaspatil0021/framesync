@@ -11,6 +11,7 @@ import { useAppSelector } from "@/lib/redux-toolkit/hook";
 
 import { SideBarComponent } from "../sidebar/sideBar";
 import SortOptions from "./dropdowns/sortOptions";
+import ProjectSetting from "./dropdowns/projectSettings";
 
 type Team = {
     id: string,
@@ -29,12 +30,9 @@ export default function ProjectHeader({
     refetchMedia: () => void
 }) {
 
-
     const { currentTeam } = useAppSelector((state) => state.currentTeam);
 
-
     const { data } = trpc.project.getProject.useQuery({ projectId })
-
 
     return (
         <>
@@ -75,11 +73,7 @@ export default function ProjectHeader({
                     </div>
 
                     <SortOptions />
-
-                    <div className="cursor-pointer">
-
-                        <SettingIcon />
-                    </div>
+                    <ProjectSetting />
                 </div>
             </div>
         </>

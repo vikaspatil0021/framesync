@@ -159,14 +159,10 @@ const BottomSection = ({
                                  }, 500);
                               }}>
 
-                                 <div key={index} className={`group flex items-center justify-between cursor-pointer h-8 pe-5 max-w-[300px] ps-10 ${activePathProject === eachProject.id ? "bg-[#4a5878]" : 'hover:bg-[#3c3c3c]'}`}>
+                                 <div key={index} className={`group flex items-center cursor-pointer h-8 pe-5 max-w-[300px] ps-10 ${activePathProject === eachProject.id ? "bg-[#4a5878]" : 'hover:bg-[#3c3c3c]'}`}>
                                     <span className="text-[13px] truncate w-[85%]">
                                        {eachProject.name}
                                     </span>
-                                    <div className="rounded-sm hidden group-hover:flex items-center justify-center h-8 w-8">
-
-                                       <ThreeVerticalDotsIcon />
-                                    </div>
                                  </div>
                               </Link>
                            </>

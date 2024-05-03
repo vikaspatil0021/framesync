@@ -1,3 +1,4 @@
+"use server"
 import prisma from "../client";
 
 export const getMembershipByTeamIdUserId = async (userId: string, teamId: string) => {
