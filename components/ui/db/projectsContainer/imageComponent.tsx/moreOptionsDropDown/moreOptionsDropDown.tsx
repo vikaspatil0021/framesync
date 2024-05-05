@@ -16,6 +16,7 @@ import { RenameMediaModal } from "./renameModel";
 import { DeleteMediaModal } from "./deleteMediaModal";
 import { trpc } from "@/trpc/client/trpcClient";
 import { MoveToOrCopyToModal } from "./copy&moveModal";
+import { useAppDispatch } from "@/lib/redux-toolkit/hook";
 
 type Media = {
    projectId: string;
@@ -43,13 +44,14 @@ export const MoreOptionsDropDown = ({
    awsCdnImgDomain: string,
    refetchMedia: () => void
 }) => {
+   const dispatch = useAppDispatch();
    const [openStatus, setOpenStatus] = useState(false);
    const [downloading, setDownloading] = useState(false);
    const [duplicateLoading, setDuplicateLoading] = useState(false);
 
    const downloadMediaHandler = async () => {
       setDownloading(true);
-      const result = await downloadMedia(each?.key, each?.name);
+      const result = await downloadMedia(each?.key, each?.name, dispatch);
       if (result === 200) {
          setOpenStatus(false)
          setDownloading(false);

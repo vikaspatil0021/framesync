@@ -14,20 +14,21 @@ import { Trash2 } from "lucide-react";
 
 import { trpc } from "@/trpc/client/trpcClient";
 import { useAppSelector } from "@/lib/redux-toolkit/hook";
-import { usePathname, useRouter } from "next/navigation";
+import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 
 
 export const DeleteProjectModal = ({
-    setOpenStatus
+    setOpenStatus,
+    router,
+    projectId
 }: {
-    setOpenStatus: Dispatch<SetStateAction<boolean>>
+    setOpenStatus: Dispatch<SetStateAction<boolean>>,
+    router: AppRouterInstance,
+    projectId: string
 }) => {
 
-    const pathname = usePathname();
-    const router = useRouter();
 
-    const projectId = pathname.replace("/db/project/", '');
 
 
     const [open, setOpen] = useState<boolean>(false);
@@ -44,13 +45,13 @@ export const DeleteProjectModal = ({
 
     useEffect(() => {
         if (isSuccess) {
-            
+
             toast({
                 title: `Project deleted - ${data.project.name}`,
                 variant: "success"
             });
             const ids = projectsData?.projects.filter((each: any) => projectId != each.id).map((each: any) => each.id) as string[];
-            
+
             refetch();
             setOpenStatus(false);
             router.push('/db/project/' + ids[0]);
@@ -81,8 +82,6 @@ export const DeleteProjectModal = ({
                     <div className="relative p-1.5 text-[11px] rounded-sm hover:bg-[#eb6060] flex items-center gap-2 cursor-pointer">
                         <Trash2 className="h-4 w-4" />
                         Delete project
-                        {/* {delProjectLoading &&
-                            <LoadingIcon className="-right-2 h-4 w-4" />} */}
                     </div >
                 </DialogTrigger>
                 <DialogContent className="text-[#fff] ">

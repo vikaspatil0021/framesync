@@ -8,6 +8,7 @@ import { TRPCProvider } from './trpcProvider'
 
 import { Toaster } from '@/components/ui/toaster';
 import StoreProvider from './storeProvider'
+import DownloadsStatusNotifier from '@/components/ui/db/projectHeader/dropdowns/ProjectSettings/downloadsStatusNotifier'
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -27,6 +28,7 @@ export default function RootLayout({
                      <SessionProvider>
                         {children}
                         <Toaster />
+                        <DownloadsStatusNotifier />
                      </SessionProvider>
                   </TRPCProvider>
                </StoreProvider>
