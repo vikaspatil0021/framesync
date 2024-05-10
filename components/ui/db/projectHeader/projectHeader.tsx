@@ -73,7 +73,9 @@ export default function ProjectHeader({
                     </div>
 
                     <SortOptions />
-                    <ProjectSetting />
+                    <ProjectSetting
+                        project={data?.project as { teamId: string; id: string; name: string; }}
+                    />
                 </div>
             </div>
         </>

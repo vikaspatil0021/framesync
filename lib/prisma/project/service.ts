@@ -33,3 +33,14 @@ export const deleteProjectById = async (projectId: string) => {
       }
    })
 }
+
+export const updateProject = async (id: string, name: string) => {
+   return await prisma?.project.update({
+      where: {
+         id
+      },
+      data: {
+         name
+      }
+   })
+}

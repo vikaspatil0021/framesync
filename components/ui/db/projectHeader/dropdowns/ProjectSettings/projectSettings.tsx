@@ -8,13 +8,19 @@ import { useState } from "react";
 import { DeleteProjectModal } from "./deleteProjectModal";
 import { usePathname, useRouter } from "next/navigation";
 import { DownloadAllBtn } from "./downloadAllBtn";
+import ProjectSettingModal from "./projectSettingsModal";
 
 
-export default function ProjectSetting() {
-    const pathname = usePathname();
+export default function ProjectSetting({
+    project
+}: {
+    project: {
+        id: string;
+        name: string;
+        teamId: string;
+    }
+}) {
     const router = useRouter();
-
-    const projectId = pathname.replace("/db/project/", '');
 
     const [openStatus, setOpenStatus] = useState<boolean>(false);
 
@@ -29,19 +35,19 @@ export default function ProjectSetting() {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="text-white rounded-sm p-1 w-[150px] text-[12px] bg-[#111] border-white/25">
                     <DownloadAllBtn
-                        projectId={projectId}
+                        projectId={project?.id}
                         setOpenStatus={setOpenStatus}
                     />
 
                     <hr className="border-t-[.5px] border-white/20 my-1" />
-                    <div className="relative p-1.5 text-[11px] rounded-sm hover:bg-[#4c4c4c] flex items-center gap-2 cursor-pointer " >
-                        <SettingIcon />
-                        Project settings
-                    </div >
+                    <ProjectSettingModal
+                        project={project}
+                        setOpenStatus={setOpenStatus}
+/>
                     <DeleteProjectModal
                         setOpenStatus={setOpenStatus}
                         router={router}
-                        projectId={projectId}
+                        projectId={project?.id}
                     />
                 </DropdownMenuContent>
             </DropdownMenu >
