@@ -11,7 +11,6 @@ import { useAppDispatch, useAppSelector } from "@/lib/redux-toolkit/hook";
 import { ScrollArea } from "../../scroll-area";
 import checkImageAvailability from "@/lib/checkImage";
 import NewuploadSkeleton from "./imageComponent.tsx/newUploadSkeleton";
-import { useEffect } from "react";
 
 
 type Media = {

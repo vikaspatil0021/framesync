@@ -56,7 +56,7 @@ export const deleteMedia = async (id: string) => {
     })
 }
 
-export const deleteManyMedia = async (projectId: string) =>  {
+export const deleteManyMedia = async (projectId: string) => {
     return await prisma.media.deleteMany({
         where: {
             projectId
@@ -74,6 +74,20 @@ export const updateMedia = async (id: string, projectId: string, name: string, u
             name,
             uploaderId,
             uploaded_at: new Date()
+        }
+    })
+}
+
+export const getMediaById = async (id: string) => {
+    return await prisma?.media?.findFirst({
+        where: {
+            id
+        },
+        select: {
+            id: true,
+            name: true,
+            key:true,
+            projectId:true
         }
     })
 }

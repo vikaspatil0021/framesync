@@ -1,18 +1,19 @@
 /** @type {import('next').NextConfig} */
 
-const awsCdnDomain = process.env.NEXT_PUBLIC_AWS_CDN_DOMAIN?.replace('https://','');
+const awsCdnDomain = process.env.NEXT_PUBLIC_AWS_CDN_DOMAIN?.replace('https://', '');
 
 const nextConfig = {
-    images: {
-        remotePatterns: [
-          {
-            protocol: 'https',
-            hostname: awsCdnDomain,
-            port: '',
-            pathname: '/**',
-          },
-        ],
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: awsCdnDomain,
+        port: '',
+        pathname: '/**',
       },
+    ],
+  },
+  reactStrictMode: false,
 }
 
 module.exports = nextConfig

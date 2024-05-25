@@ -14,6 +14,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { MoreOptionsDropDown } from "./moreOptionsDropDown/moreOptionsDropDown"
+import Link from "next/link"
 
 
 type Media = {
@@ -48,52 +49,53 @@ export default function ImageComponent({
 
     return (
         <>
+            <Link target="_blank" href={'/player/' + each?.id}>
+                <div className="group relative rounded-md text-[#fff] shadow-md shadow-[#111] cursor-pointer">
+                    <div className="relative">
+                        <Image
+                            key={index}
+                            loading="lazy"
+                            src={awsCdnImgDomain}
+                            width={100}
+                            height={100}
+                            className="rounded-t-md w-full aspect-video"
+                            alt='media-Image'
+                            unoptimized
+                            draggable={false}
+                        />
 
-            <div draggable className="group relative rounded-md text-[#fff] shadow-md shadow-[#111] cursor-pointer">
-                <div className="relative">
-                    <Image
-                        key={index}
-                        loading="lazy"
-                        src={awsCdnImgDomain}
-                        width={100}
-                        height={100}
-                        className="rounded-t-md w-full aspect-video"
-                        alt='media-Image'
-                        unoptimized
-                        draggable={false}
-                    />
-
-                    <span className="text-[9px] font-medium bg-[#222] rounded-sm absolute bottom-0 right-0 px-1 m-1 flex items-center shadow-slate-300/50 shadow-sm">
-                        {formatTime(each?.duration)}
-                    </span>
-
-                    <MoreOptionsDropDown
-                        each={each}
-                        awsCdnImgDomain={awsCdnImgDomain}
-                        refetchMedia={refetchMedia}
-                    />
-
-                </div>
-
-                <div className="text-[11px] bg-[#363c4c] rounded-b-md p-2.5">
-                    <div className="flex justify-between">
-                        <span className="truncate w-[70%]">
-                            {each?.name}
+                        <span className="text-[9px] font-medium bg-[#222] rounded-sm absolute bottom-0 right-0 px-1 m-1 flex items-center shadow-slate-300/50 shadow-sm">
+                            {formatTime(each?.duration)}
                         </span>
-                        <span>
-                            {convertBytes(each?.size)}
-                        </span>
+
+                        <MoreOptionsDropDown
+                            each={each}
+                            awsCdnImgDomain={awsCdnImgDomain}
+                            refetchMedia={refetchMedia}
+                        />
+
                     </div>
-                    <div className="flex justify-between mt-0.5 text-[9px] opacity-70 text-[#eee]">
-                        <span className="truncate max-w-[50%]">
-                            {each?.user.name}
-                        </span>
-                        <span className="truncate max-w-[50%]">
-                            {formatDate(each?.uploaded_at)}
-                        </span>
+
+                    <div className="text-[11px] bg-[#363c4c] rounded-b-md p-2.5">
+                        <div className="flex justify-between">
+                            <span className="truncate w-[70%]">
+                                {each?.name}
+                            </span>
+                            <span>
+                                {convertBytes(each?.size)}
+                            </span>
+                        </div>
+                        <div className="flex justify-between mt-0.5 text-[9px] opacity-70 text-[#eee]">
+                            <span className="truncate max-w-[50%]">
+                                {each?.user.name}
+                            </span>
+                            <span className="truncate max-w-[50%]">
+                                {formatDate(each?.uploaded_at)}
+                            </span>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </Link>
 
         </>
     )
