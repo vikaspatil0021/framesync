@@ -19,15 +19,18 @@ export default function PlayerPage({ params }: { params: { mediaId: string } }) 
 
     return (
         <>
-            <div className="flex flex-col">
-                <PlayerHeader
-                    media={data as Media}
-                />
-                {data ?
-                    <VideoPlayer
-                        media={data}
+            <div className="flex flex-col lg:flex-row bg-[#222] text-[#f2f2f2]">
+                <div className="flex flex-col lg:w-[calc(100%-350px)] h-screen">
+                    <PlayerHeader
+                        media={data as Media}
                     />
-                    : "loading"}
+                    {data ?
+                          <VideoPlayer media={data as Media} />
+                        : "loading"}
+                </div>
+                <div className="flex lg:w-[350px] bg-[#2c2c2c] h-screen lg:border-l-[1px] lg:border-[#555] p-4">
+                    hi
+                </div>
             </div>
         </>
     )

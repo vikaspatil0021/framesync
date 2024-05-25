@@ -17,83 +17,78 @@ export default function VideoPlayer({
     media: Media,
 }) {
 
-    const videoRef = useRef<HTMLDivElement>(null);
-    const [player, setPlayer] = useState<any>(null);
+    // const videoRef = useRef<HTMLDivElement>(null);
+    // const [player, setPlayer] = useState<any>(null);
 
-    const src = useMemo(() => `${process.env.NEXT_PUBLIC_AWS_CDN_DOMAIN}/${media?.key}`, [media?.key]);
+    const src: string = useMemo(() => `${process.env.NEXT_PUBLIC_AWS_CDN_DOMAIN}/${media?.key}`, [media?.key]);
+    // console.log(src)
+    // useEffect(() => {
 
-    useEffect(() => {
+    //     const options = {
+    //         controls: true,
+    //         fluid: true,
+    //         fill:true,
+    //         html5: {
+    //             vhs: {
+    //                 overridenative: true,
+    //             },
+    //         },
+    //         // height: 20,
+    //         // width: 1080,
+    //         // responsive: true,
+    //         // aspectRatio: '16:9'
+    //     }
 
-        const options = {
-            controls: true,
-            // fluid: true,
-            html5: {
-                vhs: {
-                    overridenative: true,
-                },
-            },
-            height: 720,
-            width: 1080,
-            responsive: true,
-        }
+    //     if (player === null && videoRef.current) {
 
-        if (player === null && videoRef.current) {
+    //         const videoElement = videoRef.current.appendChild(
+    //             document.createElement('video-js'),
+    //         );
 
-            const videoElement = videoRef.current.appendChild(
-                document.createElement('video-js'),
-            );
-            videoElement.classList.add('vjs-big-play-centered');
+    //         const player: any = videojs(
+    //             videoElement,
+    //             options,
+    //             () => {
+    //                 setPlayer(player);
+    //                 console.log('player started');
 
-            const player: any = videojs(
-                videoElement,
-                options,
-                () => {
-                    setPlayer(player);
-                    console.log('player started');
+    //                 player.src({
+    //                     type: 'video/mp4',
+    //                     src
+    //                 });
 
-                    player.src({
-                        type: 'video/mp4',
-                        src
-                    });
+    //                 // player?.mobileUi(); // mobile ui #https://github.com/mister-ben/videojs-mobile-ui
+    //                 player?.eme();
 
-                    // player?.mobileUi(); // mobile ui #https://github.com/mister-ben/videojs-mobile-ui
-                    player?.eme();
-
-                    // @ts-ignore
-                    this.on('keystatuschange', (event: any) => {
-                        console.log('event: ', event);
-                    });
-                },
-            );
-        }
+    //                 // @ts-ignore
+    //                 this.on('keystatuschange', (event: any) => {
+    //                     console.log('event: ', event);
+    //                 });
+    //             },
+    //         );
+    //     }
 
 
-        return () => {
-            if (player) {
-                player.dispose();
-                console.log('playuer disposed')
-            }
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    //     return () => {
+    //         if (player) {
+    //             player.dispose();
+    //             console.log('playuer disposed')
+    //         }
+    //     };
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, []);
 
     return (
         <>
-            <div
-                id="videoContainer"
-                data-vjs-player
-                ref={videoRef}
-                className="relative group/v-container select-none rounded-md overflow-hidden w-full h-screen grid"
-            >
-                {/* <VideoPlayerControls
-                    player={player}
-                    onVideoEnd={onVideoEnd}
-                    segments={segments}
-                    setQuality={setQuality}
-                    subtitles={subtitles}
-                /> */}
-
+            <div id='video-player' className="relative w-full max-h-[550px]">
+                <video className="video" controls style={{ height: "auto", width: "100%", maxHeight: "550px", backgroundColor: 'black', aspectRatio: "16/9" }}>
+                    <source
+                        src={src}
+                        type="video/mp4"
+                    />
+                </video>
             </div>
+
         </>
     )
 }
