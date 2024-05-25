@@ -148,7 +148,6 @@ const CardSkeleton = () => {
                     <div className="flex justify-between">
                         <Skeleton className="h-3 w-[40%] bg-[#666]" />
                         <Skeleton className="h-3 w-[10%] bg-[#666]" />
-
                     </div>
                     <div className="flex justify-between mt-2">
                         <Skeleton className="h-1.5 w-[30%] bg-[#666]" />

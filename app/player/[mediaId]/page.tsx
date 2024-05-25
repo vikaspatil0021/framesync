@@ -2,10 +2,10 @@
 
 import { lazy } from "react";
 
-const VideoPlayer = lazy(() => import("@/components/ui/player/videoPlayer/videoPlayer"))
-
 import { trpc } from "@/trpc/client/trpcClient";
-import PlayerHeader from "@/components/ui/player/playerHeader/playerHeader";
+
+const VideoPlayer = lazy(() => import("@/components/ui/player/videoPlayer/videoPlayer"))
+const PlayerHeader = lazy(() => import("@/components/ui/player/playerHeader/playerHeader"));
 
 interface Media {
     id: string
@@ -20,13 +20,11 @@ export default function PlayerPage({ params }: { params: { mediaId: string } }) 
     return (
         <>
             <div className="flex flex-col lg:flex-row bg-[#222] text-[#f2f2f2]">
-                <div className="flex flex-col lg:w-[calc(100%-350px)] h-screen">
+                <div className="flex flex-col lg:w-[calc(100%-350px)] sm:h-screen bg-[#222]">
                     <PlayerHeader
                         media={data as Media}
                     />
-                    {data ?
-                          <VideoPlayer media={data as Media} />
-                        : "loading"}
+                        <VideoPlayer media={data as Media} />
                 </div>
                 <div className="flex lg:w-[350px] bg-[#2c2c2c] h-screen lg:border-l-[1px] lg:border-[#555] p-4">
                     hi

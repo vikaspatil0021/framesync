@@ -1,9 +1,8 @@
 'use client'
 
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useMemo } from "react"
 
-import videojs from 'video.js';
-import 'video.js/dist/video-js.css';
+import  VideoPlayerControls from "./videoControls";
 
 interface Media {
     id: string
@@ -17,76 +16,22 @@ export default function VideoPlayer({
     media: Media,
 }) {
 
-    // const videoRef = useRef<HTMLDivElement>(null);
-    // const [player, setPlayer] = useState<any>(null);
-
     const src: string = useMemo(() => `${process.env.NEXT_PUBLIC_AWS_CDN_DOMAIN}/${media?.key}`, [media?.key]);
-    // console.log(src)
-    // useEffect(() => {
-
-    //     const options = {
-    //         controls: true,
-    //         fluid: true,
-    //         fill:true,
-    //         html5: {
-    //             vhs: {
-    //                 overridenative: true,
-    //             },
-    //         },
-    //         // height: 20,
-    //         // width: 1080,
-    //         // responsive: true,
-    //         // aspectRatio: '16:9'
-    //     }
-
-    //     if (player === null && videoRef.current) {
-
-    //         const videoElement = videoRef.current.appendChild(
-    //             document.createElement('video-js'),
-    //         );
-
-    //         const player: any = videojs(
-    //             videoElement,
-    //             options,
-    //             () => {
-    //                 setPlayer(player);
-    //                 console.log('player started');
-
-    //                 player.src({
-    //                     type: 'video/mp4',
-    //                     src
-    //                 });
-
-    //                 // player?.mobileUi(); // mobile ui #https://github.com/mister-ben/videojs-mobile-ui
-    //                 player?.eme();
-
-    //                 // @ts-ignore
-    //                 this.on('keystatuschange', (event: any) => {
-    //                     console.log('event: ', event);
-    //                 });
-    //             },
-    //         );
-    //     }
-
-
-    //     return () => {
-    //         if (player) {
-    //             player.dispose();
-    //             console.log('playuer disposed')
-    //         }
-    //     };
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, []);
-
+    if (!media) return "loading";
+    const player = document.querySelector("#video-player") as HTMLVideoElement;
+    console.log(player)
     return (
         <>
-            <div id='video-player' className="relative w-full max-h-[550px]">
-                <video className="video" controls style={{ height: "auto", width: "100%", maxHeight: "550px", backgroundColor: 'black', aspectRatio: "16/9" }}>
-                    <source
-                        src={src}
-                        type="video/mp4"
-                    />
-                </video>
+            <div className="flex justify-center sm:items-center sm:h-[calc(100vh-200px)] sm:p-3">
+                <div className="relative max-h-[550px]">
+                    <video id='video-player' controls={false} className="max-h-[550px] aspect-video bg-black">
+                        <source
+                            src={src}
+                            type="video/mp4"
+                        />
+                    </video>
+                    <VideoPlayerControls />
+                </div>
             </div>
 
         </>

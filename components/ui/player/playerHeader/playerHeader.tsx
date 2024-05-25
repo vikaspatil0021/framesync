@@ -24,7 +24,7 @@ export default function PlayerHeader({ media }: { media: Media }) {
 
                     {
                         media?.name ?
-                            <span className="text-[13px] truncate w-[70%] sm:w-full">
+                            <span className="text-[13px] truncate w-[200px] sm:w-full">
                                 {media?.name}
                             </span> :
                             <Skeleton className="h-4 w-[200px] bg-[#888]" />
