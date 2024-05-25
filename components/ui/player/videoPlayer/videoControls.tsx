@@ -21,24 +21,23 @@ export default function VideoPlayerControls() {
   const [player, setPlayer] = useState<HTMLVideoElement>(document.querySelector("#video-player") as HTMLVideoElement);
 
   useEffect(() => {
-
     const videoInstance = document.querySelector("#video-player") as HTMLVideoElement;
-    setPlayer(videoInstance)
-    console.log(videoInstance)
+    setPlayer(videoInstance);
+    
+    return () => {
+      if(player){
+        player.remove()
+      }
+    }
   }, [])
+
+
   const [playerPaused, setPlayerPaused] = useState<boolean>(true);
   const [volumeIconState, setVolumeIconState] = useState<string>('high');
   const [durationStartTime, setDurationStartTime] = useState<string>('0:00');
   const [durationEndTime, setDurationEndTime] = useState<string>('0:00');
   const [playBackSpeed, setPlayBackSpeed] = useState<string>('1x');
   const [isFullScreen, setFullScreen] = useState<boolean>(false);
-  const [showCaption, setShowCaption] = useState<boolean>(false);
-  const [captionBtnDisabled, setCaptionBtnDisabled] = useState<boolean>(false);
-  const [isSkipDurationNext, setSkipDurationNext] = useState<boolean>(false);
-  const [isSkipDurationBack, setSkipDurationBack] = useState<boolean>(false);
-  const [qualityValue, setQualityValue] = useState(
-    searchParams.get('quality') ?? '1080',
-  );
 
   const volumeSliderRef = useRef<any>(null);
 
@@ -53,36 +52,36 @@ export default function VideoPlayerControls() {
   }
 
   // // toggle voulme button
-  // function toggleVolumeBtn() {
-  //   player?.muted(!player?.muted());
-  //   setVolumeIconState(player?.muted() ? 'muted' : 'high');
+  function toggleVolumeBtn() {
+    player.muted = !player?.muted;
+    setVolumeIconState(player?.muted ? 'muted' : 'high');
 
-  //   if (player?.muted()) {
-  //     player?.volume(0);
-  //   } else {
-  //     player?.volume(1);
-  //   }
-  // }
+    if (player?.muted) {
+      player.volume = 0;
+    } else {
+      player.volume = 1;
+    }
+  }
 
-  // function volumeSliderHandler(e: any) {
-  //   player?.volume(e?.target.value);
-  //   player?.muted(e?.target.value === 0);
-  // }
+  function volumeSliderHandler(e: any) {
+    player.volume = e?.target.value;
+    player.muted = e?.target.value === 0;
+  }
 
-  // function volumeIconToggle() {
-  //   let volState;
-  //   const volume = player?.volume();
+  function volumeIconToggle() {
+    let volState;
+    const volume = player?.volume;
 
-  //   if (player?.muted() || volume === 0) {
-  //     volState = 'muted';
-  //   } else if (volume < 0.5) {
-  //     volState = 'low';
-  //   } else {
-  //     volState = 'high';
-  //   }
-  //   volumeSliderRef.current.value = volume;
-  //   setVolumeIconState(volState);
-  // }
+    if (player?.muted || volume === 0) {
+      volState = 'muted';
+    } else if (volume < 0.5) {
+      volState = 'low';
+    } else {
+      volState = 'high';
+    }
+    volumeSliderRef.current.value = volume;
+    setVolumeIconState(volState);
+  }
 
   // // setduration after metadata is loaded
   function setDurationHandler() {
@@ -142,7 +141,7 @@ export default function VideoPlayerControls() {
 
         break;
       case 'KeyM':
-        // toggleVolumeBtn();
+        toggleVolumeBtn();
         e?.stopPropagation();
         break;
 
@@ -156,23 +155,15 @@ export default function VideoPlayerControls() {
       player.onplay = () => setPlayerPaused(false);
       player.onpause = () => setPlayerPaused(true);
       console.log('hey')
-      //     player?.on('volumechange', volumeIconToggle);
+      player.onvolumechange = () => volumeIconToggle();
 
       player.onloadedmetadata = () => {
         setDurationHandler();
       }
 
+      player.ontimeupdate = () => startTimeHandler();
 
-      player.ontimeupdate = () => {
-        startTimeHandler()
-      };
-
-      //     player?.on('click', togglePlay);
-
-      //     player?.on('ended', () => {
-      //       setPlayerPaused(true);
-      //       onVideoEnd();
-      //     });
+      player.addEventListener("click", togglePlay);
 
       document.addEventListener('keydown', handleKeyEvents);
 
@@ -248,7 +239,7 @@ export default function VideoPlayerControls() {
             {/*volume-container*/}
             <div className="flex gap-2 items-center group/volume-container relative">
               <button className="outline-none"
-              // onClick={toggleVolumeBtn}
+                onClick={toggleVolumeBtn}
               >
                 <HighVolumeIcon
                   className={volumeIconState === 'high' ? 'block' : 'hidden'}
@@ -270,7 +261,7 @@ export default function VideoPlayerControls() {
                 max="1"
                 step="any"
                 defaultValue="1"
-              // onChange={volumeSliderHandler}
+                onChange={volumeSliderHandler}
               />
             </div>
 

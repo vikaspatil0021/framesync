@@ -18,8 +18,7 @@ export default function VideoPlayer({
 
     const src: string = useMemo(() => `${process.env.NEXT_PUBLIC_AWS_CDN_DOMAIN}/${media?.key}`, [media?.key]);
     if (!media) return "loading";
-    const player = document.querySelector("#video-player") as HTMLVideoElement;
-    console.log(player)
+    
     return (
         <>
             <div className="flex justify-center sm:items-center sm:h-[calc(100vh-200px)] sm:p-3">
