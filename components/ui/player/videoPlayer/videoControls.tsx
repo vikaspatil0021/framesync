@@ -24,11 +24,6 @@ export default function VideoPlayerControls() {
     const videoInstance = document.querySelector("#video-player") as HTMLVideoElement;
     setPlayer(videoInstance);
     
-    return () => {
-      if(player){
-        player.remove()
-      }
-    }
   }, [])
 
 
@@ -194,30 +189,25 @@ export default function VideoPlayerControls() {
       //       updateTimeline(e, player, segments),
       //     );
     }
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [player]);
 
   return (
     <>
 
       <div
-        className={` w-full transition-all py-1 bg-[#444]`}
+        className={` w-full transition-all pb-1 bg-[#444]`}
       >
         {/* timeline segments */}
         <div
           id="timeline-container"
-          className="group/timeline relative h-[5px] w-[calc(100%-20px)] cursor-pointer flex items-center transition-all mx-[10px] mb-2"
+          className="group/timeline relative h-[5px] w-full cursor-pointer flex items-center transition-all mb-2"
         >
           <div
             id="timeline"
-            className="w-full h-full relative top-0 left-0 flex items-center justify-between"
+            className="w-full h-full relative top-0 left-0 flex items-center justify-between bg-white"
           >
-            <div
-              id="timeline-label"
-              className="absolute -top-8 text-[#f2f2f2] text-[14px] hidden group-hover/timeline:flex font-semibol px-1 rounded-md items-center gap-1 bg-[#555] whitespace-nowrap"
-            >
-              0:00
-            </div>{' '}
-            {/* timeline-label */}
           </div>
         </div>
 
