@@ -9,21 +9,19 @@ import {
   PlayIcon,
 } from '../../../icons/videoPlayerIcons';
 
-
-// import { segmentsHandler, updateTimeline } from '@/lib/createAndHandleSegments';
-import { useRouter, useSearchParams } from 'next/navigation';
 import formatTime from '@/lib/formatTime';
 
+let isMouseOver = false;
+
+
 export default function VideoPlayerControls() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
 
   const [player, setPlayer] = useState<HTMLVideoElement>(document.querySelector("#video-player") as HTMLVideoElement);
 
   useEffect(() => {
     const videoInstance = document.querySelector("#video-player") as HTMLVideoElement;
     setPlayer(videoInstance);
-    
+
   }, [])
 
 
@@ -116,6 +114,54 @@ export default function VideoPlayerControls() {
     setFullScreen(fullScreen);
   }
 
+  // const [isFullScreen, setFullScreen] = useState<boolean>(false);
+
+  function updateTimeline(e: any) {
+    const timelineContainer = document.querySelector('#timeline-container') as HTMLDivElement;
+    const previewEle = document.querySelector('#preview-timeline') as HTMLDivElement;
+    const progressEle = document.querySelector('#progress-timeline') as HTMLDivElement;
+
+    const rect = timelineContainer && timelineContainer?.getBoundingClientRect();
+
+    let progress = (player.currentTime / player.duration) * 100;
+    let preview = 0;
+
+    if (e.type === 'timeupdate') {
+      if (!isMouseOver) {
+        preview = (player.buffered.end(player.buffered.length - 1) / player.duration) * 100;
+      }
+    }
+    if (e.type === 'click') {
+      if (rect) {
+        let percent = Math.min(Math.max(0, e?.x - rect?.x), rect?.width) / rect?.width;
+        player.currentTime = (percent * player?.duration);
+
+      }
+
+    }
+    if (e.type === 'mouseover') {
+      isMouseOver = true;
+      if (rect) {
+        let percent = Math.min(Math.max(0, e?.x - rect?.x), rect?.width) / rect?.width;
+        preview = percent * 100;
+      }
+    }
+    if (e.type === 'mousemove') {
+      isMouseOver = true;
+      let percent = Math.min(Math.max(0, e?.x - rect?.x), rect?.width) / rect?.width;
+      preview = percent * 100;
+    }
+    if (e.type === 'mouseout') {
+      isMouseOver = false;
+      preview = (player.buffered.end(player.buffered.length - 1) / player.duration) * 100;
+      console.log('out')
+    }
+
+    progressEle.style.width = progress + "%";
+    if (preview > 0) previewEle.style.width = preview + "%";
+
+  }
+
 
   // // handle key events
   function handleKeyEvents(e: any) {
@@ -149,66 +195,71 @@ export default function VideoPlayerControls() {
     if (player) {
       player.onplay = () => setPlayerPaused(false);
       player.onpause = () => setPlayerPaused(true);
-      console.log('hey')
+
       player.onvolumechange = () => volumeIconToggle();
 
       player.onloadedmetadata = () => {
         setDurationHandler();
       }
 
-      player.ontimeupdate = () => startTimeHandler();
+      player.ontimeupdate = (e: any) => {
+        startTimeHandler()
+        updateTimeline(e)
+      };
 
       player.addEventListener("click", togglePlay);
 
       document.addEventListener('keydown', handleKeyEvents);
 
 
-      //     // segments handling events
-      //     const timelineContainer = document.querySelector(
-      //       '#timeline-container',
-      //     ) as Element;
-      //     player?.on('timeupdate', (e: any) => updateTimeline(e, player, segments));
+      // segments handling events
+      const timelineContainer = document.querySelector(
+        '#timeline-container',
+      ) as Element;
 
-      //     timelineContainer.addEventListener('click', (e: any) =>
-      //       updateTimeline(e, player, segments),
-      //     );
-      //     timelineContainer.addEventListener('mousemove', (e: any) =>
-      //       updateTimeline(e, player, segments),
-      //     );
-      //     timelineContainer.addEventListener('mouseover', (e: any) =>
-      //       updateTimeline(e, player, segments),
-      //     );
-      //     timelineContainer.addEventListener('mouseout', (e: any) =>
-      //       updateTimeline(e, player, segments),
-      //     );
+      timelineContainer.addEventListener('click', (e: any) =>
+        updateTimeline(e),
+      );
+      timelineContainer.addEventListener('mousemove', (e: any) =>
+        updateTimeline(e),
+      );
+      timelineContainer.addEventListener('mouseover', (e: any) =>
+        updateTimeline(e),
+      );
+      timelineContainer.addEventListener('mouseout', (e: any) =>
+        updateTimeline(e),
+      );
       //     timelineContainer.addEventListener('mousedown', (e: any) =>
       //       updateTimeline(e, player, segments),
       //     );
 
-      //     document.addEventListener('mouseup', (e: any) =>
-      //       updateTimeline(e, player, segments),
-      //     );
+      // document.addEventListener('mouseup', (e: any) =>
+      //   updateTimeline(e),
+      // );
     }
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [player]);
 
   return (
     <>
 
       <div
-        className={` w-full transition-all pb-1 bg-[#444]`}
+        className={` w-full py-1 bg-[#444]`}
       >
         {/* timeline segments */}
         <div
           id="timeline-container"
-          className="group/timeline relative h-[5px] w-full cursor-pointer flex items-center transition-all mb-2"
+          className=" relative h-[6px]  w-full cursor-pointer flex items-center mb-2 bg-[#fff]/30"
         >
           <div
-            id="timeline"
-            className="w-full h-full relative top-0 left-0 flex items-center justify-between bg-white"
-          >
-          </div>
+            id='preview-timeline'
+            className=" h-full z-[1] absolute top-0 left-0 flex items-center justify-between transition-none bg-[#fff]/60"
+          ></div>
+          <div
+            id='progress-timeline'
+            className=" h-full z-[2] absolute top-0 left-0 flex items-center justify-between transition-all bg-[#588aff]"
+          ></div>
         </div>
 
         {/* //controls */}
