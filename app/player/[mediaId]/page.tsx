@@ -1,6 +1,7 @@
 "use client"
 
-import { lazy } from "react";
+import { lazy, useEffect } from "react";
+import { redirect } from "next/navigation";
 
 import { trpc } from "@/trpc/client/trpcClient";
 
@@ -17,6 +18,12 @@ interface Media {
 export default function PlayerPage({ params }: { params: { mediaId: string } }) {
     const { data } = trpc?.media?.getMedia.useQuery({ mediaId: params?.mediaId });
 
+    useEffect(() => {
+        if (data === null) {
+            redirect('/db/recents')
+        }
+    }, [data]);
+
     return (
         <>
             <div className="flex flex-col lg:flex-row bg-[#222] text-[#f2f2f2]">
@@ -24,7 +31,7 @@ export default function PlayerPage({ params }: { params: { mediaId: string } }) 
                     <PlayerHeader
                         media={data as Media}
                     />
-                        <VideoPlayer media={data as Media} />
+                    <VideoPlayer media={data as Media} />
                 </div>
                 <div className="flex lg:w-[350px] bg-[#2c2c2c] h-screen lg:border-l-[1px] lg:border-[#555] p-4">
                     hi

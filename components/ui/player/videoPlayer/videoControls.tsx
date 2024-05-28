@@ -20,7 +20,7 @@ export default function VideoPlayerControls() {
   const [player, setPlayer] = useState<HTMLVideoElement>(document.querySelector("#video-player") as HTMLVideoElement);
 
   useEffect(() => {
-    const videoInstance = document.querySelector("#video-player") as HTMLVideoElement;
+    const videoInstance = document && document.querySelector("#video-player") as HTMLVideoElement;
     setPlayer(videoInstance);
 
   }, [])

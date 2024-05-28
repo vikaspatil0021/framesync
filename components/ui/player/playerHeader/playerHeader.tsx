@@ -1,7 +1,7 @@
 import { ChevronLeftIcon } from "lucide-react"
 import { Skeleton } from "../../skeleton"
 import Link from "next/link"
-import { ThreeVerticalDotsIcon } from "@/components/icons/Icons"
+import PlayerDropDownOptions from "./playeroptionsDropDown"
 
 interface Media {
     id: string
@@ -21,7 +21,6 @@ export default function PlayerHeader({ media }: { media: Media }) {
                             <ChevronLeftIcon className="h-4" />
                         </div>
                     </Link>
-
                     {
                         media?.name ?
                             <span className="text-[13px] truncate w-[200px] sm:w-full">
@@ -30,11 +29,8 @@ export default function PlayerHeader({ media }: { media: Media }) {
                             <Skeleton className="h-4 w-[200px] bg-[#888]" />
                     }
                 </div>
-                <div className="flex">
-                    <div className="bg-[#444] rounded-md h-6 w-6 p-1 flex items-center justify-center">
-                        <ThreeVerticalDotsIcon />
-                    </div>
-                </div>
+                    <PlayerDropDownOptions
+                    media={media} />
             </div>
         </>
     )

@@ -3,6 +3,7 @@
 import { useMemo } from "react"
 
 import VideoPlayerControls from "./videoControls";
+import { LoadingIcon } from "@/components/icons/Icons";
 
 interface Media {
     id: string
@@ -20,10 +21,15 @@ export default function VideoPlayer({
 
     return (
         <>
-            <div className="flex justify-center sm:items-center sm:h-[calc(100vh-200px)] sm:p-3">
-                {!media ?
-                    <div className="aspect-video h-full w-full sm:w-auto flex justify-center items-center bg-[#000] max-h-[550px]"> Loading0021 ...</div>
-                    : <div className="relative max-h-[550px] h-full w-full sm:w-auto">
+            {!media ?
+                // <div className="flex justify-center sm:items-center sm:h-[calc(100vh-200px)] sm:p-3">
+                <div className="aspect-video  sm:h-[calc(100vh-200px)] flex justify-center items-center">
+                    <LoadingIcon />
+                </div>
+                // </div>
+                :
+                <div className="flex justify-center sm:items-center sm:h-[calc(100vh-200px)] sm:p-3">
+                    <div className="relative max-h-[550px] h-full w-full sm:w-auto">
                         <video id='video-player' className="max-h-[550px] h-full w-full aspect-video bg-black">
                             <source
                                 src={src}
@@ -31,9 +37,9 @@ export default function VideoPlayer({
                             />
                         </video>
                         <VideoPlayerControls />
-                    </div>}
-            </div>
-
+                    </div>
+                </div>
+            }
         </>
     )
 }
