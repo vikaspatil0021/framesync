@@ -23,6 +23,10 @@ export default function VideoPlayerControls() {
     const videoInstance = document && document.querySelector("#video-player") as HTMLVideoElement;
     setPlayer(videoInstance);
 
+    return () => {
+      videoInstance.remove();
+      console.log('dshubgvj')
+    }
   }, [])
 
 
@@ -115,7 +119,6 @@ export default function VideoPlayerControls() {
     setFullScreen(fullScreen);
   }
 
-  // const [isFullScreen, setFullScreen] = useState<boolean>(false);
 
   function updateTimeline(e: any) {
     const timelineContainer = document.querySelector('#timeline-container') as HTMLDivElement;
@@ -237,6 +240,17 @@ export default function VideoPlayerControls() {
       // document.addEventListener('mouseup', (e: any) =>
       //   updateTimeline(e),
       // );
+    }
+
+    return () => {
+
+      document.removeEventListener('keydown', handleKeyEvents);
+      if (player) {
+
+        player.removeEventListener("click", togglePlay);
+        player.remove();
+      }
+      console.log('keydown')
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

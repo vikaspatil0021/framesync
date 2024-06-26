@@ -49,7 +49,7 @@ export default function ImageComponent({
 
     return (
         <>
-            <Link target="_blank" href={'/player/' + each?.id}>
+            <Link href={'/player/' + each?.id}>
                 <div className="group relative rounded-md text-[#fff] shadow-md shadow-[#111] cursor-pointer">
                     <div className="relative">
                         <Image

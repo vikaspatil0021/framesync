@@ -1,5 +1,6 @@
 
 import { AngleDown, LogoutIcon, RecentIcon, SettingIcon } from "@/components/icons/Icons"
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import {
    DropdownMenu,
    DropdownMenuContent,
@@ -22,7 +23,14 @@ export const AccountDropDown = () => {
             <DropdownMenuTrigger asChild>
                <div className={`inline-flex items-center gap-2 cursor-pointer pl-2 py-1.5 pr-3 hover:bg-[#383838]  rounded-sm ${openStatus && 'bg-[#383838]'}`}>
 
-                  <div className="h-6 w-6 rounded-full bg-green-400" />
+                  {session?.data
+                     ?
+                     <Avatar className="h-6 w-6">
+                        <AvatarImage src={session?.data?.user?.image as string} alt="user profile image" />
+                     </Avatar>
+                     :
+                     <Skeleton className="h-6 w-6 rounded-full bg-[#555]" />
+                  }
                   {
                      session.data ?
                         <span className="text-[13px]">
