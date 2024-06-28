@@ -157,7 +157,6 @@ export default function VideoPlayerControls() {
     if (e.type === 'mouseout') {
       isMouseOver = false;
       preview = (player.buffered.end(player.buffered.length - 1) / player.duration) * 100;
-      console.log('out')
     }
 
     progressEle.style.width = progress + "%";
@@ -168,6 +167,9 @@ export default function VideoPlayerControls() {
 
   // // handle key events
   function handleKeyEvents(e: any) {
+
+    if (e.target.localName !== 'body') return;
+
     switch (e?.code) {
       case 'Space':
         togglePlay();
