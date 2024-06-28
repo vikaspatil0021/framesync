@@ -25,7 +25,6 @@ export default function VideoPlayerControls() {
 
     return () => {
       videoInstance.remove();
-      console.log('dshubgvj')
     }
   }, [])
 
@@ -250,7 +249,6 @@ export default function VideoPlayerControls() {
         player.removeEventListener("click", togglePlay);
         player.remove();
       }
-      console.log('keydown')
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
