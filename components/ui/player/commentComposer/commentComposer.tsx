@@ -47,13 +47,15 @@ export default function CommentComposer({ mediaId }: { mediaId: string }) {
 
     const createCommentMutation = trpc.comment.createComment.useMutation();
 
-    const { isSuccess } = createCommentMutation;
+    const { data, isSuccess } = createCommentMutation;
     useEffect(() => {
         if (isSuccess) {
             setCommentMsg('');
             setbtnLoding(false);
             if (textareaRef.current)
                 textareaRef.current.style.height = "auto";
+
+            console.log(data)
         }
     }, [isSuccess]);
 
@@ -71,7 +73,7 @@ export default function CommentComposer({ mediaId }: { mediaId: string }) {
             timeStamp?: number
             userId: string
         }
-        
+
         if (startTimeChecked) {
             opt.timeStamp = startTime as number;
         }

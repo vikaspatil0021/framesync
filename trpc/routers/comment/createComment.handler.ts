@@ -1,3 +1,4 @@
+import { createComment } from "@/lib/prisma/comment/service"
 
 type params = {
     msg: string
@@ -7,8 +8,10 @@ type params = {
 }
 export const createCommentHandler = async (params: params) => {
     try {
-        console.log(params)
-
+        const data = await createComment(params);
+        return {
+            data
+        }
     } catch (error: any) {
         throw new Error(error?.message)
     }
