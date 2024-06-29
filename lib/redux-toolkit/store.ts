@@ -4,6 +4,7 @@ import currentTeamReducer from "./slices/currentTeamSlice";
 import newUploadsMediaData from "./slices/newUploadsMediaData";
 import mediaOrderOptions from "./slices/mediaOrderOptions";
 import downloadMediaReducer from "./slices/downloadMediaSlice";
+import videoPlayerInfoReducer from "./slices/videoPlayerInfoSlice"
 
 export const makeStore = () => {
     return configureStore({
@@ -11,7 +12,8 @@ export const makeStore = () => {
             currentTeam: currentTeamReducer,
             newUploadsMediaData,
             mediaOrderOptions,
-            downloadMediaReducer
+            downloadMediaReducer,
+            videoPlayerInfoReducer
         }
     })
 

@@ -1,14 +1,24 @@
+"use client"
+
 import { useSession } from "next-auth/react";
-import { useRef } from "react"
+
+import { useRef, useState } from "react"
 import { Avatar, AvatarImage } from "../../avatar";
 import { Skeleton } from "../../skeleton";
 import { Button } from "../../button";
-import { Clock } from "lucide-react";
+import { Checkbox } from "../../checkbox";
+
+import formatTime from "@/lib/formatTime";
+import { useAppSelector } from "@/lib/redux-toolkit/hook";
 
 export default function CommentComposer() {
     const session = useSession();
 
+    const { startTime } = useAppSelector(state => state.videoPlayerInfoReducer)
+
     const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+    const [startTimeChecked, setStartTimeChecked] = useState(true);
 
     // controlling the rows of textarea by scrollheight
     const handleTextareaHeight = () => {
@@ -20,6 +30,8 @@ export default function CommentComposer() {
             textareaRef.current.style.height = (textareaRef.current.scrollHeight) + "px";
         }
     }
+
+    console.log(startTimeChecked)
 
 
     return (
@@ -45,14 +57,19 @@ export default function CommentComposer() {
                             }} />
                     </div>
                     <div className="flex justify-between items-center ps-7">
-
-                    <div className=" flex gap-1 items-center text-[11px] bg-[#222] p-1 rounded-md text-white/70">
-                        <Clock className="h-3 w-3" />
-                        0:00
-                    </div>
-                    <Button size={"sm"} className="h-7 text-white/70 hover:text-white/80">
-                        Send
-                    </Button>
+                        <div className="flex items-center  bg-[rgb(32,34,43)] rounded-md gap-1  p-1">
+                            <Checkbox
+                                checked={startTimeChecked}
+                                onCheckedChange={(val) => setStartTimeChecked(val as boolean)} className="bg-[#999] border-none" id="currentTime" />
+                            <label htmlFor='currentTime' className="flex w-8 items-center text-[11px]  text-white/90">
+                                <span>
+                                    {formatTime(startTime)}
+                                </span>
+                            </label>
+                        </div>
+                        <Button size={"sm"} className="h-7 text-white/70 hover:text-white/80">
+                            Send
+                        </Button>
                     </div>
                 </div>
             </div >

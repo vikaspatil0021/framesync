@@ -11,11 +11,14 @@ import {
 } from '../../../icons/videoPlayerIcons';
 
 import formatTime from '@/lib/formatTime';
+import { useAppDispatch } from '@/lib/redux-toolkit/hook';
+import { updateCurrentPlayerTime } from '@/lib/redux-toolkit/slices/videoPlayerInfoSlice';
 
 let isMouseOver = false;
 
 
 export default function VideoPlayerControls() {
+  const dispatch = useAppDispatch();
 
   const [player, setPlayer] = useState<HTMLVideoElement>(document.querySelector("#video-player") as HTMLVideoElement);
 
@@ -31,8 +34,8 @@ export default function VideoPlayerControls() {
 
   const [playerPaused, setPlayerPaused] = useState<boolean>(true);
   const [volumeIconState, setVolumeIconState] = useState<string>('high');
-  const [durationStartTime, setDurationStartTime] = useState<string>('0:00');
-  const [durationEndTime, setDurationEndTime] = useState<string>('0:00');
+  const [durationStartTime, setDurationStartTime] = useState<string>('00:00');
+  const [durationEndTime, setDurationEndTime] = useState<string>('00:00');
   const [playBackSpeed, setPlayBackSpeed] = useState<string>('1x');
   const [isFullScreen, setFullScreen] = useState<boolean>(false);
 
@@ -90,6 +93,7 @@ export default function VideoPlayerControls() {
   function startTimeHandler() {
     const currentTime = formatTime(player?.currentTime as number);
     setDurationStartTime(currentTime);
+    dispatch(updateCurrentPlayerTime(player?.currentTime as number));
   }
 
   // // playback speed control
