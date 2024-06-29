@@ -1,4 +1,5 @@
 import { router } from "./../trpc";
+import { commentRouter } from "./comment/_route";
 
 import { inviteRouter } from "./invite/_router";
 import { mediaRouter } from "./media/_router";
@@ -12,8 +13,8 @@ export const appRouter = router({
     memberships: membershipsRouter,
     teams: teamsRouter,
     project: projectRouter,
-    media: mediaRouter
-
+    media: mediaRouter,
+    comment: commentRouter
 });
 
 

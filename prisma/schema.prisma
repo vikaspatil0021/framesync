@@ -16,6 +16,7 @@ model User {
   authProviderId String
   TeamMembership TeamMembership[]
   Media          Media[]
+  Comment        Comment[]
 }
 
 model Team {
@@ -68,6 +69,15 @@ model Media {
   projectId   String
   project     Project   @relation(fields: [projectId], references: [id])
   user        User      @relation(fields: [uploaderId], references: [id])
+}
+
+model Comment {
+  id        String @id @default("")
+  msg       String
+  mediaId   String
+  timeStamp Int?
+  userId    String
+  user      User   @relation(fields: [userId], references: [id])
 }
 
 enum MediaType {

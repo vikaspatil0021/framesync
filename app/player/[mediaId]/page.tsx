@@ -33,7 +33,9 @@ export default function PlayerPage({ params }: { params: { mediaId: string } }) 
                         media={data as Media}
                     />
                     <VideoPlayer media={data as Media} />
-                    <CommentComposer />
+                    <CommentComposer
+                        mediaId={data?.id as string} />
+
                 </div>
                 <div className="flex lg:w-[350px] bg-[#2c2c2c] h-screen lg:border-l-[1px] lg:border-[#555] p-4">
                     hi

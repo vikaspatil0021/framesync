@@ -1,8 +1,8 @@
 "use client"
 
-import { useSession } from "next-auth/react";
+import { SessionContextValue, useSession } from "next-auth/react";
 
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Avatar, AvatarImage } from "../../avatar";
 import { Skeleton } from "../../skeleton";
 import { Button } from "../../button";
@@ -10,29 +10,75 @@ import { Checkbox } from "../../checkbox";
 
 import formatTime from "@/lib/formatTime";
 import { useAppSelector } from "@/lib/redux-toolkit/hook";
+import { trpc } from "@/trpc/client/trpcClient";
 
-export default function CommentComposer() {
-    const session = useSession();
+type Session = {
+    data: {
+        user: {
+            id: string
+        }
+    }
+} & SessionContextValue
+
+
+export default function CommentComposer({ mediaId }: { mediaId: string }) {
+    const session = useSession() as Session;
 
     const { startTime } = useAppSelector(state => state.videoPlayerInfoReducer)
 
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+    const [commentMsg, setCommentMsg] = useState('');
     const [startTimeChecked, setStartTimeChecked] = useState(true);
+    const [btnLoding, setbtnLoding] = useState(false);
 
     // controlling the rows of textarea by scrollheight
     const handleTextareaHeight = () => {
         if (textareaRef.current === null) return;
         textareaRef.current.style.height = "auto";
+
         if (textareaRef.current.scrollHeight > 96) {
             textareaRef.current.style.height = "96px";
         } else {
+
             textareaRef.current.style.height = (textareaRef.current.scrollHeight) + "px";
         }
     }
 
-    console.log(startTimeChecked)
+    const createCommentMutation = trpc.comment.createComment.useMutation();
 
+    const { isSuccess } = createCommentMutation;
+    useEffect(() => {
+        if (isSuccess) {
+            setCommentMsg('');
+            setbtnLoding(false);
+            if (textareaRef.current)
+                textareaRef.current.style.height = "auto";
+        }
+    }, [isSuccess]);
+
+    const handleNewComment = () => {
+        if (commentMsg === '') return;
+
+        const opt = {
+            msg: commentMsg,
+            userId: session?.data?.user?.id,
+            mediaId,
+
+        } as {
+            msg: string
+            mediaId: string
+            timeStamp?: number
+            userId: string
+        }
+        
+        if (startTimeChecked) {
+            opt.timeStamp = startTime as number;
+        }
+
+        createCommentMutation.mutate(opt);
+        setbtnLoding(true);
+    }
 
     return (
         <>
@@ -46,14 +92,16 @@ export default function CommentComposer() {
                                 <AvatarImage src={session?.data?.user?.image as string} alt="user profile image" />
                             </Avatar>
                             :
-                            <Skeleton className="h-5 w-5 rounded-full bg-[#555]" />
+                            <Skeleton className="h-5 min-w-5 w-5 rounded-full bg-[#555]" />
                         }
 
                         <textarea
                             ref={textareaRef}
-                            rows={1} className="bg-transparent outline-none text-sm w-full resize-none no-scrollbar text-white/70" placeholder="Leave your comment here ..."
-                            onChange={() => {
+                            value={commentMsg}
+                            rows={1} className="bg-transparent flex-auto outline-none text-sm resize-none no-scrollbar text-white/70" placeholder="Leave your comment here ..."
+                            onChange={(e: any) => {
                                 handleTextareaHeight();
+                                setCommentMsg(e.target.value);
                             }} />
                     </div>
                     <div className="flex justify-between items-center ps-7">
@@ -67,7 +115,10 @@ export default function CommentComposer() {
                                 </span>
                             </label>
                         </div>
-                        <Button size={"sm"} className="h-7 text-white/70 hover:text-white/80">
+                        <Button size={"sm"} className="h-7 text-white/70 hover:text-white/80"
+                            loading={btnLoding}
+                            onClick={handleNewComment}
+                        >
                             Send
                         </Button>
                     </div>
