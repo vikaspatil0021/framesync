@@ -87,7 +87,15 @@ export const getMediaById = async (id: string) => {
             id: true,
             name: true,
             key:true,
-            projectId:true
+            projectId:true,
+            duration:true,
+            size:true,
+            uploaded_at:true,
+            user:{
+                select:{
+                    name:true
+                }
+            }
         }
     })
 }
