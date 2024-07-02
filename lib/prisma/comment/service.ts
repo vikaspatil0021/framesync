@@ -29,3 +29,11 @@ export const getAllCommentsByMediaId = async (mediaId: string) => {
         }
     })
 }
+
+export const deleteCommentById = async (id: string) => {
+    return await prisma?.comment.delete({
+        where: {
+            id
+        }
+    })
+}
