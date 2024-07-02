@@ -24,32 +24,44 @@ type params = {
         id: string;
         userId: string;
         msg: string;
-        mediaId: string;
-        timeStamp: number | null;
-        date: string
+        mediaId?: string;
+        timeStamp?: number | null;
+        date: string;
+        commentId?: string
     },
     deleteCommentMutation: any,
-    updateCommentMutation: any
+    updateCommentMutation: any,
+    createReplyCommentMutation: any
 }
 
-export default function CommentCard({ eachComment, deleteCommentMutation, updateCommentMutation }: params) {
+export default function CommentCard({ eachComment, deleteCommentMutation, updateCommentMutation, createReplyCommentMutation }: params) {
     const session = useSession() as Session;
 
     const [editMode, setEditMode] = useState(false);
+    const [replyMode, setReplyMode] = useState(false);
     const [editMsg, setEditMsg] = useState(eachComment?.msg);
+    const [editReplyMsg, setEditReplyMsg] = useState('');
 
     const { isSuccess: updateSuccess } = updateCommentMutation;
+    const { isSuccess: createReplyCopmmentSuccess } = createReplyCommentMutation;
 
     useEffect(() => {
         if (updateSuccess)
-            setEditMode(false)
+            setEditMode(false);
 
-    }, [updateSuccess])
+        if (createReplyCopmmentSuccess){
+            setEditReplyMsg('')
+            setReplyMode(false);
+        }
 
+
+    }, [updateSuccess, createReplyCopmmentSuccess])
+
+    if (eachComment?.commentId) console.log(eachComment?.timeStamp)
     return (
         <>
 
-            < div key={eachComment?.id} className="border-y-[.5px] border-[#444]">
+            < div key={eachComment?.id} className={`border-y-[.5px] border-[#444] ${eachComment?.commentId && "ps-7"}`}>
 
                 <div className="p-3 flex flex-col gap-1.5">
                     <div className="flex gap-2 items-center">
@@ -64,7 +76,7 @@ export default function CommentCard({ eachComment, deleteCommentMutation, update
                             <div>
                                 <textarea
                                     value={editMsg}
-                                    rows={2} className="bg-[#363c4c] rounded-md p-2  w-full outline-none text-xs resize-none no-scrollbar text-white/70" placeholder="Leave your comment here ..."
+                                    rows={2} className="bg-[#363c4c] rounded-md p-2  w-full outline-none text-xs resize-none no-scrollbar text-white/70"
                                     onChange={(e: any) => setEditMsg(e.target.value as string)}
                                 />
                                 <div className=''>
@@ -82,12 +94,13 @@ export default function CommentCard({ eachComment, deleteCommentMutation, update
                         :
                         <>
                             <div className="text-[13px] lg:text-xs text-white/80 whitespace-pre-line leading-relaxed">
-                                {eachComment?.timeStamp !== null && <span className="text-[#6784d3] pe-2">{formatTime(eachComment?.timeStamp as number)}</span>}
+                                {(eachComment?.timeStamp !== null && eachComment?.timeStamp !== undefined) && <span className="text-[#6784d3] pe-2">{formatTime(eachComment?.timeStamp as number)}</span>}
                                 {eachComment?.msg}
                             </div>
                             <div className="flex justify-between items-center transition-all">
 
-                                <div className="text-[#f2f2f2]/60 text-xs font-semibold">
+                                <div className="text-[#f2f2f2]/60 text-xs font-semibold cursor-pointer"
+                                    onClick={() => setReplyMode(!replyMode)}>
                                     reply
                                 </div>
 
@@ -106,6 +119,30 @@ export default function CommentCard({ eachComment, deleteCommentMutation, update
                                     </div>
                                 }
                             </div>
+                            {
+                                replyMode && <div>
+                                    <textarea
+                                        rows={2} className="bg-[#363c4c] rounded-md p-2  w-full outline-none text-xs resize-none no-scrollbar text-white/70"
+                                        value={editReplyMsg}
+                                        onChange={(e: any) => setEditReplyMsg(e.target.value)}
+                                    />
+                                    <div className=''>
+                                        <Button size={"sm"} className="h-6 text-white/70 bg-transparent hover:bg-transparent hover:text-white/80"
+                                            onClick={() => setReplyMode(false)} >
+                                            Cancel
+                                        </Button>
+                                        <Button size={"sm"} className="h-6"
+                                            onClick={() => createReplyCommentMutation.mutate({
+                                                userId: session?.data?.user?.id,
+                                                commentId: eachComment?.commentId ? eachComment?.commentId : eachComment?.id,
+                                                msg: editReplyMsg
+                                            })}
+                                        >
+                                            Send
+                                        </Button>
+                                    </div>
+                                </div>
+                            }
                         </>
                     }
 

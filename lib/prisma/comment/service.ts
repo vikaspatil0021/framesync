@@ -26,6 +26,21 @@ export const getAllCommentsByMediaId = async (mediaId: string) => {
                     name: true
                 }
             },
+            ReplyComment: {
+                include: {
+                    user: {
+                        select: {
+                            id: true,
+                            picture: true,
+                            name: true
+                        }
+                    }
+                },
+                orderBy:{
+                    date:'asc'
+                }
+            }
+
         },
         orderBy: {
             date: "asc"

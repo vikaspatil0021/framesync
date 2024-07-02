@@ -49,7 +49,32 @@ type EachComment = {
     msg: string;
     mediaId: string;
     timeStamp: number | null;
-    date: string
+    date: string;
+    ReplyComment: {
+        id: string;
+        user: {
+            id: string;
+            name: string;
+            picture: string;
+        };
+        userId: string;
+        msg: string;
+        date: string;
+        commentId: string;
+    }[];
+}
+
+type ReplyComment = {
+    id: string;
+    user: {
+        id: string;
+        name: string;
+        picture: string;
+    };
+    userId: string;
+    msg: string;
+    date: string;
+    commentId: string;
 }
 
 export default function FileDetailsAndCommentsContainer({ media }: { media: Media }) {
@@ -59,16 +84,22 @@ export default function FileDetailsAndCommentsContainer({ media }: { media: Medi
     const { data: allComments, refetch: allCommentsRefetch } = trpc?.comment?.getAllComments.useQuery({ mediaId: media?.id });
     const deleteCommentMutation = trpc?.comment?.deleteComment?.useMutation();
     const updateCommentMutation = trpc?.comment?.updateComment?.useMutation();
+    const createReplyCommentMutation = trpc?.replyComment?.createReplyComment?.useMutation();
+    const deleteReplyCommentMutation = trpc?.replyComment?.deleteReplyComment?.useMutation();
+    const updateReplyCommentMutation = trpc?.replyComment?.updateReplyComment?.useMutation();
 
     const { isSuccess: deleteSuccess } = deleteCommentMutation;
     const { isSuccess: updateSuccess } = updateCommentMutation;
+    const { isSuccess: createReplyCommentSuccess } = updateCommentMutation;
+    const { isSuccess: deleteReplyCommentSuccess } = deleteReplyCommentMutation;
+    const { isSuccess: updateReplyCommentSuccess } = updateReplyCommentMutation;
 
 
     useEffect(() => {
-        if (deleteSuccess || updateSuccess)
+        if (deleteSuccess || updateSuccess || createReplyCommentSuccess || deleteReplyCommentSuccess || updateReplyCommentSuccess)
             allCommentsRefetch()
 
-    }, [deleteSuccess, updateSuccess]);
+    }, [deleteSuccess, updateSuccess, createReplyCommentSuccess,deleteReplyCommentSuccess,updateReplyCommentSuccess]);
 
     useEffect(() => {
         if (media) {
@@ -98,12 +129,32 @@ export default function FileDetailsAndCommentsContainer({ media }: { media: Medi
 
                         {allComments && allComments?.map((eachComment: EachComment) => {
                             return (
-                                <CommentCard
-                                    key={eachComment?.id}
-                                    deleteCommentMutation={deleteCommentMutation}
-                                    updateCommentMutation={updateCommentMutation}
-                                    eachComment={eachComment}
-                                />
+                                <>
+                                    <CommentCard
+                                        key={eachComment?.id}
+                                        deleteCommentMutation={deleteCommentMutation}
+                                        updateCommentMutation={updateCommentMutation}
+                                        createReplyCommentMutation={createReplyCommentMutation}
+                                        eachComment={eachComment}
+                                    />
+                                    {
+                                        eachComment?.ReplyComment?.map((eachReplyComment: ReplyComment) => {
+                                            return (
+                                                <>
+
+                                                    <CommentCard
+                                                        key={eachReplyComment?.id}
+                                                        createReplyCommentMutation={createReplyCommentMutation}
+                                                        eachComment={eachReplyComment}
+                                                        deleteCommentMutation={deleteReplyCommentMutation}
+                                                        updateCommentMutation={updateReplyCommentMutation}
+                                                    />
+                                                </>
+                                            )
+                                        })
+                                    }
+                                </>
+
                             )
 
                         })}

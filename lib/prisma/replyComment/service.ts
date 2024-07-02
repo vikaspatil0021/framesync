@@ -10,3 +10,24 @@ export const createReplyComment = async (params: CreateReplyCommentParams) => {
         data: params
     })
 }
+
+
+export const deleteReplyCommentById = async (id: string) => {
+    return await prisma?.replyComment.delete({
+        where: {
+            id
+        }
+    })
+}
+
+export const updateReplyCommentById = async (id: string, msg: string) => {
+    return await prisma?.replyComment.update({
+        where: {
+            id
+        },
+        data: {
+            msg,
+            // date: new Date()
+        }
+    })
+}
