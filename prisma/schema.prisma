@@ -72,12 +72,13 @@ model Media {
 }
 
 model Comment {
-  id        String @id @default("")
+  id        String   @id @default("")
   msg       String
   mediaId   String
   timeStamp Int?
+  date      DateTime @default(now())
   userId    String
-  user      User   @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
 }
 
 enum MediaType {

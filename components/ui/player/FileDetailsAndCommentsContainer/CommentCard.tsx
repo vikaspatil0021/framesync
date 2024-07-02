@@ -1,9 +1,10 @@
 import { SessionContextValue, useSession } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Avatar, AvatarImage } from "../../avatar";
 import { Pencil, Trash2 } from "lucide-react";
 import formatTime from "@/lib/formatTime";
 import { Button } from "../../button";
+import { calculateTimeSince } from "@/lib/calculateTimeSince";
 
 type Session = {
     data: {
@@ -25,16 +26,25 @@ type params = {
         msg: string;
         mediaId: string;
         timeStamp: number | null;
+        date: string
     },
-    deleteCommentMutation: any
+    deleteCommentMutation: any,
+    updateCommentMutation: any
 }
 
-export default function CommentCard({ eachComment, deleteCommentMutation }: params) {
+export default function CommentCard({ eachComment, deleteCommentMutation, updateCommentMutation }: params) {
     const session = useSession() as Session;
 
     const [editMode, setEditMode] = useState(false);
     const [editMsg, setEditMsg] = useState(eachComment?.msg);
 
+    const { isSuccess: updateSuccess } = updateCommentMutation;
+
+    useEffect(() => {
+        if (updateSuccess)
+            setEditMode(false)
+
+    }, [updateSuccess])
 
     return (
         <>
@@ -47,6 +57,7 @@ export default function CommentCard({ eachComment, deleteCommentMutation }: para
                             <AvatarImage src={eachComment?.user?.picture} alt="user profile image" />
                         </Avatar>
                         <span className="text-sm font-semibold text-white/70">{eachComment?.user?.name}</span>
+                        <span className="text-xs text-gray-400">{calculateTimeSince(eachComment?.date)}</span>
                     </div>
                     {editMode ?
                         <>
@@ -61,7 +72,8 @@ export default function CommentCard({ eachComment, deleteCommentMutation }: para
                                         onClick={() => setEditMode(false)}>
                                         Cancel
                                     </Button>
-                                    <Button size={"sm"} className="h-6">
+                                    <Button size={"sm"} className="h-6"
+                                        onClick={() => updateCommentMutation.mutate({ id: eachComment?.id, msg: editMsg })}>
                                         Save
                                     </Button>
                                 </div>

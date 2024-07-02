@@ -4,6 +4,7 @@ import {
     Table,
     TableBody,
     TableCell,
+    TableRow,
 } from "@/components/ui/table"
 import { useEffect, useState } from "react";
 import formatTime from "@/lib/formatTime";
@@ -48,6 +49,7 @@ type EachComment = {
     msg: string;
     mediaId: string;
     timeStamp: number | null;
+    date: string
 }
 
 export default function FileDetailsAndCommentsContainer({ media }: { media: Media }) {
@@ -56,14 +58,17 @@ export default function FileDetailsAndCommentsContainer({ media }: { media: Medi
 
     const { data: allComments, refetch: allCommentsRefetch } = trpc?.comment?.getAllComments.useQuery({ mediaId: media?.id });
     const deleteCommentMutation = trpc?.comment?.deleteComment?.useMutation();
+    const updateCommentMutation = trpc?.comment?.updateComment?.useMutation();
 
-    const { isSuccess } = deleteCommentMutation;
+    const { isSuccess: deleteSuccess } = deleteCommentMutation;
+    const { isSuccess: updateSuccess } = updateCommentMutation;
+
 
     useEffect(() => {
-        if (isSuccess)
+        if (deleteSuccess || updateSuccess)
             allCommentsRefetch()
 
-    }, [isSuccess]);
+    }, [deleteSuccess, updateSuccess]);
 
     useEffect(() => {
         if (media) {
@@ -90,47 +95,49 @@ export default function FileDetailsAndCommentsContainer({ media }: { media: Medi
                 </TabsList>
                 <TabsContent value="comments" className="data-[state=active]:flex flex-col flex-1 overflow-y-auto">
                     <ScrollArea className="flex-1 pb-28 lg:pb-0">
-                        {/* <Table className="">
-                            <TableBody > */}
-                                {allComments && allComments?.map((eachComment: EachComment) => {
-                                    return (
-                                        <CommentCard
-                                            key={eachComment?.id}
-                                            deleteCommentMutation={deleteCommentMutation}
-                                            eachComment={eachComment}
-                                        />
-                                    )
 
-                                })}
-                                {
-                                    !allComments &&
-                                    <>
-                                        < div className="border-y-[.5px] border-[#444]">
+                        {allComments && allComments?.map((eachComment: EachComment) => {
+                            return (
+                                <CommentCard
+                                    key={eachComment?.id}
+                                    deleteCommentMutation={deleteCommentMutation}
+                                    updateCommentMutation={updateCommentMutation}
+                                    eachComment={eachComment}
+                                />
+                            )
 
-                                            <div className="p-3 flex flex-col gap-1.5">
-                                                <div className="flex gap-2 items-center">
-                                                    <Skeleton className="h-5 min-w-5 w-5 rounded-full bg-[#555]" />
-                                                    <Skeleton className="h-4  w-20 rounded-md bg-[#555]" />
-                                                </div>
-                                                <Skeleton className="h-8  w-full rounded-md bg-[#555]" />
+                        })}
+                        {allComments?.length === 0
+                            && <div className="flex justify-center items-center h-full w-full text-sm opacity-80">No Comments</div>
+                        }
+                        {
+                            !allComments &&
+                            <>
+                                < div className="border-y-[.5px] border-[#444]">
 
-                                            </div>
+                                    <div className="p-3 flex flex-col gap-1.5">
+                                        <div className="flex gap-2 items-center">
+                                            <Skeleton className="h-5 min-w-5 w-5 rounded-full bg-[#555]" />
+                                            <Skeleton className="h-4  w-20 rounded-md bg-[#555]" />
                                         </div>
-                                        < div className="border-y-[.5px] border-[#444]">
+                                        <Skeleton className="h-8  w-full rounded-md bg-[#555]" />
 
-                                            <div className="p-3 flex flex-col gap-1.5">
-                                                <div className="flex gap-2 items-center">
-                                                    <Skeleton className="h-5 min-w-5 w-5 rounded-full bg-[#555]" />
-                                                    <Skeleton className="h-4  w-20 rounded-md bg-[#555]" />
-                                                </div>
-                                                <Skeleton className="h-8  w-full rounded-md bg-[#555]" />
+                                    </div>
+                                </div>
+                                < div className="border-y-[.5px] border-[#444]">
 
-                                            </div>
+                                    <div className="p-3 flex flex-col gap-1.5">
+                                        <div className="flex gap-2 items-center">
+                                            <Skeleton className="h-5 min-w-5 w-5 rounded-full bg-[#555]" />
+                                            <Skeleton className="h-4  w-20 rounded-md bg-[#555]" />
                                         </div>
-                                    </>
-                                }
-                            {/* </TableBody>
-                        </Table > */}
+                                        <Skeleton className="h-8  w-full rounded-md bg-[#555]" />
+
+                                    </div>
+                                </div>
+                            </>
+                        }
+
 
                     </ScrollArea>
                 </TabsContent>
@@ -141,10 +148,10 @@ export default function FileDetailsAndCommentsContainer({ media }: { media: Medi
                                 mediaInfo && Object.entries(mediaInfo).map(([key, value]) => {
                                     return (
                                         <>
-                                            <div className="hover:bg-none">
+                                            <TableRow className="hover:bg-none">
                                                 <TableCell className="font-medium text-[#999]/90 text-xs">{key}</TableCell>
                                                 <TableCell className="text-xs">{value}</TableCell>
-                                            </div>
+                                            </TableRow>
                                         </>
                                     )
                                 })

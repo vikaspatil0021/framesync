@@ -25,7 +25,10 @@ export const getAllCommentsByMediaId = async (mediaId: string) => {
                     picture: true,
                     name: true
                 }
-            }
+            },
+        },
+        orderBy: {
+            date: "asc"
         }
     })
 }
@@ -34,6 +37,18 @@ export const deleteCommentById = async (id: string) => {
     return await prisma?.comment.delete({
         where: {
             id
+        }
+    })
+}
+
+export const updateCommentById = async (id: string, msg: string) => {
+    return await prisma?.comment.update({
+        where: {
+            id
+        },
+        data: {
+            msg,
+            // date: new Date()
         }
     })
 }
