@@ -84,7 +84,7 @@ export default function CommentComposer({ mediaId }: { mediaId: string }) {
 
     return (
         <>
-            <div className="fixed lg:absolute bottom-0 w-full flex justify-center px-3 pb-5">
+            <div className="fixed z-10 lg:absolute bottom-0 w-full flex justify-center px-3 pb-5">
                 <div className="bg-[#363c4c] w-[calc(100%-24px)] max-w-[600px] rounded-lg px-3 py-2">
                     <div className="flex gap-2 mb-2">
 
