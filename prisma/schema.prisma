@@ -17,6 +17,7 @@ model User {
   TeamMembership TeamMembership[]
   Media          Media[]
   Comment        Comment[]
+  ReplyComment   ReplyComment[]
 }
 
 model Team {
@@ -72,13 +73,24 @@ model Media {
 }
 
 model Comment {
+  id           String         @id @default("")
+  msg          String
+  mediaId      String
+  timeStamp    Int?
+  date         DateTime       @default(now())
+  userId       String
+  user         User           @relation(fields: [userId], references: [id])
+  ReplyComment ReplyComment[]
+}
+
+model ReplyComment {
   id        String   @id @default("")
   msg       String
-  mediaId   String
-  timeStamp Int?
   date      DateTime @default(now())
   userId    String
   user      User     @relation(fields: [userId], references: [id])
+  commentId String
+  comment   Comment  @relation(fields: [commentId], references: [id])
 }
 
 enum MediaType {
