@@ -12,3 +12,20 @@ export const createComment = async (params: createCommentParams) => {
         data: params
     })
 }
+
+export const getAllCommentsByMediaId = async (mediaId: string) => {
+    return await prisma?.comment.findMany({
+        where: {
+            mediaId
+        },
+        include: {
+            user: {
+                select: {
+                    id: true,
+                    picture: true,
+                    name: true
+                }
+            }
+        }
+    })
+}

@@ -55,13 +55,12 @@ export default function CommentComposer({ mediaId }: { mediaId: string }) {
             if (textareaRef.current)
                 textareaRef.current.style.height = "auto";
 
-            console.log(data)
         }
     }, [isSuccess]);
 
     const handleNewComment = () => {
         if (commentMsg === '') return;
-
+        console.log(commentMsg)
         const opt = {
             msg: commentMsg,
             userId: session?.data?.user?.id,
