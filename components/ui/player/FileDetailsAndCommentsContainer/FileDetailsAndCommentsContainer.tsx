@@ -57,13 +57,11 @@ function CommentCard({ mediaId }: { mediaId: string }) {
                                             </Avatar>
                                             <span className="text-sm font-semibold text-white/70">{eachComment?.user?.name}</span>
                                         </div>
-                                        <div className=" text-xs text-white/80">
-                                            <span className="whitespace-pre-wrap leading-5">
-                                                {eachComment?.timeStamp !== null && <span className="text-[#6784d3] pe-2">{formatTime(eachComment?.timeStamp as number)}</span>}
-                                                {eachComment?.msg}
-                                            </span>
+                                        <div className="text-[13px] lg:text-xs text-white/80 whitespace-pre-line leading-relaxed">
+                                            {eachComment?.timeStamp !== null && <span className="text-[#6784d3] pe-2">{formatTime(eachComment?.timeStamp as number)}</span>}
+                                            {eachComment?.msg}
                                         </div>
-                                        <div className="text-[#f2f2f2]/60 text-xs">
+                                        <div className="text-[#f2f2f2]/60 text-xs font-semibold">
                                             reply
                                         </div>
                                     </div>
