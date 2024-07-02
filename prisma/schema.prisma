@@ -90,7 +90,7 @@ model ReplyComment {
   userId    String
   user      User     @relation(fields: [userId], references: [id])
   commentId String
-  comment   Comment  @relation(fields: [commentId], references: [id])
+  comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
 }
 
 enum MediaType {
