@@ -41,7 +41,7 @@ function CommentCard() {
     if (!session?.data) return <></>
     return (
         <>
-            <Table>
+            <Table className="">
                 <TableBody >
                     <TableRow>
                         <div className="p-3">
@@ -354,12 +354,12 @@ export default function FileDetailsAndCommentsContainer({ media }: { media: Medi
     return (
         <>
             <Tabs defaultValue="comments" className="w-full flex flex-col">
-                <TabsList className="lg:w- m-3">
+                <TabsList className=" m-3">
                     <TabsTrigger value="comments" className="w-full h-7 text-xs">Comments</TabsTrigger>
                     <TabsTrigger value="fileInfo" className="w-full h-7 text-xs">File Information</TabsTrigger>
                 </TabsList>
                 <TabsContent value="comments" className="data-[state=active]:flex flex-col flex-1 overflow-y-auto">
-                    <ScrollArea className="flex-1 pb-3">
+                    <ScrollArea className="flex-1 pb-28">
                         <CommentCard />
                     </ScrollArea>
                 </TabsContent>
