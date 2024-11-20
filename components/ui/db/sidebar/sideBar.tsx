@@ -69,19 +69,6 @@ const TopSection = ({
                      <span className="text-xs">Recents</span>
                   </div>
                </Link>
-               <Link href='/db/apps' onClick={()=>{
-                   setTimeout(() => {
-                                    
-                     setOpenSideBar && setOpenSideBar(false);
-                  }, 500);
-               }}>
-                  <div className={cn(`flex items-center gap-2 h-8 px-5 cursor-pointer ${activePath === "apps" ? "bg-[#4a5878]" : 'hover:bg-[#3c3c3c]'}`)} >
-                     <AppsIcon />
-                     <span className="text-xs">
-                        Apps
-                     </span>
-                  </div>
-               </Link>
             </div >
          </div >
 
