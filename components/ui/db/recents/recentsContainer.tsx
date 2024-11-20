@@ -40,8 +40,8 @@ type Team = {
 export default function RecentsContainer() {
     const { currentTeam } = useAppSelector((state) => state.currentTeam);
 
-    const { data } = trpc.recents.getRecents.useQuery({ teamId: currentTeam?.id })
-    console.log(data)
+    const { data } = trpc.recents.getRecents.useQuery()
+
     return (
         <>
             <div className="p-5 pb-0 pe-0 w-full mt-10 lg:mt-0">

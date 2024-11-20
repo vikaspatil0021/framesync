@@ -8,7 +8,6 @@ import { getRecentsHandler } from "./getRecentsHandler.handler";
 export const recentsRouter = router({
 
     getRecents: authedProcedure
-        .input(z.object({ teamId: z.string() }))
-        .query(({ input }) => getRecentsHandler({ ...input }))
+        .query(() => getRecentsHandler()),
 
 })

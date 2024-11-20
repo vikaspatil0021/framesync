@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth"
 
 import prisma from "@/lib/prisma/client"
 
-export const getRecentsHandler = async ({ teamId }: { teamId: string }) => {
+export const getRecentsHandler = async () => {
     try {
         const session = await getServerSession(options)
 
