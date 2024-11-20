@@ -1,6 +1,8 @@
 import { options } from "@/lib/auth/options"
 import { getServerSession } from "next-auth"
 
+import prisma from "@/lib/prisma/client"
+
 export const getRecentsHandler = async ({ teamId }: { teamId: string }) => {
     try {
         const session = await getServerSession(options)
