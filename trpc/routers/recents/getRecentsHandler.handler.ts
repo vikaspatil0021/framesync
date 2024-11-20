@@ -37,6 +37,7 @@ export const getRecentsHandler = async ({ teamId }: { teamId: string }) => {
                 }
             }
         })
+        
         return res
     } catch (error: any) {
         throw new Error(error?.message)

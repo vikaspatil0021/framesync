@@ -124,10 +124,10 @@ export default function ProjectsContainer({
                                 })
                                 :
                                 <>
-                                    <CardSkeleton />
-                                    <CardSkeleton />
-                                    <CardSkeleton />
-                                    <CardSkeleton />
+                                    <CardSkeleton showSection={true} height="52px" />
+                                    <CardSkeleton showSection={true} height="52px" />
+                                    <CardSkeleton showSection={true} height="52px" />
+                                    <CardSkeleton showSection={true} height="52px" />
                                 </>
                         }
                     </div>
@@ -139,20 +139,23 @@ export default function ProjectsContainer({
 }
 
 
-const CardSkeleton = () => {
+export const CardSkeleton = ({ showSection, height }: { showSection: boolean, height: string }) => {
     return (
         <>
             <div className="h-full">
                 <Skeleton className="w-full rounded-b-none aspect-video bg-[#444]" />
-                <Skeleton className="text-[11px] bg-[#363c4c] rounded-t-none p-2.5  h-[52px]">
+                <Skeleton className={`text-[11px] bg-[#363c4c] rounded-t-none p-2.5  h-[${height}]]`}>
                     <div className="flex justify-between">
                         <Skeleton className="h-3 w-[40%] bg-[#666]" />
                         <Skeleton className="h-3 w-[10%] bg-[#666]" />
                     </div>
-                    <div className="flex justify-between mt-2">
-                        <Skeleton className="h-1.5 w-[30%] bg-[#666]" />
-                        <Skeleton className="h-1.5 w-[25%] bg-[#666]" />
-                    </div>
+                    {
+                        showSection &&
+                        <div className="flex justify-between mt-2">
+                            <Skeleton className="h-1.5 w-[30%] bg-[#666]" />
+                            <Skeleton className="h-1.5 w-[25%] bg-[#666]" />
+                        </div>
+                    }
                 </Skeleton>
             </div>
         </>
