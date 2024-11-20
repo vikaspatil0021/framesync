@@ -64,7 +64,7 @@ export default function RecentsContainer() {
                                                 <div className="text-[16px]">
                                                     {eachProject?.name}
                                                 </div>
-                                                <div className="grid grid-cols-2 gap-y-5 gap-x-7 mt-4">
+                                                <div className="grid grid-cols-2 gap-3 mt-4">
                                                     {
                                                         eachProject?.Media?.map((each: Media, index: number) => {
                                                             return (
@@ -122,7 +122,7 @@ export default function RecentsContainer() {
 
                                         <Skeleton className="h-3 w-[30%] bg-[#666]" />
                                         <Skeleton className="h-6 w-[60%] bg-[#666] mt-2" />
-                                        <div className="grid grid-cols-2 gap-y-5 gap-x-7 mt-4">
+                                        <div className="grid grid-cols-2 gap-3 mt-4">
                                             <CardSkeleton showSection={false} height="38px" />
                                             <CardSkeleton showSection={false} height="38px" />
                                             <CardSkeleton showSection={false} height="38px" />
@@ -133,7 +133,7 @@ export default function RecentsContainer() {
 
                                         <Skeleton className="h-3 w-[30%] bg-[#666]" />
                                         <Skeleton className="h-6 w-[60%] bg-[#666] mt-2" />
-                                        <div className="grid grid-cols-2 gap-y-5 gap-x-7 mt-4">
+                                        <div className="grid grid-cols-2 gap-3 mt-4">
                                             <CardSkeleton showSection={false} height="38px" />
                                             <CardSkeleton showSection={false} height="38px" />
                                             <CardSkeleton showSection={false} height="38px" />
