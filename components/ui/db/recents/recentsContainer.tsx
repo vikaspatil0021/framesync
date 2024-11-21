@@ -51,6 +51,11 @@ export default function RecentsContainer() {
                 <ScrollArea className="h-[calc(100vh-108px)] lg:h-[calc(100vh-68px)] mt-5 pe-5 xl:pe-40">
 
                     <div className="grid sm:grid-cols-2 w-full gap-x-10 md:gap-x-16 gap-y-10 mb-5">
+                        {data?.length === 0 &&
+                            <div className="text-[#999]">
+                                No Media Found!
+                            </div>
+                        }
                         {
                             data ?
                                 data?.map((eachProject: Project) => {
