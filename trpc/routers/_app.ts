@@ -7,6 +7,7 @@ import { membershipsRouter } from "./memberships/_router";
 import { projectRouter } from "./project/_router";
 import { recentsRouter } from "./recents/_router";
 import { replyCommentRouter } from "./replyComment/_route";
+import { searchRouter } from "./search/router";
 import { teamsRouter } from "./teams/_router";
 
 
@@ -18,7 +19,9 @@ export const appRouter = router({
     media: mediaRouter,
     comment: commentRouter,
     replyComment: replyCommentRouter,
-    recents: recentsRouter
+    recents: recentsRouter,
+    search: searchRouter
+
 });
 
 

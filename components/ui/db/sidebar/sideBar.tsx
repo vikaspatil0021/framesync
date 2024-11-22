@@ -17,7 +17,7 @@ import { NewProjectModal } from "./dialogs/newProjectModal/newProjectModal"
 import { Dispatch, SetStateAction, useEffect } from "react"
 import { ScrollArea } from "../../scroll-area"
 import { Skeleton } from "../../skeleton"
-import SearchComponent from "./searchComponent"
+import MemoizedSearchComponent from "./searchComponent";
 
 
 
@@ -47,7 +47,7 @@ const TopSection = ({
                   <AccountDropDown />
                   <NotificationDropDown />
                </div>
-               <SearchComponent />
+               <MemoizedSearchComponent />
             </div>
             <div className="my-3">
                <Link href='/db/recents' onClick={() => {
@@ -86,7 +86,6 @@ const BottomSection = ({
 
 
    const activePathProject = activePath.replace('project/', '');
-
 
    useEffect(() => { // change the url to the current first project  if team changes
       let allProjectIds = projectsData?.projects.map((each: EachProject) => {

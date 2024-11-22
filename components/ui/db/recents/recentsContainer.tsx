@@ -38,7 +38,6 @@ type Team = {
 };
 
 export default function RecentsContainer() {
-    const { currentTeam } = useAppSelector((state) => state.currentTeam);
 
     const { data } = trpc.recents.getRecents.useQuery()
 

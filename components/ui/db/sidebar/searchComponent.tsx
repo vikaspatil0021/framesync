@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Image from "next/image";
 
@@ -13,11 +13,49 @@ import {
 } from "@/components/ui/dialog";
 import { ScrollArea } from "../../scroll-area";
 
+import { trpc } from "@/trpc/client/trpcClient";
+import convertBytes from "@/lib/convertBytesFunction";
+import Link from "next/link";
+import { useAppDispatch } from "@/lib/redux-toolkit/hook";
+import { updateTeam } from "@/lib/redux-toolkit/slices/currentTeamSlice";
+import { useRouter } from "next/navigation";
+import { Skeleton } from "../../skeleton";
+import { LoadingIcon } from "@/components/icons/Icons";
 
-export default function SearchComponent() {
+type Project = {
+    id: string;
+    name: string;
+    teamId: string;
+    team: Team;
+};
+
+type Media = {
+    id: string;
+    key: string;
+    name: string;
+    size: number;
+    duration: number;
+    uploaded_at: string;
+    type: "VideoFile" | "Folder";
+    uploaderId: string;
+    projectId: string;
+};
+
+type Team = {
+    id: string;
+    name: string;
+};
+
+function SearchComponent() {
+    const dispatch = useAppDispatch();
+    const router = useRouter();
+
     const [open, setOpen] = useState<boolean>(false);
 
-    
+    const [searchString, setSearchString] = useState<string>('');
+
+    const { data, isRefetching, isFetching } = trpc?.search.searchQuery?.useQuery({ searchString })
+
     return (
         <>
             <Dialog key={"newProjectModal"} open={open} onOpenChange={setOpen}>
@@ -38,66 +76,86 @@ export default function SearchComponent() {
                         <Input className="border-none h-8 bg-[#3c3c3c] placeholder:text-[#999] text-xs p-1 ps-9 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-sky-500 focus-visible:ring-transparent transition-all"
                             placeholder="Search files or projects"
                             autoFocus={false}
+                            value={searchString}
+                            onChange={(e) => setSearchString(e.target.value)}
                         />
                     </div>
-                    <ScrollArea className="max-h-[40vh] pe-3">
-                        <div>
-                            <div className="text-xs text-[#999]">
-                                Files
+                    <ScrollArea className="max-h-[40vh] h-[40vh] pe-3">
+                        <div className="">
+                            <div className="text-xs text-[#999] flex relative">
+                                Projects [{data?.projects ? data?.projects.length : 0}]
+                                {isRefetching || isFetching && <LoadingIcon className="h-3 right-0" />}
                             </div>
                             <div className="flex flex-col mt-2">
-                                <div className="flex w-full p-2 hover:bg-[#333] rounded-md cursor-pointer">
-                                    <Image src={'https://d3c077k1fiz41j.cloudfront.net/YMTeOqBvJN4gf2xBky7Y0.jpg'} alt="media_image" width='100' height='100' className="w-16 rounded-md" />
-                                    <div className="flex flex-col px-3">
-                                        <div className="text-[13px] line-clamp-1">
-                                            9789c63b-0ff9-48c5-98a0-647783d5f8 99 (1).mp4sidjgvb aasidhvbsdhbv
-                                        </div>
-                                        <div className="text-[#999] text-xs">
-                                            9.8 MB
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="flex w-full p-2 hover:bg-[#333] rounded-md cursor-pointer">
-                                    <Image src={'https://d3c077k1fiz41j.cloudfront.net/YMTeOqBvJN4gf2xBky7Y0.jpg'} alt="media_image" width='100' height='100' className="w-16 rounded-md" />
-                                    <div className="flex flex-col px-3">
-                                        <div className="text-[13px] line-clamp-1">
-                                            9789c63b-0ff9-48c5-98a0-647783d5f8 99 (1).mp4sidjgvb aasidhvbsdhbv
-                                        </div>
-                                        <div className="text-[#999] text-xs">
-                                            9.8 MB
-                                        </div>
-                                    </div>
-                                </div>
+                                {
+                                    data?.projects && data?.projects?.map((eachProject: Project) => {
+                                        return (
+                                            <>
+                                                <div className="flex flex-col w-full py-1 px-3 hover:bg-[#333] rounded-md cursor-pointer"
+                                                    onClick={() => {
+                                                        dispatch(updateTeam(eachProject?.team));
+                                                        setTimeout(() => {
+                                                            router.push(`/db/project/${eachProject?.id}`);
+                                                            setOpen(false)
+                                                        }, 100);
+                                                    }}
+                                                >
+                                                    <div className="text-[13px] line-clamp-1">
+                                                        {eachProject?.name}
+                                                    </div>
+                                                    <div className="text-[#999] text-[10px]">
+                                                        {eachProject?.team?.name}
+                                                    </div>
+                                                </div>
+                                            </>
+                                        )
+                                    })
+                                }
                             </div>
-
                         </div>
                         <div className="mt-3">
-                            <div className="text-xs text-[#999]">
-                                Projects
+                            <div className="text-xs text-[#999] flex relative">
+                                Files [{data?.media ? data?.media.length : 0}]
+                                {isRefetching || isFetching && <LoadingIcon className="h-3 right-0" />}
                             </div>
                             <div className="flex flex-col mt-2">
+                                {
+                                    data?.media && data?.media?.map((eachMedia: Media) => {
+                                        return (
+                                            <>
+                                                <Link href={`/player/${eachMedia?.id}`} target="_blank" onClick={() => setOpen(false)}>
+                                                    <div className="flex w-full p-2 hover:bg-[#333] rounded-md cursor-pointer">
+                                                        <Image
+                                                            src={`${process.env.NEXT_PUBLIC_AWS_CDN_DOMAIN}/${eachMedia?.key}.jpg`}
+                                                            alt="media_image" width='100' height='100'
+                                                            className="w-16 rounded-md" />
 
-                                <div className="flex flex-col w-full py-1 px-3 hover:bg-[#333] rounded-md cursor-pointer">
-                                    <div className="text-[13px] line-clamp-1">
-                                        another cool project
-                                    </div>
-                                    <div className="text-[#999] text-[10px]">
-                                        VIKAS's Team
-                                    </div>
-                                </div>
-                                <div className="flex flex-col w-full py-1 px-3 hover:bg-[#333] rounded-md cursor-pointer">
-                                    <div className="text-[13px] line-clamp-1">
-                                        another cool project
-                                    </div>
-                                    <div className="text-[#999] text-[10px]">
-                                        VIKAS's Team
-                                    </div>
-                                </div>
-                            </div>
+                                                        <div className="flex flex-col px-3">
+                                                            <div className="text-[13px] line-clamp-1">
+                                                                {eachMedia?.name}
+                                                            </div>
+                                                            <div className="text-[#999] text-xs">
+                                                                {convertBytes(eachMedia?.size)}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </Link>
+                                            </>
+                                        )
+                                    })
+                                }
+
+                            </div >
+
                         </div>
+
                     </ScrollArea>
                 </DialogContent>
             </Dialog>
         </>
     )
 }
+
+const MemoizedSearchComponent = React.memo(SearchComponent);
+
+export default MemoizedSearchComponent;
