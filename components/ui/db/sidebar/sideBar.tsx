@@ -1,8 +1,6 @@
 "use client"
 
-import { AppsIcon, RecentIcon, ThreeVerticalDotsIcon } from "@/components/icons/Icons"
-import { Input } from "../../input"
-import { Search } from "lucide-react"
+import { RecentIcon } from "@/components/icons/Icons"
 
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
@@ -19,6 +17,7 @@ import { NewProjectModal } from "./dialogs/newProjectModal/newProjectModal"
 import { Dispatch, SetStateAction, useEffect } from "react"
 import { ScrollArea } from "../../scroll-area"
 import { Skeleton } from "../../skeleton"
+import SearchComponent from "./searchComponent"
 
 
 
@@ -48,19 +47,12 @@ const TopSection = ({
                   <AccountDropDown />
                   <NotificationDropDown />
                </div>
-               <div className="relative flex items-center ">
-                  <Search className="h-4 absolute left-1.5" />
-                  <Input className="border-none h-8 bg-[#3c3c3c] placeholder:text-[#999] text-xs p-1 ps-9 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-sky-500 focus-visible:ring-transparent transition-all"
-                     placeholder="Search files or projects"
-                     autoFocus={false}
-
-                  />
-               </div>
+               <SearchComponent />
             </div>
             <div className="my-3">
-               <Link href='/db/recents' onClick={()=>{
-                   setTimeout(() => {
-                                    
+               <Link href='/db/recents' onClick={() => {
+                  setTimeout(() => {
+
                      setOpenSideBar && setOpenSideBar(false);
                   }, 500);
                }}>
@@ -105,7 +97,7 @@ const BottomSection = ({
       if (activePath.includes('project') && allProjectIds && !allProjectIds?.includes(activePathProject)) {
 
          setTimeout(() => {
-                                    
+
             setOpenSideBar && setOpenSideBar(false);
          }, 500);
          const currentId = allProjectIds[0]
@@ -125,11 +117,11 @@ const BottomSection = ({
             </div>
             <div className="py-2 flex justify-between items-center">
                <div className="px-3 text-[11px]">Projects</div>
-                  <NewProjectModal
-                     teamId={currentTeam?.id}
-                     refetchProjectsdata={refetchProjectsdata}    
-                        setOpenSideBar={setOpenSideBar}
-                  />
+               <NewProjectModal
+                  teamId={currentTeam?.id}
+                  refetchProjectsdata={refetchProjectsdata}
+                  setOpenSideBar={setOpenSideBar}
+               />
             </div>
 
             <ScrollArea className="flex-1">
@@ -138,10 +130,10 @@ const BottomSection = ({
                      projectsData?.projects.map((eachProject: EachProject, index: number) => {
                         return (
                            <>
-                              <Link href={"/db/project/" + eachProject.id} onClick={()=>{
+                              <Link href={"/db/project/" + eachProject.id} onClick={() => {
 
                                  setTimeout(() => {
-                                    
+
                                     setOpenSideBar && setOpenSideBar(false);
                                  }, 500);
                               }}>
