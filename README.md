@@ -6,7 +6,7 @@ Open-source video review platform for YouTubers and Editors.
 
 - Custom video player optimized for feedback and usability.  
 - Seamless team collaboration for editors and creators.  
-- Effortless upload, organization, and sharing of videos.
+- Effortless upload, organization of videos.
 
   
 ## Built with
