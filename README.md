@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Introduction
 
-## Getting Started
+Open-source video review platform for YouTubers and Editors.
 
-First, run the development server:
+### Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Custom video player optimized for feedback and usability.  
+- Seamless team collaboration for editors and creators.  
+- Effortless upload, organization, and sharing of videos.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+  
+## Built with
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- [Next.js](https://nextjs.org/) – framework
+- [TypeScript](https://www.typescriptlang.org/) – language
+- [Tailwind](https://tailwindcss.com/) – CSS
+- [NextAuth.js](https://next-auth.js.org/) – auth
+- [Postgresql](https://www.postgresql.org/) – database
+- [Prisma](https://www.prisma.io/) – ORM
+- [Shadcn](https://ui.shadcn.com/) – ui
+- [S3](https://aws.amazon.com/s3/) – files storage
+- [Cloudfront](https://aws.amazon.com/cloudfront/) – files distribution
+- [tRPC](https://trpc.io/) – api
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Local Development  
 
-## Learn More
+1. Clone the repository:  
+   ```bash
+   git clone https://github.com/your-repo/framesync.git
+   cd framesync
+   ```  
+2. Install dependencies:  
+   ```bash
+   npm install
+   ```  
+3. Start the development server:  
+   ```bash
+   npm run dev
+   ```  
+4. Open your browser and navigate to `http://localhost:3000` to view the application locally.  
 
-To learn more about Next.js, take a look at the following resources:
+## Contribution  
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Contributions are welcome! Please fork this repository and submit a pull request with your proposed changes. Be sure to include a detailed description of your modifications.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## License  
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+This project is licensed under the [MIT License](LICENSE), allowing you to freely use, modify, and distribute the code with proper attribution.  
