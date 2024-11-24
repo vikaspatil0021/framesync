@@ -1,3 +1,9 @@
+
+
+https://github.com/user-attachments/assets/3a1dcac0-d4a9-440b-b4fb-c3a1cd745a79
+
+
+
 ## Introduction
 
 Open-source video review platform for YouTubers and Editors.
